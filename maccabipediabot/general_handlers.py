@@ -3,7 +3,7 @@ import logging
 from telegram.error import (TelegramError, Unauthorized, BadRequest,
                             TimedOut, ChatMigrated, NetworkError)
 
-from maccabipediabot.handlers_utils import send_typing_action
+from maccabipediabot.handlers_utils import send_typing_action, log_user_request
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +35,7 @@ def error_callback(update, context):
         # handle all other telegram related errors
 
 
+@log_user_request
 @send_typing_action
 def help_handler(update, context):
     """
@@ -44,6 +45,7 @@ def help_handler(update, context):
                                                                     "\n/create_games_set")
 
 
+@log_user_request
 @send_typing_action
 def unknown_message_handler(update, context):
     """
@@ -52,6 +54,7 @@ def unknown_message_handler(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="הפקודה אחרונה לא הובנה, נסו להשתמש ב: /help")
 
 
+@log_user_request
 @send_typing_action
 def start_handler(update, context):
     """
