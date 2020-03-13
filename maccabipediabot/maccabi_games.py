@@ -22,6 +22,9 @@ def get_similar_teams_names(team_name):
 
 
 def get_games_by_filters(user_data_filters):
+    """
+    :rtype: maccabistats.stats.maccabi_games_stats.MaccabiGamesStats
+    """
     filtered_games = maccabipedia_games
 
     logger.info(f"unfiltered games: {filtered_games}")
