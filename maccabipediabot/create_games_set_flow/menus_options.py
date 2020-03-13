@@ -3,11 +3,15 @@ class TeamFilteringMenuOptions(object):
     ALL_TEAMS = f"{MENU_NAME}_all_teams"
     SPECIFIC_TEAM = f"{MENU_NAME}_specific_team"
 
+    TEXT = "סנן לפי יריבות:"
+
 
 class CompetitionFilteringMenuOptions(object):
     MENU_NAME = "competition_filtering_menu"
     ALL_COMPETITIONS = f"{MENU_NAME}_all_competitions"
     LEAGUE_ONLY = f"{MENU_NAME}_league_only"
+
+    TEXT = "סנן לפי מפעל:"
 
 
 class DateFilteringMenuOptions(object):
@@ -15,12 +19,16 @@ class DateFilteringMenuOptions(object):
     ALL_TIME = f"{MENU_NAME}_all"
     SINCE_COUNTRY = f"{MENU_NAME}_country"
 
+    TEXT = "סנן לפי תאריכי משחקים:"
+
 
 class HomeAwayFilteringMenuOptions(object):
     MENU_NAME = "home_away_filtering_menu"
     HOME = f"{MENU_NAME}_home"
     AWAY = f"{MENU_NAME}_away"
     ALL_HOME_AWAY = f"{MENU_NAME}_all"
+
+    TEXT = "סנן משחקים לפי ביתיות:"
 
 
 class GamesFilteringMainMenuOptions(object):
@@ -30,3 +38,6 @@ class GamesFilteringMainMenuOptions(object):
     COMPETITION = f"{MENU_NAME}_competition"
     DATE = f"{MENU_NAME}_date"
     FINISH = f"{MENU_NAME}_finish"
+
+    FIRST_TIME_TEXT = "סנן משחקים לפי:"
+    AFTER_FIRST_TIME_TEXT = "סנן משחקים נוספים, או סיים:"

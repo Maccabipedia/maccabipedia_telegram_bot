@@ -2,8 +2,8 @@ import logging
 
 from telegram.ext import CommandHandler, MessageHandler, Filters, CallbackQueryHandler, ConversationHandler
 
-from maccabipediabot.create_games_set_flow.menus_keyboards import show_games_filter_main_menu, show_home_away_menu, \
-    show_team_menu, show_competition_menu, show_date_menu
+from maccabipediabot.create_games_set_flow.menus_keyboards import create_games_filter_main_menu, create_home_away_games_filter_menu, \
+    create_team_games_filter_menu, create_competition_games_filter_menu, create_date_games_filter_menu
 from maccabipediabot.create_games_set_flow.menus_options import GamesFilteringMainMenuOptions, TeamFilteringMenuOptions, \
     CompetitionFilteringMenuOptions, DateFilteringMenuOptions, HomeAwayFilteringMenuOptions
 from maccabipediabot.general_handlers import help_handler
@@ -16,7 +16,10 @@ select_games_filter, games_filtering, select_home_away_filter, select_team_filte
 
 
 def go_back_to_main_games_filter_menu(update, context):
-    show_games_filter_main_menu(update, context)
+    reply_keyboard = create_games_filter_main_menu(first_time_menu=False)
+
+    # This is not the first time the user sees the games filtering menu, we will ask him if he want to continue filtering or to finish the process.
+    context.bot.send_message(chat_id=update.effective_chat.id, text=GamesFilteringMainMenuOptions.AFTER_FIRST_TIME_TEXT, reply_markup=reply_keyboard)
     return games_filtering
 
 
@@ -36,12 +39,19 @@ def create_games_set(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="מתחילים ליצור קבוצת משחקים")
     set_default_filters_for_current_user(update, context)  # In case he want to exit with all games (unfiltered)
 
-    return go_back_to_main_games_filter_menu(update, context)
+    reply_keyboard = create_games_filter_main_menu(first_time_menu=True)
+
+    # This is the entry point of games filtering, we will show the user a general msg asking him to filter games
+    context.bot.send_message(chat_id=update.effective_chat.id, text=GamesFilteringMainMenuOptions.FIRST_TIME_TEXT, reply_markup=reply_keyboard)
+    return games_filtering
 
 
 @send_typing_action
 def show_date_menu_action(update, context):
-    show_date_menu(update, context)
+    reply_keyboard = create_date_games_filter_menu()
+
+    context.bot.send_message(chat_id=update.effective_chat.id, text=DateFilteringMenuOptions.TEXT, reply_markup=reply_keyboard)
+
     return select_date_filter
 
 
@@ -56,7 +66,9 @@ def save_date_decision(update, context):
 
 @send_typing_action
 def show_competition_menu_action(update, context):
-    show_competition_menu(update, context)
+    reply_keyboard = create_competition_games_filter_menu()
+    context.bot.send_message(chat_id=update.effective_chat.id, text=CompetitionFilteringMenuOptions.TEXT, reply_markup=reply_keyboard)
+
     return select_competition_filter
 
 
@@ -71,7 +83,9 @@ def save_competition_decision(update, context):
 
 @send_typing_action
 def show_home_away_menu_action(update, context):
-    show_home_away_menu(update, context)
+    reply_keyboard = create_home_away_games_filter_menu()
+
+    context.bot.send_message(chat_id=update.effective_chat.id, text=HomeAwayFilteringMenuOptions.TEXT, reply_markup=reply_keyboard)
     return select_home_away_filter
 
 
@@ -86,7 +100,9 @@ def save_home_away_decision(update, context):
 
 @send_typing_action
 def show_team_menu_action(update, context):
-    show_team_menu(update, context)
+    reply_keyboard = create_team_games_filter_menu()
+
+    context.bot.send_message(chat_id=update.effective_chat.id, text=TeamFilteringMenuOptions.TEXT, reply_markup=reply_keyboard)
     return select_team_filter
 
 
