@@ -55,4 +55,4 @@ def show_games_filter_main_menu(update, context):
         [InlineKeyboardButton("סיים", callback_data=GamesFilteringMainMenuOptions.FINISH)]
     ]
     reply_markup = InlineKeyboardMarkup(buttons)
-    context.bot.send_message(chat_id=update.effective_chat.id, text="בחר משחקים לפי:", reply_markup=reply_markup)
+    context.bot.send_message(chat_id=update.effective_chat.id, text="סנן משחקים לפי:", reply_markup=reply_markup)
