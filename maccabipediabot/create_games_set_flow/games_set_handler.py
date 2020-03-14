@@ -41,7 +41,7 @@ def create_games_set(update, context):
     """
     Creates a games set that will be used for statistics
     """
-    context.bot.send_message(chat_id=update.effective_chat.id, text="מתחילים ליצור קבוצת משחקים")
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f"מתחילים ליצור קבוצת משחקים, {len(maccabipedia_games)} משחקים קיימים")
     set_default_filters_for_current_user(update, context)  # In case he want to exit with all games (unfiltered)
 
     reply_keyboard = create_games_filter_main_menu(first_time_menu=True)
@@ -67,9 +67,10 @@ def show_date_menu_action(update, context):
 def save_date_decision(update, context):
     query = update.callback_query
     context.user_data[_USER_DATE_GAMES_FILTER_KEY].update_date_filter(query.data)
+    games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
 
     button_text_the_user_chose = get_button_text_from_query_data(query)
-    query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}")
+    query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}, {len(games)} משחקים נבחרו")
     # Showing the main menu and moving to the step of choosing a game filter again
     return go_back_to_main_games_filter_menu(update, context)
 
@@ -90,9 +91,11 @@ def show_competition_menu_action(update, context):
 def save_competition_decision(update, context):
     query = update.callback_query
     context.user_data[_USER_DATE_GAMES_FILTER_KEY].update_competition_filter(query.data)
+    games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
+
 
     button_text_the_user_chose = get_button_text_from_query_data(query)
-    query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}")
+    query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}, {len(games)} משחקים נבחרו")
     # Showing the main menu and moving to the step of choosing a game filter again
     return go_back_to_main_games_filter_menu(update, context)
 
@@ -113,9 +116,11 @@ def show_home_away_menu_action(update, context):
 def save_home_away_decision(update, context):
     query = update.callback_query
     context.user_data[_USER_DATE_GAMES_FILTER_KEY].update_home_away_filter(query.data)
+    games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
+
 
     button_text_the_user_chose = get_button_text_from_query_data(query)
-    query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}")
+    query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}, {len(games)} משחקים נבחרו")
     # Showing the main menu and moving to the step of choosing a game filter again
     return go_back_to_main_games_filter_menu(update, context)
 
@@ -137,9 +142,10 @@ def save_team_decision(update, context):
 
     if query.data == TeamFilteringMenuOptions.ALL_TEAMS:
         context.user_data[_USER_DATE_GAMES_FILTER_KEY].update_team_filter_for_all_teams()
+        games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
 
         button_text_the_user_chose = get_button_text_from_query_data(query)
-        query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}")
+        query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}, {len(games)} משחקים נבחרו")
 
         return go_back_to_main_games_filter_menu(update, context)
     else:
@@ -166,8 +172,9 @@ def save_specific_team_action(update, context):
         return select_team_filter
     else:
         context.user_data[_USER_DATE_GAMES_FILTER_KEY].update_team_filter(team_name)
+        games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
 
-        context.bot.send_message(chat_id=update.effective_chat.id, text=f"בחרת ב: {team_name}")
+        context.bot.send_message(chat_id=update.effective_chat.id, text=f"בחרת ב: {team_name}, {len(games)} משחקים נבחרו")
         return go_back_to_main_games_filter_menu(update, context)
 
 
