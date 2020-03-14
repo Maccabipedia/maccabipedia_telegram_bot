@@ -4,16 +4,24 @@ from pprint import pformat
 from telegram.ext import CommandHandler, CallbackQueryHandler, ConversationHandler
 
 from maccabipediabot.games_set_stats_flow.menus_keyboards import create_top_players_games_stats_keyboard, create_games_stats_main_menu_keyboard, \
-    create_players_streaks_games_stats_keyboard
-from maccabipediabot.games_set_stats_flow.menus_options import TopPlayersStatsMenuOptions, GamesStatsMainMenuOptions, PlayersStreaksStatsMenuOptions
+    create_players_streaks_games_stats_keyboard, create_more_stats_or_finish_menu_keyboard
+from maccabipediabot.games_set_stats_flow.menus_options import TopPlayersStatsMenuOptions, GamesStatsMainMenuOptions, PlayersStreaksStatsMenuOptions, \
+    MoreStatsOrFinishMenuOptions
 from maccabipediabot.general_handlers import help_handler
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
-from maccabipediabot.consts import _USER_DATE_GAMES_FILTER_KEY
+from maccabipediabot.common import _USER_DATE_GAMES_FILTER_KEY, set_default_filters_for_current_user
 from maccabipediabot.maccabi_games_filtering import MaccabiGamesFiltering
 
 logger = logging.getLogger(__name__)
 
-show_stats, select_top_players_stats, select_players_streaks_stats = range(3)
+show_stats, select_top_players_stats, select_players_streaks_stats, select_more_stats_or_finish = range(4)
+
+
+def go_to_more_stats_or_finish_menu(update, context):
+    reply_keyboard = create_more_stats_or_finish_menu_keyboard()
+
+    context.bot.send_message(chat_id=update.effective_chat.id, text=GamesStatsMainMenuOptions.AFTER_FIRST_TIME_TEXT, reply_markup=reply_keyboard)
+    return show_stats
 
 
 def go_back_to_games_stats_main_menu(update, context):
@@ -28,6 +36,10 @@ def go_back_to_games_stats_main_menu(update, context):
 @send_typing_action
 def games_stats_action(update, context):
     logger.info(f"New user for games stats: {update.effective_chat.username}")
+
+    # In case the uses got here without filter any games, we should apply the default filter for him
+    if _USER_DATE_GAMES_FILTER_KEY not in context.user_data:
+        set_default_filters_for_current_user(update, context)
 
     reply_keyboard = create_games_stats_main_menu_keyboard()
     context.bot.send_message(chat_id=update.effective_chat.id, text=GamesStatsMainMenuOptions.FIRST_TIME_TEXT, reply_markup=reply_keyboard)
@@ -49,7 +61,8 @@ def show_summary_stats_action(update, context):
     games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
     summary_stats = games.results.json_dict()
 
-    context.bot.send_message(chat_id=update.effective_chat.id, text=summary_stats)
+    query = update.callback_query
+    query.edit_message_text(text=summary_stats)
 
     return go_back_to_games_stats_main_menu(update, context)
 
@@ -135,6 +148,11 @@ def create_games_stats_conversion_handler():
                 CallbackQueryHandler(show_players_streaks_stats_menu_action, pattern=f"^{GamesStatsMainMenuOptions.PLAYERS_STREAKS_STATS}$"),
                 CallbackQueryHandler(show_summary_stats_action, pattern=f"^{GamesStatsMainMenuOptions.SUMMARY_STATS}$"),
                 CallbackQueryHandler(finished_to_show_games_stats_action, pattern=f"^{GamesStatsMainMenuOptions.FINISH}$")],
+
+            select_more_stats_or_finish: [
+                CallbackQueryHandler(go_back_to_games_stats_main_menu, pattern=f"^{MoreStatsOrFinishMenuOptions.MORE_STATS}$"),
+                CallbackQueryHandler(finished_to_show_games_stats_action, pattern=f"^{MoreStatsOrFinishMenuOptions.FINISH}$"),
+            ],
 
             select_top_players_stats: [
                 CallbackQueryHandler(show_top_scorers_action, pattern=f"^{TopPlayersStatsMenuOptions.TOP_SCORERS}$"),

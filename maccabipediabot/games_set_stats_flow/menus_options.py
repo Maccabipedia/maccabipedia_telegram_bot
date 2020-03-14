@@ -15,6 +15,14 @@ class PlayersStreaksStatsMenuOptions(object):
     TEXT = "בחר את הסטטיסטיקה שעבורה תרצה לראות את השחקנים בעלי הרצף הארוך ביותר?"
 
 
+class MoreStatsOrFinishMenuOptions(object):
+    MENU_NAME = "more_stats_or_finish_menu"
+    MORE_STATS = f"{MENU_NAME}_more_stats"
+    FINISH = f"{MENU_NAME}_finish"
+
+    TEST = "תרצה לצפות בסטטיסטיקה נוספת או לסיים?"
+
+
 class GamesStatsMainMenuOptions(object):
     MENU_NAME = "games_stats_main_menu"
     TOP_PLAYERS_STATS = f"{MENU_NAME}_top_players"

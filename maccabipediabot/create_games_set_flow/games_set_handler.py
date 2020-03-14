@@ -2,7 +2,7 @@ import logging
 
 from telegram.ext import CommandHandler, MessageHandler, Filters, CallbackQueryHandler, ConversationHandler
 
-from maccabipediabot.consts import _USER_DATE_GAMES_FILTER_KEY
+from maccabipediabot.common import _USER_DATE_GAMES_FILTER_KEY, set_default_filters_for_current_user
 from maccabipediabot.create_games_set_flow.menus_keyboards import create_games_filter_main_menu, create_home_away_games_filter_menu, \
     create_team_games_filter_menu, create_competition_games_filter_menu, create_date_games_filter_menu
 from maccabipediabot.create_games_set_flow.menus_options import GamesFilteringMainMenuOptions, TeamFilteringMenuOptions, \
@@ -10,7 +10,7 @@ from maccabipediabot.create_games_set_flow.menus_options import GamesFilteringMa
 from maccabipediabot.general_handlers import help_handler
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
 from maccabipediabot.maccabi_games import maccabipedia_games, get_similar_teams_names
-from maccabipediabot.maccabi_games_filtering import GamesFilter, MaccabiGamesFiltering
+from maccabipediabot.maccabi_games_filtering import MaccabiGamesFiltering
 
 logger = logging.getLogger(__name__)
 
@@ -29,10 +29,6 @@ def go_back_to_main_games_filter_menu(update, context):
     # This is not the first time the user sees the games filtering menu, we will ask him if he want to continue filtering or to finish the process.
     context.bot.send_message(chat_id=update.effective_chat.id, text=GamesFilteringMainMenuOptions.AFTER_FIRST_TIME_TEXT, reply_markup=reply_keyboard)
     return games_filtering
-
-
-def set_default_filters_for_current_user(update, context):
-    context.user_data[_USER_DATE_GAMES_FILTER_KEY] = GamesFilter()
 
 
 @log_user_request
@@ -93,7 +89,6 @@ def save_competition_decision(update, context):
     context.user_data[_USER_DATE_GAMES_FILTER_KEY].update_competition_filter(query.data)
     games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
 
-
     button_text_the_user_chose = get_button_text_from_query_data(query)
     query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}, {len(games)} משחקים נבחרו")
     # Showing the main menu and moving to the step of choosing a game filter again
@@ -117,7 +112,6 @@ def save_home_away_decision(update, context):
     query = update.callback_query
     context.user_data[_USER_DATE_GAMES_FILTER_KEY].update_home_away_filter(query.data)
     games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
-
 
     button_text_the_user_chose = get_button_text_from_query_data(query)
     query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}, {len(games)} משחקים נבחרו")
@@ -182,9 +176,11 @@ def save_specific_team_action(update, context):
 @send_typing_action
 def finished_to_create_games_action(update, context):
     filtered_games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"{len(filtered_games)} משחקים נבחרו,"
-                                                                    f"\nבכדי לראות סטטיסטיקות על המשחקים שנבחרו בחר:"
-                                                                    f"\n/games_stats")
+
+    query = update.callback_query
+    query.edit_message_text(text=f"{len(filtered_games)} משחקים נבחרו,"
+                                 f"\nבכדי לראות סטטיסטיקות על המשחקים שנבחרו בחר:"
+                                 f"\n/games_stats")
 
     return ConversationHandler.END
 

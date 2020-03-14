@@ -1,3 +1,7 @@
+------ Version 0.2.0 ------
+    Show the games number after each filtering
+    After each games stats request show a menu of "continue or go back"
+
 ------ Version 0.1.0 ------
     Added "create_games_set" command to create temporary games group (by some pre-defined filters).
     Added "games_stats" command to get useful stats on the games group
