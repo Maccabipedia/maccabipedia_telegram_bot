@@ -1,3 +1,6 @@
+------ Version 0.3.0 ------
+    Add "shirt_number" command
+
 ------ Version 0.2.0 ------
     Show the games number after each filtering
     After each games stats request show a menu of "continue or go back"

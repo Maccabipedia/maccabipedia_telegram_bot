@@ -2,7 +2,9 @@ import logging
 
 from telegram.error import (TelegramError, Unauthorized, BadRequest,
                             TimedOut, ChatMigrated, NetworkError)
+from telegram.parsemode import ParseMode
 
+from maccabipediabot.common import create_maccabipedia_shirt_number_category_html_text
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
 
 logger = logging.getLogger(__name__)
@@ -44,7 +46,9 @@ def help_handler(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="בכדי לבחור את קבוצת המשחקים שעליהם תרצה לקבל סטטיסטיקה:"
                                                                     "\n/create_games_set"
                                                                     "\n\nבכדי לצפות בסטטיסטיקות כלשהן:"
-                                                                    "\n/games_set")
+                                                                    "\n/games_set"
+                                                                    "\n\nקבלת השחקנים ששיחקו עם מספר חולצה כלשהו, נניח 10:"
+                                                                    f"\n/shirt_number 10")
 
 
 @log_user_request
@@ -65,3 +69,18 @@ def start_handler(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text=f"שלום {update.effective_chat.username}")
 
     help_handler(update, context)
+
+
+@log_user_request
+@send_typing_action
+def shirt_number_handler(update, context):
+    """
+    Send link ot the category of player who played with the given shirt number
+    """
+    if not context.args:
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text=f"מספר חולצה לא התקבל, בכדי לבדוק למשל אילו שחקנים שיחקו עם חולצה מספר 10, שלח:"
+                                      f"\n/shirt_number 10")
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
+                                 text=create_maccabipedia_shirt_number_category_html_text(context.args[0]))

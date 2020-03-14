@@ -8,6 +8,10 @@ def set_default_filters_for_current_user(update, context):
     context.user_data[_USER_DATE_GAMES_FILTER_KEY] = GamesFilter()
 
 
+def create_maccabipedia_shirt_number_category_html_text(shirt_number):
+    return f"<a href='{_MACCABIPEDIA_LINK}/קטגוריה:שחקנים_שלבשו_מספר_{shirt_number}'>שחקנים שלבשו מספר {shirt_number}</a>"
+
+
 def transform_players_with_amount_to_telegram_html_text(top_players_with_amount):
     """
     Transforms the given list of players with amount (probably list of top players in a specific criteria, like top scorers)
