@@ -7,7 +7,7 @@ from maccabipediabot.create_games_set_flow.menus_keyboards import create_games_f
 from maccabipediabot.create_games_set_flow.menus_options import GamesFilteringMainMenuOptions, TeamFilteringMenuOptions, \
     CompetitionFilteringMenuOptions, DateFilteringMenuOptions, HomeAwayFilteringMenuOptions
 from maccabipediabot.general_handlers import help_handler
-from maccabipediabot.handlers_utils import send_typing_action
+from maccabipediabot.handlers_utils import send_typing_action, log_user_request
 from maccabipediabot.maccabi_games import maccabipedia_games, get_similar_teams_names, get_games_by_filters
 
 logger = logging.getLogger(__name__)
@@ -30,6 +30,7 @@ def set_default_filters_for_current_user(update, context):
     context.user_data['home_away'] = HomeAwayFilteringMenuOptions.ALL_HOME_AWAY
 
 
+@log_user_request
 @send_typing_action
 def create_games_set(update, context):
     """
@@ -46,6 +47,7 @@ def create_games_set(update, context):
     return games_filtering
 
 
+@log_user_request
 @send_typing_action
 def show_date_menu_action(update, context):
     reply_keyboard = create_date_games_filter_menu()
@@ -55,6 +57,7 @@ def show_date_menu_action(update, context):
     return select_date_filter
 
 
+@log_user_request
 @send_typing_action
 def save_date_decision(update, context):
     query = update.callback_query
@@ -64,6 +67,7 @@ def save_date_decision(update, context):
     return go_back_to_main_games_filter_menu(update, context)
 
 
+@log_user_request
 @send_typing_action
 def show_competition_menu_action(update, context):
     reply_keyboard = create_competition_games_filter_menu()
@@ -72,6 +76,7 @@ def show_competition_menu_action(update, context):
     return select_competition_filter
 
 
+@log_user_request
 @send_typing_action
 def save_competition_decision(update, context):
     query = update.callback_query
@@ -81,6 +86,7 @@ def save_competition_decision(update, context):
     return go_back_to_main_games_filter_menu(update, context)
 
 
+@log_user_request
 @send_typing_action
 def show_home_away_menu_action(update, context):
     reply_keyboard = create_home_away_games_filter_menu()
@@ -89,6 +95,7 @@ def show_home_away_menu_action(update, context):
     return select_home_away_filter
 
 
+@log_user_request
 @send_typing_action
 def save_home_away_decision(update, context):
     query = update.callback_query
@@ -98,6 +105,7 @@ def save_home_away_decision(update, context):
     return go_back_to_main_games_filter_menu(update, context)
 
 
+@log_user_request
 @send_typing_action
 def show_team_menu_action(update, context):
     reply_keyboard = create_team_games_filter_menu()
@@ -106,6 +114,7 @@ def show_team_menu_action(update, context):
     return select_team_filter
 
 
+@log_user_request
 @send_typing_action
 def save_team_decision(update, context):
     query = update.callback_query
@@ -118,6 +127,7 @@ def save_team_decision(update, context):
         return select_team_filter
 
 
+@log_user_request
 @send_typing_action
 def save_specific_team_action(update, context):
     team_name = update.message.text
@@ -140,6 +150,7 @@ def save_specific_team_action(update, context):
         return go_back_to_main_games_filter_menu(update, context)
 
 
+@log_user_request
 @send_typing_action
 def finished_to_create_games_action(update, context):
     games = get_games_by_filters(context.user_data)

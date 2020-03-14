@@ -7,7 +7,7 @@ from maccabipediabot.games_set_stats_flow.menus_keyboards import create_top_play
     create_players_streaks_games_stats_keyboard
 from maccabipediabot.games_set_stats_flow.menus_options import TopPlayersStatsMenuOptions, GamesStatsMainMenuOptions, PlayersStreaksStatsMenuOptions
 from maccabipediabot.general_handlers import help_handler
-from maccabipediabot.handlers_utils import send_typing_action
+from maccabipediabot.handlers_utils import send_typing_action, log_user_request
 from maccabipediabot.maccabi_games import get_games_by_filters
 
 logger = logging.getLogger(__name__)
@@ -23,6 +23,7 @@ def go_back_to_games_stats_main_menu(update, context):
     return show_stats
 
 
+@log_user_request
 @send_typing_action
 def games_stats_action(update, context):
     logger.info(f"New user for games stats: {update.effective_chat.username}")
@@ -32,6 +33,7 @@ def games_stats_action(update, context):
     return show_stats
 
 
+@log_user_request
 @send_typing_action
 def show_players_streaks_stats_menu_action(update, context):
     reply_keyboard = create_players_streaks_games_stats_keyboard()
@@ -40,6 +42,7 @@ def show_players_streaks_stats_menu_action(update, context):
     return select_players_streaks_stats
 
 
+@log_user_request
 @send_typing_action
 def show_summary_stats_action(update, context):
     games = get_games_by_filters(context.user_data)
@@ -50,6 +53,7 @@ def show_summary_stats_action(update, context):
     return go_back_to_games_stats_main_menu(update, context)
 
 
+@log_user_request
 @send_typing_action
 def show_top_players_stats_menu_action(update, context):
     reply_keyboard = create_top_players_games_stats_keyboard()
@@ -58,6 +62,7 @@ def show_top_players_stats_menu_action(update, context):
     return select_top_players_stats
 
 
+@log_user_request
 @send_typing_action
 def show_players_unbeaten_streaks_action(update, context):
     games = get_games_by_filters(context.user_data)
@@ -68,6 +73,7 @@ def show_players_unbeaten_streaks_action(update, context):
     return go_back_to_games_stats_main_menu(update, context)
 
 
+@log_user_request
 @send_typing_action
 def show_players_winning_streaks_action(update, context):
     games = get_games_by_filters(context.user_data)
@@ -78,6 +84,7 @@ def show_players_winning_streaks_action(update, context):
     return go_back_to_games_stats_main_menu(update, context)
 
 
+@log_user_request
 @send_typing_action
 def show_top_scorers_action(update, context):
     games = get_games_by_filters(context.user_data)
@@ -88,6 +95,7 @@ def show_top_scorers_action(update, context):
     return go_back_to_games_stats_main_menu(update, context)
 
 
+@log_user_request
 @send_typing_action
 def show_top_assisters_action(update, context):
     games = get_games_by_filters(context.user_data)
@@ -98,6 +106,7 @@ def show_top_assisters_action(update, context):
     return go_back_to_games_stats_main_menu(update, context)
 
 
+@log_user_request
 @send_typing_action
 def show_most_played_action(update, context):
     games = get_games_by_filters(context.user_data)
@@ -108,6 +117,7 @@ def show_most_played_action(update, context):
     return go_back_to_games_stats_main_menu(update, context)
 
 
+@log_user_request
 @send_typing_action
 def finished_to_show_games_stats_action(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text=f"ביי!")

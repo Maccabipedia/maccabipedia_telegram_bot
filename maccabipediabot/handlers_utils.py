@@ -1,32 +1,29 @@
 import logging
-from functools import wraps
 
+from decorator import decorator
 from telegram import ChatAction
 
 logger = logging.getLogger(__name__)
 
 
-def log_user_request(func):
+@decorator
+def log_user_request(func, update, context, *args, **kwargs):
     """
     Log the user name with the current function name
     """
+    if update.callback_query:
+        user_text = update.callback_query.data
+    else:
+        user_text = ""
 
-    @wraps(func)
-    def log_handler(update, context, *args, **kwargs):
-        logger.info(f"User: {update.effective_chat.username} (id: {update.effective_chat.id}) -- {func.__name__} ")
-        return func(update, context, *args, **kwargs)
-
-    return log_handler
+    logger.info(f"User: {update.effective_chat.username} (id: {update.effective_chat.id}), Function: {func.__name__}, Text: {user_text} ")
+    return func(update, context, *args, **kwargs)
 
 
-def send_typing_action(func):
+@decorator
+def send_typing_action(func, update, context, *args, **kwargs):
     """
     Send "Typing..." to the user while processing the request
     """
-
-    @wraps(func)
-    def command_func(update, context, *args, **kwargs):
-        context.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=ChatAction.TYPING)
-        return func(update, context, *args, **kwargs)
-
-    return command_func
+    context.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=ChatAction.TYPING)
+    return func(update, context, *args, **kwargs)
