@@ -20,7 +20,7 @@ class MoreStatsOrFinishMenuOptions(object):
     MORE_STATS = f"{MENU_NAME}_more_stats"
     FINISH = f"{MENU_NAME}_finish"
 
-    TEST = "תרצה לצפות בסטטיסטיקה נוספת או לסיים?"
+    TEXT = "תרצה לצפות בסטטיסטיקה נוספת או לסיים?"
 
 
 class GamesStatsMainMenuOptions(object):

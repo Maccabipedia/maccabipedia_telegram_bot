@@ -2,6 +2,7 @@ import logging
 from pprint import pformat
 
 from telegram.ext import CommandHandler, CallbackQueryHandler, ConversationHandler
+from telegram.parsemode import ParseMode
 
 from maccabipediabot.games_set_stats_flow.menus_keyboards import create_top_players_games_stats_keyboard, create_games_stats_main_menu_keyboard, \
     create_players_streaks_games_stats_keyboard, create_more_stats_or_finish_menu_keyboard
@@ -20,8 +21,8 @@ show_stats, select_top_players_stats, select_players_streaks_stats, select_more_
 def go_to_more_stats_or_finish_menu(update, context):
     reply_keyboard = create_more_stats_or_finish_menu_keyboard()
 
-    context.bot.send_message(chat_id=update.effective_chat.id, text=GamesStatsMainMenuOptions.AFTER_FIRST_TIME_TEXT, reply_markup=reply_keyboard)
-    return show_stats
+    context.bot.send_message(chat_id=update.effective_chat.id, text=MoreStatsOrFinishMenuOptions.TEXT, reply_markup=reply_keyboard)
+    return select_more_stats_or_finish
 
 
 def go_back_to_games_stats_main_menu(update, context):
@@ -50,7 +51,9 @@ def games_stats_action(update, context):
 @send_typing_action
 def show_players_streaks_stats_menu_action(update, context):
     reply_keyboard = create_players_streaks_games_stats_keyboard()
-    context.bot.send_message(chat_id=update.effective_chat.id, text=PlayersStreaksStatsMenuOptions.TEXT, reply_markup=reply_keyboard)
+
+    query = update.callback_query
+    query.edit_message_text(text=PlayersStreaksStatsMenuOptions.TEXT, reply_markup=reply_keyboard)
 
     return select_players_streaks_stats
 
@@ -64,14 +67,16 @@ def show_summary_stats_action(update, context):
     query = update.callback_query
     query.edit_message_text(text=summary_stats)
 
-    return go_back_to_games_stats_main_menu(update, context)
+    return go_to_more_stats_or_finish_menu(update, context)
 
 
 @log_user_request
 @send_typing_action
 def show_top_players_stats_menu_action(update, context):
     reply_keyboard = create_top_players_games_stats_keyboard()
-    context.bot.send_message(chat_id=update.effective_chat.id, text=TopPlayersStatsMenuOptions.TEXT, reply_markup=reply_keyboard)
+
+    query = update.callback_query
+    query.edit_message_text(text=TopPlayersStatsMenuOptions.TEXT, reply_markup=reply_keyboard)
 
     return select_top_players_stats
 
@@ -82,9 +87,11 @@ def show_players_unbeaten_streaks_action(update, context):
     games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
     top = games.players_streaks.get_players_with_best_unbeaten_streak()
 
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"השחקנים עם רצף 'לא מנוצחים' הארוך ביותר:"
-                                                                    f"\n{pformat(top)}")
-    return go_back_to_games_stats_main_menu(update, context)
+    query = update.callback_query
+    query.edit_message_text(text=f"השחקנים עם רצף 'לא מנוצחים' הארוך ביותר:"
+                                 f"\n{pformat(top)}")
+
+    return go_to_more_stats_or_finish_menu(update, context)
 
 
 @log_user_request
@@ -93,9 +100,11 @@ def show_players_winning_streaks_action(update, context):
     games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
     top = games.players_streaks.get_players_with_best_win_streak()
 
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"השחקנים עם רצף הנצחונות הארוך ביותר:"
-                                                                    f"\n{pformat(top)}")
-    return go_back_to_games_stats_main_menu(update, context)
+    query = update.callback_query
+    query.edit_message_text(text=f"השחקנים עם רצף הנצחונות הארוך ביותר:"
+                                 f"\n{pformat(top)}")
+
+    return go_to_more_stats_or_finish_menu(update, context)
 
 
 @log_user_request
@@ -104,9 +113,10 @@ def show_top_scorers_action(update, context):
     games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
     top = games.players.best_scorers[0:10]
 
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"הכובשים המובילים: {pformat(top)}")
+    query = update.callback_query
+    query.edit_message_text(text=f"הכובשים המובילים: {pformat(top)}")
 
-    return go_back_to_games_stats_main_menu(update, context)
+    return go_to_more_stats_or_finish_menu(update, context)
 
 
 @log_user_request
@@ -115,9 +125,10 @@ def show_top_assisters_action(update, context):
     games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
     top = games.players.best_assisters[0:10]
 
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"המבשלים המובילים: {pformat(top)}")
+    query = update.callback_query
+    query.edit_message_text(text=f"המבשלים המובילים: {pformat(top)}")
 
-    return go_back_to_games_stats_main_menu(update, context)
+    return go_to_more_stats_or_finish_menu(update, context)
 
 
 @log_user_request
@@ -126,15 +137,18 @@ def show_most_played_action(update, context):
     games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
     top = games.players.most_played[0:10]
 
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"השחקנים ששיקחו הכי הרבה: {pformat(top)}")
+    query = update.callback_query
+    query.edit_message_text(text=f"השחקנים ששיקחו הכי הרבה: {pformat(top)}")
 
-    return go_back_to_games_stats_main_menu(update, context)
+    return go_to_more_stats_or_finish_menu(update, context)
 
 
 @log_user_request
 @send_typing_action
 def finished_to_show_games_stats_action(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"ביי!")
+    context.bot.send_message(parse_mode=ParseMode.HTML, chat_id=update.effective_chat.id,
+                             text=f"יצאת ממצב צפייה בסטטיסטיקות"
+                                  f"\n להתראות, <a href='www.maccabipedia.co.il'>מכביפדיה</a>")
 
     return ConversationHandler.END
 
