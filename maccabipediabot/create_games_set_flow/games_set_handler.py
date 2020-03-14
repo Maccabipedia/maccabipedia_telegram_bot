@@ -2,13 +2,15 @@ import logging
 
 from telegram.ext import CommandHandler, MessageHandler, Filters, CallbackQueryHandler, ConversationHandler
 
+from maccabipediabot.consts import _USER_DATE_GAMES_FILTER_KEY
 from maccabipediabot.create_games_set_flow.menus_keyboards import create_games_filter_main_menu, create_home_away_games_filter_menu, \
     create_team_games_filter_menu, create_competition_games_filter_menu, create_date_games_filter_menu
 from maccabipediabot.create_games_set_flow.menus_options import GamesFilteringMainMenuOptions, TeamFilteringMenuOptions, \
     CompetitionFilteringMenuOptions, DateFilteringMenuOptions, HomeAwayFilteringMenuOptions
 from maccabipediabot.general_handlers import help_handler
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
-from maccabipediabot.maccabi_games import maccabipedia_games, get_similar_teams_names, get_games_by_filters
+from maccabipediabot.maccabi_games import maccabipedia_games, get_similar_teams_names
+from maccabipediabot.maccabi_games_filtering import GamesFilter, MaccabiGamesFiltering
 
 logger = logging.getLogger(__name__)
 
@@ -30,10 +32,7 @@ def go_back_to_main_games_filter_menu(update, context):
 
 
 def set_default_filters_for_current_user(update, context):
-    context.user_data['competition'] = CompetitionFilteringMenuOptions.ALL_COMPETITIONS
-    context.user_data['team'] = TeamFilteringMenuOptions.ALL_TEAMS
-    context.user_data['date'] = DateFilteringMenuOptions.ALL_TIME
-    context.user_data['home_away'] = HomeAwayFilteringMenuOptions.ALL_HOME_AWAY
+    context.user_data[_USER_DATE_GAMES_FILTER_KEY] = GamesFilter()
 
 
 @log_user_request
@@ -67,7 +66,7 @@ def show_date_menu_action(update, context):
 @send_typing_action
 def save_date_decision(update, context):
     query = update.callback_query
-    context.user_data['date'] = query.data
+    context.user_data[_USER_DATE_GAMES_FILTER_KEY].update_date_filter(query.data)
 
     button_text_the_user_chose = get_button_text_from_query_data(query)
     query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}")
@@ -90,7 +89,7 @@ def show_competition_menu_action(update, context):
 @send_typing_action
 def save_competition_decision(update, context):
     query = update.callback_query
-    context.user_data['competition'] = query.data
+    context.user_data[_USER_DATE_GAMES_FILTER_KEY].update_competition_filter(query.data)
 
     button_text_the_user_chose = get_button_text_from_query_data(query)
     query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}")
@@ -113,7 +112,7 @@ def show_home_away_menu_action(update, context):
 @send_typing_action
 def save_home_away_decision(update, context):
     query = update.callback_query
-    context.user_data['home_away'] = query.data
+    context.user_data[_USER_DATE_GAMES_FILTER_KEY].update_home_away_filter(query.data)
 
     button_text_the_user_chose = get_button_text_from_query_data(query)
     query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}")
@@ -137,7 +136,7 @@ def save_team_decision(update, context):
     query = update.callback_query
 
     if query.data == TeamFilteringMenuOptions.ALL_TEAMS:
-        context.user_data['team'] = query.data
+        context.user_data[_USER_DATE_GAMES_FILTER_KEY].update_team_filter_for_all_teams()
 
         button_text_the_user_chose = get_button_text_from_query_data(query)
         query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}")
@@ -162,12 +161,12 @@ def save_specific_team_action(update, context):
                                           f"{pretty_print_of_similar_team_names}"
                                           f"\n\nשלח את שם הקבוצה הרצויה:")
         else:
-            context.bot.send_message(chat_id=update.effective_chat.id,
-                                     text=f"קבוצה בשם {team_name} לא נמצאה, נסה בשנית")
+            context.bot.send_message(chat_id=update.effective_chat.id, text=f"קבוצה בשם {team_name} לא נמצאה, נסה בשנית")
 
         return select_team_filter
     else:
-        context.user_data['team'] = team_name
+        context.user_data[_USER_DATE_GAMES_FILTER_KEY].update_team_filter(team_name)
+
         context.bot.send_message(chat_id=update.effective_chat.id, text=f"בחרת ב: {team_name}")
         return go_back_to_main_games_filter_menu(update, context)
 
@@ -175,8 +174,8 @@ def save_specific_team_action(update, context):
 @log_user_request
 @send_typing_action
 def finished_to_create_games_action(update, context):
-    games = get_games_by_filters(context.user_data)
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"{games}"
+    filtered_games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f"{len(filtered_games)} משחקים נבחרו,"
                                                                     f"\nבכדי לראות סטטיסטיקות על המשחקים שנבחרו בחר:"
                                                                     f"\n/games_stats")
 

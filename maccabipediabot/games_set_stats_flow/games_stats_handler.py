@@ -8,7 +8,8 @@ from maccabipediabot.games_set_stats_flow.menus_keyboards import create_top_play
 from maccabipediabot.games_set_stats_flow.menus_options import TopPlayersStatsMenuOptions, GamesStatsMainMenuOptions, PlayersStreaksStatsMenuOptions
 from maccabipediabot.general_handlers import help_handler
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
-from maccabipediabot.maccabi_games import get_games_by_filters
+from maccabipediabot.consts import _USER_DATE_GAMES_FILTER_KEY
+from maccabipediabot.maccabi_games_filtering import MaccabiGamesFiltering
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +46,7 @@ def show_players_streaks_stats_menu_action(update, context):
 @log_user_request
 @send_typing_action
 def show_summary_stats_action(update, context):
-    games = get_games_by_filters(context.user_data)
+    games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
     summary_stats = games.results.json_dict()
 
     context.bot.send_message(chat_id=update.effective_chat.id, text=summary_stats)
@@ -65,7 +66,7 @@ def show_top_players_stats_menu_action(update, context):
 @log_user_request
 @send_typing_action
 def show_players_unbeaten_streaks_action(update, context):
-    games = get_games_by_filters(context.user_data)
+    games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
     top = games.players_streaks.get_players_with_best_unbeaten_streak()
 
     context.bot.send_message(chat_id=update.effective_chat.id, text=f"השחקנים עם רצף 'לא מנוצחים' הארוך ביותר:"
@@ -76,7 +77,7 @@ def show_players_unbeaten_streaks_action(update, context):
 @log_user_request
 @send_typing_action
 def show_players_winning_streaks_action(update, context):
-    games = get_games_by_filters(context.user_data)
+    games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
     top = games.players_streaks.get_players_with_best_win_streak()
 
     context.bot.send_message(chat_id=update.effective_chat.id, text=f"השחקנים עם רצף הנצחונות הארוך ביותר:"
@@ -87,7 +88,7 @@ def show_players_winning_streaks_action(update, context):
 @log_user_request
 @send_typing_action
 def show_top_scorers_action(update, context):
-    games = get_games_by_filters(context.user_data)
+    games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
     top = games.players.best_scorers[0:10]
 
     context.bot.send_message(chat_id=update.effective_chat.id, text=f"הכובשים המובילים: {pformat(top)}")
@@ -98,7 +99,7 @@ def show_top_scorers_action(update, context):
 @log_user_request
 @send_typing_action
 def show_top_assisters_action(update, context):
-    games = get_games_by_filters(context.user_data)
+    games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
     top = games.players.best_assisters[0:10]
 
     context.bot.send_message(chat_id=update.effective_chat.id, text=f"המבשלים המובילים: {pformat(top)}")
@@ -109,7 +110,7 @@ def show_top_assisters_action(update, context):
 @log_user_request
 @send_typing_action
 def show_most_played_action(update, context):
-    games = get_games_by_filters(context.user_data)
+    games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
     top = games.players.most_played[0:10]
 
     context.bot.send_message(chat_id=update.effective_chat.id, text=f"השחקנים ששיקחו הכי הרבה: {pformat(top)}")
