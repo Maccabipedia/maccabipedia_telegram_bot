@@ -25,7 +25,7 @@ def register_telegram_bot():
     updater.dispatcher.add_handler(MessageHandler(Filters.command, unknown_message_handler))
     updater.dispatcher.add_error_handler(error_callback)
     logger.info("Starting to run the bot!")
-    updater.start_polling()
+    updater.start_polling(clean=True)
 
 
 if __name__ == "__main__":

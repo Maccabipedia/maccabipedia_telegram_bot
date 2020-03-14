@@ -15,6 +15,12 @@ logger = logging.getLogger(__name__)
 select_games_filter, games_filtering, select_home_away_filter, select_team_filter, select_competition_filter, select_date_filter = range(6)
 
 
+def get_button_text_from_query_data(query):
+    from itertools import chain
+
+    return next(button.text for button in chain.from_iterable(query.message.reply_markup.inline_keyboard) if button.callback_data == query.data)
+
+
 def go_back_to_main_games_filter_menu(update, context):
     reply_keyboard = create_games_filter_main_menu(first_time_menu=False)
 
@@ -51,7 +57,8 @@ def create_games_set(update, context):
 def show_date_menu_action(update, context):
     reply_keyboard = create_date_games_filter_menu()
 
-    context.bot.send_message(chat_id=update.effective_chat.id, text=DateFilteringMenuOptions.TEXT, reply_markup=reply_keyboard)
+    query = update.callback_query
+    query.edit_message_text(text=DateFilteringMenuOptions.TEXT, reply_markup=reply_keyboard)
 
     return select_date_filter
 
@@ -62,6 +69,8 @@ def save_date_decision(update, context):
     query = update.callback_query
     context.user_data['date'] = query.data
 
+    button_text_the_user_chose = get_button_text_from_query_data(query)
+    query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}")
     # Showing the main menu and moving to the step of choosing a game filter again
     return go_back_to_main_games_filter_menu(update, context)
 
@@ -70,7 +79,9 @@ def save_date_decision(update, context):
 @send_typing_action
 def show_competition_menu_action(update, context):
     reply_keyboard = create_competition_games_filter_menu()
-    context.bot.send_message(chat_id=update.effective_chat.id, text=CompetitionFilteringMenuOptions.TEXT, reply_markup=reply_keyboard)
+
+    query = update.callback_query
+    query.edit_message_text(text=CompetitionFilteringMenuOptions.TEXT, reply_markup=reply_keyboard)
 
     return select_competition_filter
 
@@ -81,6 +92,8 @@ def save_competition_decision(update, context):
     query = update.callback_query
     context.user_data['competition'] = query.data
 
+    button_text_the_user_chose = get_button_text_from_query_data(query)
+    query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}")
     # Showing the main menu and moving to the step of choosing a game filter again
     return go_back_to_main_games_filter_menu(update, context)
 
@@ -90,7 +103,9 @@ def save_competition_decision(update, context):
 def show_home_away_menu_action(update, context):
     reply_keyboard = create_home_away_games_filter_menu()
 
-    context.bot.send_message(chat_id=update.effective_chat.id, text=HomeAwayFilteringMenuOptions.TEXT, reply_markup=reply_keyboard)
+    query = update.callback_query
+    query.edit_message_text(text=HomeAwayFilteringMenuOptions.TEXT, reply_markup=reply_keyboard)
+
     return select_home_away_filter
 
 
@@ -100,6 +115,8 @@ def save_home_away_decision(update, context):
     query = update.callback_query
     context.user_data['home_away'] = query.data
 
+    button_text_the_user_chose = get_button_text_from_query_data(query)
+    query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}")
     # Showing the main menu and moving to the step of choosing a game filter again
     return go_back_to_main_games_filter_menu(update, context)
 
@@ -109,7 +126,8 @@ def save_home_away_decision(update, context):
 def show_team_menu_action(update, context):
     reply_keyboard = create_team_games_filter_menu()
 
-    context.bot.send_message(chat_id=update.effective_chat.id, text=TeamFilteringMenuOptions.TEXT, reply_markup=reply_keyboard)
+    query = update.callback_query
+    query.edit_message_text(text=TeamFilteringMenuOptions.TEXT, reply_markup=reply_keyboard)
     return select_team_filter
 
 
@@ -120,9 +138,13 @@ def save_team_decision(update, context):
 
     if query.data == TeamFilteringMenuOptions.ALL_TEAMS:
         context.user_data['team'] = query.data
+
+        button_text_the_user_chose = get_button_text_from_query_data(query)
+        query.edit_message_text(text=f"בחרת ב: {button_text_the_user_chose}")
+
         return go_back_to_main_games_filter_menu(update, context)
     else:
-        context.bot.send_message(chat_id=update.effective_chat.id, text="הקלד את שם הקבוצה:")
+        query.edit_message_text(text="הקלד את שם הקבוצה:")
         return select_team_filter
 
 
@@ -146,6 +168,7 @@ def save_specific_team_action(update, context):
         return select_team_filter
     else:
         context.user_data['team'] = team_name
+        context.bot.send_message(chat_id=update.effective_chat.id, text=f"בחרת ב: {team_name}")
         return go_back_to_main_games_filter_menu(update, context)
 
 
