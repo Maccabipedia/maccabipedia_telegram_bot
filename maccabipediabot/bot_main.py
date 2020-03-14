@@ -1,14 +1,21 @@
 import logging
-from maccabipediabot.general_handlers import help_handler, start_handler, shirt_number_handler, unknown_message_handler, error_callback
+import os
+
+from dotenv import load_dotenv
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+
 from maccabipediabot.create_games_set_flow.games_set_handler import create_games_set_conversion_handler
 from maccabipediabot.games_set_stats_flow.games_stats_handler import create_games_stats_conversion_handler
-
-import os
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from maccabipediabot.general_handlers import help_handler, start_handler, shirt_number_handler, unknown_message_handler, error_callback
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 logger = logging.getLogger(__name__)
+
+
+def load_env_file():
+    logger.info("Loading env variable from .env if exists")
+    load_dotenv(verbose=True)
 
 
 def register_telegram_bot():
@@ -30,4 +37,5 @@ def register_telegram_bot():
 
 
 if __name__ == "__main__":
+    load_env_file()
     register_telegram_bot()
