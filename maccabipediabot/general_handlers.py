@@ -41,8 +41,10 @@ def help_handler(update, context):
     """
     Shows the help for this bot.
     """
-    context.bot.send_message(chat_id=update.effective_chat.id, text="בכדי לבחור את המשחקים שעליהם תרצה לקבל סטטיסטיקה:"
-                                                                    "\n/create_games_set")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="בכדי לבחור את קבוצת המשחקים שעליהם תרצה לקבל סטטיסטיקה:"
+                                                                    "\n/create_games_set"
+                                                                    "\n\nבכדי לצפות בסטטיסטיקות כלשהן:"
+                                                                    "\n/games_set")
 
 
 @log_user_request
@@ -60,7 +62,6 @@ def start_handler(update, context):
     """
     First msg the user sees
     """
-    logger.info(f"New user interacts with the bot: {update.effective_chat.username}")
     context.bot.send_message(chat_id=update.effective_chat.id, text=f"שלום {update.effective_chat.username}")
 
     help_handler(update, context)

@@ -36,7 +36,6 @@ def create_games_set(update, context):
     """
     Creates a games set that will be used for statistics
     """
-    logger.info(f"New user creates games set: {update.effective_chat.username}")
     context.bot.send_message(chat_id=update.effective_chat.id, text="מתחילים ליצור קבוצת משחקים")
     set_default_filters_for_current_user(update, context)  # In case he want to exit with all games (unfiltered)
 
