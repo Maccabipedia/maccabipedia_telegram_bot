@@ -4,8 +4,9 @@ from telegram.error import (TelegramError, Unauthorized, BadRequest,
                             TimedOut, ChatMigrated, NetworkError)
 from telegram.parsemode import ParseMode
 
-from maccabipediabot.common import create_maccabipedia_shirt_number_category_html_text
+from maccabipediabot.common import create_maccabipedia_shirt_number_category_html_text, get_song_lyrics
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
+
 
 logger = logging.getLogger(__name__)
 
@@ -84,3 +85,18 @@ def shirt_number_handler(update, context):
     else:
         context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
                                  text=create_maccabipedia_shirt_number_category_html_text(context.args[0]))
+
+@log_user_request
+@send_typing_action
+def song_handler(update, context):
+    """
+    :return: Lyrics of the given song & link to the page
+    """
+
+    if not context.args:
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text=f"שם שיר לא התקבל. בכדי לקבל מילות שיר, למשל, שיר הקונטרה, שלח:"
+                                      f"\n/song הקונטרה")
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
+                                 text=get_song_lyrics(context.args[0]))

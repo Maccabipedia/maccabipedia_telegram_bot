@@ -1,3 +1,6 @@
+import requests
+from bs4 import BeautifulSoup
+
 from maccabipediabot.maccabi_games_filtering import GamesFilter
 
 _USER_DATE_GAMES_FILTER_KEY = "games_filter"
@@ -10,6 +13,19 @@ def set_default_filters_for_current_user(update, context):
 
 def create_maccabipedia_shirt_number_category_html_text(shirt_number):
     return f"<a href='{_MACCABIPEDIA_LINK}/קטגוריה:שחקנים_שלבשו_מספר_{shirt_number}'>שחקנים שלבשו מספר {shirt_number}</a>"
+
+
+def get_song_lyrics(song_name):
+    url = _MACCABIPEDIA_LINK + '/שיר:' + song_name
+    print(url)
+    print(requests.utils.quote(url))
+    response = requests.get('http://' + requests.utils.quote(url))
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.content, 'html.parser')
+        lyrics = soup.find(class_='poem')
+        return f"<a href='{url}' >שיר {song_name}:</a>\n{lyrics.text} \n\n"
+    elif response.status_code == 404:
+        return "לא נמצא שיר בשם זה. נסה שוב"
 
 
 def transform_players_with_amount_to_telegram_html_text(top_players_with_amount):
