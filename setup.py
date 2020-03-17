@@ -12,8 +12,8 @@ setup(
     long_description="MaccabiPedia telegram bot for Maccabi Tel-Aviv fans, including statistics and crawling of maccabipedia.co.il.",
     long_description_content_type='text/markdown',
     python_requires='>=3',
-    install_requires=["python-telegram-bot==12.4.2",
-                      "decorator==4.4.2",
-                      "maccabistats==2.9.3",
-                      "python-dotenv==0.12.0"]
+    install_requires=["python-telegram-bot>=12.4.2, <13",
+                      "decorator>=4.4.2, <5",
+                      "python-dotenv>=0.12.0, <0.13",
+                      "maccabistats>=2.9.4"]
 )
