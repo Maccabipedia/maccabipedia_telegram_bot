@@ -6,6 +6,14 @@ class TeamFilteringMenuOptions(object):
     TEXT = "סנן לפי יריבות:"
 
 
+class PlayedPlayerFilteringMenuOptions(object):
+    MENU_NAME = "played_player_filtering_menu"
+    ALL_PLAYERS = f"{MENU_NAME}_all_players"
+    SPECIFIC_PLAYER = f"{MENU_NAME}_specific_player"
+
+    TEXT = "סנן לפי שחקן:"
+
+
 class CompetitionFilteringMenuOptions(object):
     MENU_NAME = "competition_filtering_menu"
     ALL_COMPETITIONS = f"{MENU_NAME}_all_competitions"
@@ -37,6 +45,7 @@ class GamesFilteringMainMenuOptions(object):
     TEAM = f"{MENU_NAME}_team"
     COMPETITION = f"{MENU_NAME}_competition"
     DATE = f"{MENU_NAME}_date"
+    PLAYED_PLAYER = f"{MENU_NAME}_played_player"
     FINISH = f"{MENU_NAME}_finish"
 
     FIRST_TIME_TEXT = "סנן משחקים לפי:"

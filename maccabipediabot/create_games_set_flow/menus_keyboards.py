@@ -1,7 +1,7 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
-from maccabipediabot.create_games_set_flow.menus_options import GamesFilteringMainMenuOptions, HomeAwayFilteringMenuOptions, TeamFilteringMenuOptions, \
-    CompetitionFilteringMenuOptions, DateFilteringMenuOptions
+from maccabipediabot.create_games_set_flow.menus_options import GamesFilteringMainMenuOptions, HomeAwayFilteringMenuOptions, \
+    TeamFilteringMenuOptions, CompetitionFilteringMenuOptions, DateFilteringMenuOptions, PlayedPlayerFilteringMenuOptions
 
 
 def create_home_away_games_filter_menu():
@@ -41,12 +41,23 @@ def create_team_games_filter_menu():
     return InlineKeyboardMarkup(buttons)
 
 
+def create_played_player_games_filter_menu():
+    buttons = [
+        [InlineKeyboardButton("שחקן ספציפי", callback_data=PlayedPlayerFilteringMenuOptions.SPECIFIC_PLAYER),
+         InlineKeyboardButton("כל השחקנים", callback_data=PlayedPlayerFilteringMenuOptions.ALL_PLAYERS)]
+    ]
+
+    return InlineKeyboardMarkup(buttons)
+
+
 def create_games_filter_main_menu(first_time_menu):
     buttons = [
         [InlineKeyboardButton("ביתיות", callback_data=GamesFilteringMainMenuOptions.HOME_AWAY),
          InlineKeyboardButton("מפעל", callback_data=GamesFilteringMainMenuOptions.COMPETITION),
-         InlineKeyboardButton("יריבה", callback_data=GamesFilteringMainMenuOptions.TEAM),
          InlineKeyboardButton("תאריך", callback_data=GamesFilteringMainMenuOptions.DATE)],
+
+        [InlineKeyboardButton("יריבה", callback_data=GamesFilteringMainMenuOptions.TEAM),
+         InlineKeyboardButton("שחקן ששיחק", callback_data=GamesFilteringMainMenuOptions.PLAYED_PLAYER)]
 
     ]
 

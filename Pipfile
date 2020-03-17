@@ -9,6 +9,3 @@ verify_ssl = true
 maccabipediabot = {editable = true,path = "."}
 matplotlib = "*"
 requests = "*"
-
-[requires]
-python_version = "3.8"
