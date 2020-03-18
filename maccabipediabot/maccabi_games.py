@@ -52,3 +52,11 @@ def get_similar_stadiums_names(stadium_name):
     :rtype: list of str
     """
     return _get_similar_names(stadium_name, maccabipedia_games.available_stadiums)
+
+
+def get_similar_coaches_names(coach_name):
+    """
+    :type coach_name: str
+    :rtype: list of str
+    """
+    return _get_similar_names(coach_name, maccabipedia_games.available_coaches)

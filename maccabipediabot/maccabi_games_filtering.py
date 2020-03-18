@@ -15,6 +15,7 @@ class GamesFilter(object):
     ALL_PLAYERS = "all_players"
     ALL_REFEREES = "all_referees"
     ALL_STADIUMS = "all_stadiums"
+    ALL_COACHES = "all_coaches"
 
     def __init__(self):
         """
@@ -25,6 +26,7 @@ class GamesFilter(object):
         self.played_player = self.ALL_PLAYERS
         self.referee_name = self.ALL_REFEREES
         self.stadium_name = self.ALL_STADIUMS
+        self.coach_name = self.ALL_COACHES
 
         self._set_default_home_away_filter()
         self._set_default_date_filter()
@@ -83,11 +85,21 @@ class GamesFilter(object):
     def update_stadium_filter(self, stadium_name):
         self.stadium_name = stadium_name
 
+    def update_coach_filter_to_all_coaches(self):
+        self.coach_name = self.ALL_COACHES
+
+    def update_coach_filter(self, coach_name):
+        self.coach_name = coach_name
+
     def update_date_filter(self, date_filter):
         if date_filter == DateFilteringMenuOptions.SINCE_COUNTRY:
             self.start_date = "04.01.1949"
         elif date_filter == DateFilteringMenuOptions.ALL_TIME:
             self._set_default_date_filter()
+
+    @property
+    def coach_filter_exists(self):
+        return self.coach_name != self.ALL_COACHES
 
     @property
     def stadium_filter_exists(self):
@@ -149,6 +161,10 @@ class MaccabiGamesFiltering(object):
         if self.games_filter.stadium_filter_exists:
             filtered_games = filtered_games.get_games_by_stadium(self.games_filter.stadium_name)
             logger.info(f"Filter: select games which played at stadium: {self.games_filter.stadium_name}. Games: {filtered_games}")
+
+        if self.games_filter.coach_filter_exists:
+            filtered_games = filtered_games.get_games_by_coach(self.games_filter.coach_name)
+            logger.info(f"Filter: select games with maccabi coach: {self.games_filter.coach_name}. Games: {filtered_games}")
 
         # TODO: today we allow to filter ALL or LEAGUE_ONLY, that probably will be changed
         if self.games_filter.competition_filter_exists:

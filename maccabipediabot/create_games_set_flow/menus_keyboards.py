@@ -2,7 +2,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 from maccabipediabot.create_games_set_flow.menus_options import GamesFilteringMainMenuOptions, HomeAwayFilteringMenuOptions, \
     TeamFilteringMenuOptions, CompetitionFilteringMenuOptions, DateFilteringMenuOptions, PlayedPlayerFilteringMenuOptions, \
-    RefereeFilteringMenuOptions, StadiumFilteringMenuOptions
+    RefereeFilteringMenuOptions, StadiumFilteringMenuOptions, CoachFilteringMenuOptions
 
 
 def create_home_away_games_filter_menu():
@@ -69,13 +69,24 @@ def create_stadium_games_filter_menu():
     return InlineKeyboardMarkup(buttons)
 
 
+def create_coach_games_filter_menu():
+    buttons = [
+        [InlineKeyboardButton("מאמן ספציפי", callback_data=CoachFilteringMenuOptions.SPECIFIC_COACH),
+         InlineKeyboardButton("כל המאמנים", callback_data=CoachFilteringMenuOptions.ALL_COACHES)]
+    ]
+
+    return InlineKeyboardMarkup(buttons)
+
+
 def create_games_filter_main_menu(first_time_menu):
     buttons = [
         [InlineKeyboardButton("ביתיות", callback_data=GamesFilteringMainMenuOptions.HOME_AWAY),
          InlineKeyboardButton("מפעל", callback_data=GamesFilteringMainMenuOptions.COMPETITION),
+         InlineKeyboardButton("מאמן", callback_data=GamesFilteringMainMenuOptions.COACH),
+         InlineKeyboardButton("תאריך", callback_data=GamesFilteringMainMenuOptions.DATE)
          # We cant use it now because we dont treat some stadiums name as the same one like: בלומפילד, אצטדיון בלמפילד, באסה
          # InlineKeyboardButton("אצטדיון", callback_data=GamesFilteringMainMenuOptions.STADIUM),
-         InlineKeyboardButton("תאריך", callback_data=GamesFilteringMainMenuOptions.DATE)],
+         ],
 
         [InlineKeyboardButton("יריבה", callback_data=GamesFilteringMainMenuOptions.TEAM),
          InlineKeyboardButton("שחקן ששיחק", callback_data=GamesFilteringMainMenuOptions.PLAYED_PLAYER),
