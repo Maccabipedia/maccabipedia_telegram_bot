@@ -58,7 +58,7 @@ def unknown_message_handler(update, context):
     """
     For any msg that we didn't registered explicit
     """
-    context.bot.send_message(chat_id=update.effective_chat.id, text="הפקודה אחרונה לא הובנה, נסו להשתמש ב: /help")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="הפקודה האחרונה לא הובנה, נסו להשתמש ב: /help")
 
 
 @log_user_request
@@ -98,5 +98,6 @@ def song_handler(update, context):
                                  text=f"שם שיר לא התקבל. בכדי לקבל מילות שיר, למשל, שיר הקונטרה, שלח:"
                                       f"\n/song הקונטרה")
     else:
+        song_name = "_".join(context.args[:])
         context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
-                                 text=get_song_lyrics(context.args[0]))
+                                 text=get_song_lyrics(song_name))

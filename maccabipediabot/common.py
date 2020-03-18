@@ -16,16 +16,23 @@ def create_maccabipedia_shirt_number_category_html_text(shirt_number):
 
 
 def get_song_lyrics(song_name):
+    """
+    scrapes the given song from it's page at maccabipedia, parsing the HTML to string and return the lyrics
+    :param song_name: Tha name of the song
+    :type song_name: str
+    :return: link to the given song at maccabipedia & the lyrics of thegiven  song
+    :rtype: str
+    """
     url = _MACCABIPEDIA_LINK + '/שיר:' + song_name
-    print(url)
-    print(requests.utils.quote(url))
     response = requests.get('http://' + requests.utils.quote(url))
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, 'html.parser')
         lyrics = soup.find(class_='poem')
-        return f"<a href='{url}' >שיר {song_name}:</a>\n{lyrics.text} \n\n"
+        return f"<a href='{url}' >שיר {song_name.replace('_', ' ')}:</a>\n{lyrics.text} \n\n"
     elif response.status_code == 404:
-        return "לא נמצא שיר בשם זה. נסה שוב"
+        return "לא נמצא שיר בשם זה. נסו שוב"
+    else:
+        return "אופס! קרתה שגיאה. נסו שוב עוד מספר דקות"
 
 
 def transform_players_with_amount_to_telegram_html_text(top_players_with_amount):
