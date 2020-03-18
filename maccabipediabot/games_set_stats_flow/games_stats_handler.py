@@ -150,6 +150,19 @@ def show_most_played_action(update, context):
 
 @log_user_request
 @send_typing_action
+def show_most_captain_action(update, context):
+    games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
+    top = games.players.most_captains[0:10]
+    top_players_html_text = transform_players_with_amount_to_telegram_html_text(top)
+
+    query = update.callback_query
+    query.edit_message_text(parse_mode=ParseMode.HTML, text=f"השחקנים שהיו קפטן הכי הרבה פעמים: \n{top_players_html_text}")
+
+    return go_to_more_stats_or_finish_menu(update, context)
+
+
+@log_user_request
+@send_typing_action
 def finished_to_show_games_stats_action(update, context):
     context.bot.send_message(parse_mode=ParseMode.HTML, chat_id=update.effective_chat.id,
                              text=f"יצאת ממצב צפייה בסטטיסטיקות"
@@ -176,6 +189,7 @@ def create_games_stats_conversion_handler():
             select_top_players_stats: [
                 CallbackQueryHandler(show_top_scorers_action, pattern=f"^{TopPlayersStatsMenuOptions.TOP_SCORERS}$"),
                 CallbackQueryHandler(show_top_assisters_action, pattern=f"^{TopPlayersStatsMenuOptions.TOP_ASSISTERS}$"),
+                CallbackQueryHandler(show_most_captain_action, pattern=f"^{TopPlayersStatsMenuOptions.MOST_CAPTAIN}$"),
                 CallbackQueryHandler(show_most_played_action, pattern=f"^{TopPlayersStatsMenuOptions.MOST_PLAYED}$")],
 
             select_players_streaks_stats: [
