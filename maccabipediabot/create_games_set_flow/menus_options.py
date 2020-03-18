@@ -14,6 +14,14 @@ class PlayedPlayerFilteringMenuOptions(object):
     TEXT = "סנן לפי שחקן:"
 
 
+class RefereeFilteringMenuOptions(object):
+    MENU_NAME = "referee_filtering_menu"
+    ALL_REFEREES = f"{MENU_NAME}_all_referees"
+    SPECIFIC_REFEREE = f"{MENU_NAME}_specific_referee"
+
+    TEXT = "סנן לפי שופט:"
+
+
 class CompetitionFilteringMenuOptions(object):
     MENU_NAME = "competition_filtering_menu"
     ALL_COMPETITIONS = f"{MENU_NAME}_all_competitions"
@@ -46,6 +54,7 @@ class GamesFilteringMainMenuOptions(object):
     COMPETITION = f"{MENU_NAME}_competition"
     DATE = f"{MENU_NAME}_date"
     PLAYED_PLAYER = f"{MENU_NAME}_played_player"
+    REFEREE = f"{MENU_NAME}_referee"
     FINISH = f"{MENU_NAME}_finish"
 
     FIRST_TIME_TEXT = "סנן משחקים לפי:"

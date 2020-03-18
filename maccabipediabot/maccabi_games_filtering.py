@@ -13,6 +13,7 @@ class GamesFilter(object):
     ALL_COMPETITIONS = "all_competitions"
     ALL_TEAMS = "all_opponents"
     ALL_PLAYERS = "all_players"
+    ALL_REFEREES = "all_referees"
 
     def __init__(self):
         """
@@ -21,6 +22,7 @@ class GamesFilter(object):
         self.competition_name = self.ALL_COMPETITIONS
         self.team_name = self.ALL_TEAMS
         self.played_player = self.ALL_PLAYERS
+        self.referee_name = self.ALL_REFEREES
 
         self._set_default_home_away_filter()
         self._set_default_date_filter()
@@ -67,11 +69,21 @@ class GamesFilter(object):
     def update_played_player_filter(self, player_name):
         self.played_player = player_name
 
+    def update_referee_filter_to_all_referees(self):
+        self.referee_name = self.ALL_REFEREES
+
+    def update_referee_filter(self, referee_name):
+        self.referee_name = referee_name
+
     def update_date_filter(self, date_filter):
         if date_filter == DateFilteringMenuOptions.SINCE_COUNTRY:
             self.start_date = "04.01.1949"
         elif date_filter == DateFilteringMenuOptions.ALL_TIME:
             self._set_default_date_filter()
+
+    @property
+    def referee_filter_exists(self):
+        return self.referee_name != self.ALL_REFEREES
 
     @property
     def team_filter_exists(self):
@@ -117,6 +129,10 @@ class MaccabiGamesFiltering(object):
         if self.games_filter.played_player_filter_exists:
             filtered_games = filtered_games.get_games_by_player_name(self.games_filter.played_player)
             logger.info(f"Filter: select games with this player only: {self.games_filter.played_player}. Games: {filtered_games}")
+
+        if self.games_filter.referee_filter_exists:
+            filtered_games = filtered_games.get_games_by_referee(self.games_filter.referee_name)
+            logger.info(f"Filter: select games with this referee only: {self.games_filter.referee_name}. Games: {filtered_games}")
 
         # TODO: today we allow to filter ALL or LEAGUE_ONLY, that probably will be changed
         if self.games_filter.competition_filter_exists:
