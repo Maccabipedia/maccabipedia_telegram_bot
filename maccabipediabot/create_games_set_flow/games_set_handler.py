@@ -12,7 +12,8 @@ from maccabipediabot.create_games_set_flow.menus_keyboards import create_games_f
 from maccabipediabot.create_games_set_flow.menus_options import GamesFilteringMainMenuOptions
 from maccabipediabot.create_games_set_flow.played_player_filtering_menu import show_played_player_menu_action, save_played_player_decision, \
     save_specific_played_player_action
-from maccabipediabot.create_games_set_flow.referee_menu import show_referee_menu_action, save_referee_decision, save_specific_referee_action
+from maccabipediabot.create_games_set_flow.referee_filtering_menu import show_referee_menu_action, save_referee_decision, save_specific_referee_action
+from maccabipediabot.create_games_set_flow.stadium_filtering_menu import show_stadium_menu_action, save_stadium_decision, save_specific_stadium_action
 from maccabipediabot.create_games_set_flow.team_filtering_menu import show_team_menu_action, save_team_decision, save_specific_team_action
 from maccabipediabot.general_handlers import help_handler
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
@@ -61,6 +62,7 @@ def create_games_set_conversion_handler():
                               CallbackQueryHandler(show_date_menu_action, pattern=f"^{GamesFilteringMainMenuOptions.DATE}$"),
                               CallbackQueryHandler(show_played_player_menu_action, pattern=f"^{GamesFilteringMainMenuOptions.PLAYED_PLAYER}$"),
                               CallbackQueryHandler(show_referee_menu_action, pattern=f"^{GamesFilteringMainMenuOptions.REFEREE}$"),
+                              CallbackQueryHandler(show_stadium_menu_action, pattern=f"^{GamesFilteringMainMenuOptions.STADIUM}$"),
                               CallbackQueryHandler(finished_to_create_games_action, pattern=f"^{GamesFilteringMainMenuOptions.FINISH}$")],
 
             select_home_away_filter: [CallbackQueryHandler(save_home_away_decision)],
@@ -71,7 +73,9 @@ def create_games_set_conversion_handler():
             select_played_player_filter: [CallbackQueryHandler(save_played_player_decision),
                                           MessageHandler(Filters.all, save_specific_played_player_action)],
             select_referee_filter: [CallbackQueryHandler(save_referee_decision),
-                                    MessageHandler(Filters.all, save_specific_referee_action)]
+                                    MessageHandler(Filters.all, save_specific_referee_action)],
+            select_stadium_filter: [CallbackQueryHandler(save_stadium_decision),
+                                    MessageHandler(Filters.all, save_specific_stadium_action)]
 
         },
         fallbacks=[CommandHandler('help', help_handler)]

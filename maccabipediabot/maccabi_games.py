@@ -38,9 +38,17 @@ def get_similar_player_names(player_name):
     return _get_similar_names(player_name, maccabipedia_games.available_players_names)
 
 
-def get_similar_referee_names(referee_name):
+def get_similar_referees_names(referee_name):
     """
     :type referee_name: str
     :rtype: list of str
     """
     return _get_similar_names(referee_name, maccabipedia_games.available_referees)
+
+
+def get_similar_stadiums_names(stadium_name):
+    """
+    :type stadium_name: str
+    :rtype: list of str
+    """
+    return _get_similar_names(stadium_name, maccabipedia_games.available_stadiums)

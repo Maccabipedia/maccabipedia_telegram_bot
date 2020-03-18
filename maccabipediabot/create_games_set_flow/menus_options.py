@@ -22,6 +22,14 @@ class RefereeFilteringMenuOptions(object):
     TEXT = "סנן לפי שופט:"
 
 
+class StadiumFilteringMenuOptions(object):
+    MENU_NAME = "stadium_filtering_menu"
+    ALL_STADIUMS = f"{MENU_NAME}_all_stadiums"
+    SPECIFIC_STADIUM = f"{MENU_NAME}_specific_stadium"
+
+    TEXT = "סנן לפי אצטדיון:"
+
+
 class CompetitionFilteringMenuOptions(object):
     MENU_NAME = "competition_filtering_menu"
     ALL_COMPETITIONS = f"{MENU_NAME}_all_competitions"
@@ -55,6 +63,7 @@ class GamesFilteringMainMenuOptions(object):
     DATE = f"{MENU_NAME}_date"
     PLAYED_PLAYER = f"{MENU_NAME}_played_player"
     REFEREE = f"{MENU_NAME}_referee"
+    STADIUM = f"{MENU_NAME}_stadium"
     FINISH = f"{MENU_NAME}_finish"
 
     FIRST_TIME_TEXT = "סנן משחקים לפי:"

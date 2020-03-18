@@ -4,7 +4,7 @@ from maccabipediabot.create_games_set_flow.common_menu import get_button_text_fr
 from maccabipediabot.create_games_set_flow.menus_keyboards import create_referee_games_filter_menu
 from maccabipediabot.create_games_set_flow.menus_options import RefereeFilteringMenuOptions
 from maccabipediabot.handlers_utils import log_user_request, send_typing_action
-from maccabipediabot.maccabi_games import maccabipedia_games, get_similar_referee_names
+from maccabipediabot.maccabi_games import maccabipedia_games, get_similar_referees_names
 from maccabipediabot.maccabi_games_filtering import MaccabiGamesFiltering
 
 
@@ -43,7 +43,7 @@ def save_specific_referee_action(update, context):
     user_referee = update.message.text
 
     if user_referee not in maccabipedia_games.available_referees:
-        similar_referees_names = get_similar_referee_names(user_referee)
+        similar_referees_names = get_similar_referees_names(user_referee)
         if similar_referees_names:
             pretty_print_of_similar_referees_names = "\n".join(referee_name for referee_name in similar_referees_names)
             context.bot.send_message(chat_id=update.effective_chat.id,
