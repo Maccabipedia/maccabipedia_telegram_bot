@@ -20,7 +20,7 @@ def get_song_lyrics(song_name):
     scrapes the given song from it's page at maccabipedia, parsing the HTML to string and return the lyrics
     :param song_name: Tha name of the song
     :type song_name: str
-    :return: link to the given song at maccabipedia & the lyrics of thegiven  song
+    :return: link to the given song at maccabipedia & the lyrics of the given song
     :rtype: str
     """
     url = _MACCABIPEDIA_LINK + '/שיר:' + song_name
