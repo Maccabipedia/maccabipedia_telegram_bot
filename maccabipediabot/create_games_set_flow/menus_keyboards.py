@@ -2,7 +2,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 from maccabipediabot.create_games_set_flow.menus_options import GamesFilteringMainMenuOptions, HomeAwayFilteringMenuOptions, \
     TeamFilteringMenuOptions, CompetitionFilteringMenuOptions, DateFilteringMenuOptions, PlayedPlayerFilteringMenuOptions, \
-    RefereeFilteringMenuOptions, StadiumFilteringMenuOptions, CoachFilteringMenuOptions
+    RefereeFilteringMenuOptions, StadiumFilteringMenuOptions, CoachFilteringMenuOptions, FinishOrContinueFilteringMenuOptions
 
 
 def create_home_away_games_filter_menu():
@@ -73,6 +73,15 @@ def create_coach_games_filter_menu():
     buttons = [
         [InlineKeyboardButton("מאמן ספציפי", callback_data=CoachFilteringMenuOptions.SPECIFIC_COACH),
          InlineKeyboardButton("כל המאמנים", callback_data=CoachFilteringMenuOptions.ALL_COACHES)]
+    ]
+
+    return InlineKeyboardMarkup(buttons)
+
+
+def create_finish_or_continue_games_filter_menu():
+    buttons = [
+        [InlineKeyboardButton("סנן משחקים", callback_data=FinishOrContinueFilteringMenuOptions.CONTINUE),
+         InlineKeyboardButton("סיים", callback_data=FinishOrContinueFilteringMenuOptions.FINISH)]
     ]
 
     return InlineKeyboardMarkup(buttons)
