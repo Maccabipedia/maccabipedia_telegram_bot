@@ -3,6 +3,7 @@ class TopPlayersStatsMenuOptions(object):
     TOP_SCORERS = f"{MENU_NAME}_top_scorers"
     TOP_ASSISTERS = f"{MENU_NAME}_top_assisters"
     MOST_PLAYED = f"{MENU_NAME}_most_played"
+    MOST_CAPTAIN = f"{MENU_NAME}_most_captain"
 
     TEXT = "איזו סטטסטיקה לגבי שחקנים מצטיינים תרצה לראות?"
 

@@ -11,7 +11,8 @@ from maccabipediabot.games_set_stats_flow.menus_options import TopPlayersStatsMe
 from maccabipediabot.general_handlers import help_handler
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
 from maccabipediabot.common import _USER_DATE_GAMES_FILTER_KEY, set_default_filters_for_current_user, \
-    transform_players_with_amount_to_telegram_html_text, transform_players_with_maccabi_games_to_telegram_html_text
+    transform_players_with_amount_to_telegram_html_text, transform_players_with_maccabi_games_to_telegram_html_text, \
+    transform_stats_to_pretty_hebrew_text
 from maccabipediabot.maccabi_games_filtering import MaccabiGamesFiltering
 
 logger = logging.getLogger(__name__)
@@ -63,7 +64,7 @@ def show_players_streaks_stats_menu_action(update, context):
 @send_typing_action
 def show_summary_stats_action(update, context):
     games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
-    summary_stats = games.results.json_dict()
+    summary_stats = transform_stats_to_pretty_hebrew_text(games.results.json_dict())
 
     query = update.callback_query
     query.edit_message_text(text=summary_stats)
@@ -149,6 +150,19 @@ def show_most_played_action(update, context):
 
 @log_user_request
 @send_typing_action
+def show_most_captain_action(update, context):
+    games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
+    top = games.players.most_captains[0:10]
+    top_players_html_text = transform_players_with_amount_to_telegram_html_text(top)
+
+    query = update.callback_query
+    query.edit_message_text(parse_mode=ParseMode.HTML, text=f"השחקנים שהיו קפטן הכי הרבה פעמים: \n{top_players_html_text}")
+
+    return go_to_more_stats_or_finish_menu(update, context)
+
+
+@log_user_request
+@send_typing_action
 def finished_to_show_games_stats_action(update, context):
     context.bot.send_message(parse_mode=ParseMode.HTML, chat_id=update.effective_chat.id,
                              text=f"יצאת ממצב צפייה בסטטיסטיקות"
@@ -175,6 +189,7 @@ def create_games_stats_conversion_handler():
             select_top_players_stats: [
                 CallbackQueryHandler(show_top_scorers_action, pattern=f"^{TopPlayersStatsMenuOptions.TOP_SCORERS}$"),
                 CallbackQueryHandler(show_top_assisters_action, pattern=f"^{TopPlayersStatsMenuOptions.TOP_ASSISTERS}$"),
+                CallbackQueryHandler(show_most_captain_action, pattern=f"^{TopPlayersStatsMenuOptions.MOST_CAPTAIN}$"),
                 CallbackQueryHandler(show_most_played_action, pattern=f"^{TopPlayersStatsMenuOptions.MOST_PLAYED}$")],
 
             select_players_streaks_stats: [

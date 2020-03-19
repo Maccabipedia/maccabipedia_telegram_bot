@@ -7,6 +7,22 @@ _USER_DATE_GAMES_FILTER_KEY = "games_filter"
 _MACCABIPEDIA_LINK = "www.maccabipedia.co.il"
 
 
+def transform_stats_to_pretty_hebrew_text(stats_summary):
+    """
+    Transform summary to pretty hebrew text
+    :type stats_summary: dict
+    :return: Hebrew text
+    :rtype: str
+    """
+    return f"כמות נצחונות: {stats_summary['wins_count']} - ({stats_summary['wins_percentage']}%)" \
+           f"\nכמות הפסדים: {stats_summary['losses_count']} - ({stats_summary['losses_percentage']}%)" \
+           f"\nכמות תיקו: {stats_summary['ties_count']} - ({stats_summary['ties_percentage']}%)" \
+           f"\nכמות משחקים ללא ספיגה: {stats_summary['clean_sheets_count']} - ({stats_summary['clean_sheets_percentage']}%)" \
+           f"\n\n כמות שערים למכבי: {stats_summary['total_goals_for_maccabi']}" \
+           f"\n כמות שערים נגד מכבי: {stats_summary['total_goals_against_maccabi']}" \
+           f"\n יחס שערים למכבי חלקי נגד מכבי: {stats_summary['goals_ratio']}"
+
+
 def set_default_filters_for_current_user(update, context):
     context.user_data[_USER_DATE_GAMES_FILTER_KEY] = GamesFilter()
 
