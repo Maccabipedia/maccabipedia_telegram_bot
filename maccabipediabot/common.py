@@ -44,13 +44,21 @@ def get_profile(profile_name):
     response = requests.get('http://' + requests.utils.quote(url))
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, 'html.parser')
-        profile = soup
+        for br in soup.find_all('br'):
+            br.replace_with("\n")
 
-        """
-        TODO: continue parsing
-        """
+        profile = "\n- פרטים אישיים: \n" + soup.find(class_='ppPersonalDetails').text
+        profile += "\n- פרטים מקצועיים: \n" + soup.find(class_='ppProDetails').text
+        profile += "\n- סטטיסטיקה: \n"
+        profile += "\n--- כל המסגרות ---" + soup.find(id='tab1-content').text
+        profile += "--- ליגה ---" + soup.find(id='tab2-content').text
+        profile += "--- גביע ---" + soup.find(id='tab3-content').text
+        profile += "--- אירופה ---" + soup.find(id='tab4-content').text
 
-        return f"<a href='{url}' >שיר {profile_name.replace('_', ' ')}:</a>\n{profile.text} \n\n"
+        "Removing whitespace"
+        profile = profile.replace(" גובה:", "גובה:")
+
+        return f"<a href='{url}' >פרופיל {profile_name.replace('_', ' ')}:</a>\n{profile} \n\n"
     elif response.status_code == 404:
         return "לא נמצא שחקן בשם זה. נסו שוב"
     else:
