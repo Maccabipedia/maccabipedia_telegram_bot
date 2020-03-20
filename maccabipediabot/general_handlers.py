@@ -4,8 +4,10 @@ from telegram.error import (TelegramError, Unauthorized, BadRequest,
                             TimedOut, ChatMigrated, NetworkError)
 from telegram.parsemode import ParseMode
 
-from maccabipediabot.common import create_maccabipedia_shirt_number_category_html_text, get_song_lyrics, get_donation_link_html_text
+from maccabipediabot.common import create_maccabipedia_shirt_number_category_html_text, get_song_lyrics, get_profile, \
+    get_donation_link_html_text
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
+
 
 logger = logging.getLogger(__name__)
 
@@ -48,9 +50,7 @@ def help_handler(update, context):
                                                                     "\n\nבכדי לצפות בסטטיסטיקות כלשהן:"
                                                                     "\n/games_set"
                                                                     "\n\nקבלת השחקנים ששיחקו עם מספר חולצה כלשהו, נניח 10:"
-                                                                    f"\n/shirt_number 10"
-                                                                    f"\n\nבכדי לתרום למכביפדיה:"
-                                                                    f"\n/donate")
+                                                                    f"\n/shirt_number 10")
 
 
 @log_user_request
@@ -87,7 +87,6 @@ def shirt_number_handler(update, context):
         context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
                                  text=create_maccabipedia_shirt_number_category_html_text(context.args[0]))
 
-
 @log_user_request
 @send_typing_action
 def song_handler(update, context):
@@ -104,6 +103,22 @@ def song_handler(update, context):
         context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
                                  text=get_song_lyrics(song_name))
 
+@log_user_request
+@send_typing_action
+def profile_handler(update, context):
+    """
+    handle profiles of players. Will be extended to all staff people later
+    :return: parsed profile data of the given player
+    """
+
+    if not context.args:
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text=f"שם שחקן לא התקבל. בכדי לקבל מידע על שחקן, למשל, שרן ייני, שלח:"
+                                      f"\n/profile שרן ייני")
+    else:
+        profile_name = "_".join(context.args[:])
+        context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
+                                 text=get_profile(profile_name))
 
 @log_user_request
 @send_typing_action
