@@ -59,7 +59,8 @@ def get_song_lyrics(song_name):
 def get_profile(profile_name):
     """
     scrapes the given profile from it's page at maccabipedia, parsing the HTML to string and return the info & stats
-    :param player_name: The name of the given player/staff
+    :type profile_name: str
+    :param profile_name: The name of the given player/staff
     :return: Information and stats of the player/staff people & link to the profile page
     """
     url = _MACCABIPEDIA_LINK + '/' + profile_name
@@ -80,7 +81,8 @@ def get_profile(profile_name):
         "Removing whitespace"
         profile = profile.replace(" גובה:", "גובה:")
 
-        return f"<a href='{url}' >פרופיל {profile_name.replace('_', ' ')}:</a>\n{profile} \n\n"
+        # The href="..." must have double quotation because we have some players with single quotation in their name
+        return f'<a href="{url}" >פרופיל {profile_name.replace("_", " ")}:</a>\n{profile} \n\n'
     elif response.status_code == 404:
         return "לא נמצא שחקן בשם זה. נסו שוב"
     else:
