@@ -84,3 +84,24 @@ def transform_players_with_maccabi_games_to_telegram_html_text(top_players_with_
     telegram_html_text = "\n".join(f'<a href="{_MACCABIPEDIA_LINK}/{player_name}">{player_name}</a> : {maccabi_games.hebrew_representation}'
                                    for player_name, maccabi_games in top_players_with_maccabi_games)
     return telegram_html_text
+
+
+def transform_teams_with_maccabi_games_to_telegram_html_text(top_teams_with_maccabi_games):
+    """
+    Transforms the given list of teams with maccabi games (probably list of teams streaks, like winning streak)
+    into html text that will be sent to the user (including links for the teams).
+    :param top_teams_with_maccabi_games: The teams with the maccabi games
+    :type top_teams_with_maccabi_games: list of (str, maccabistats.stats.maccabi_games_stats.MaccabiGamesStats)
+    :return: The top teams as html text (With maccabipedia links to the teams)
+    :rtype: str
+    """
+
+    def remove_double_quotation(team_name):
+        return team_name.replace('"', '')
+
+    # The href="..." must have double quotation because we have some teams with single quotation in their name
+    # We remove the double quotation just be sure they wont be unescaped here
+    telegram_html_text = "\n".join(
+        f'<a href="{_MACCABIPEDIA_LINK}/{remove_double_quotation(team_name)}">{team_name}</a> : {maccabi_games.hebrew_representation}'
+        for team_name, maccabi_games in top_teams_with_maccabi_games)
+    return telegram_html_text
