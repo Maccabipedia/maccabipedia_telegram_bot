@@ -8,7 +8,6 @@ from maccabipediabot.common import create_maccabipedia_shirt_number_category_htm
     get_donation_link_html_text
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -87,6 +86,7 @@ def shirt_number_handler(update, context):
         context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
                                  text=create_maccabipedia_shirt_number_category_html_text(context.args[0]))
 
+
 @log_user_request
 @send_typing_action
 def song_handler(update, context):
@@ -102,6 +102,7 @@ def song_handler(update, context):
         song_name = "_".join(context.args[:])
         context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
                                  text=get_song_lyrics(song_name))
+
 
 @log_user_request
 @send_typing_action
@@ -119,6 +120,7 @@ def profile_handler(update, context):
         profile_name = "_".join(context.args[:])
         context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
                                  text=get_profile(profile_name))
+
 
 @log_user_request
 @send_typing_action

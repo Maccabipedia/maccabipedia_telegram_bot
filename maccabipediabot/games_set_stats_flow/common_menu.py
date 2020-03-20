@@ -1,10 +1,10 @@
 from telegram import ParseMode
 from telegram.ext import ConversationHandler
 
+from maccabipediabot.games_set_stats_flow.games_stats_conversation_handler_states import show_stats, select_more_stats_or_finish
 from maccabipediabot.games_set_stats_flow.menus_keyboards import create_games_stats_main_menu_keyboard, create_more_stats_or_finish_menu_keyboard
 from maccabipediabot.games_set_stats_flow.menus_options import GamesStatsMainMenuOptions, MoreStatsOrFinishMenuOptions
 from maccabipediabot.handlers_utils import log_user_request, send_typing_action
-from maccabipediabot.games_set_stats_flow.games_stats_conversation_handler_states import show_stats, select_more_stats_or_finish
 
 
 def go_back_to_games_stats_main_menu(update, context):
