@@ -45,6 +45,9 @@ def create_players_streaks_games_stats_keyboard():
     buttons = [
         [InlineKeyboardButton("השחקן רק ניצח", callback_data=PlayersStreaksStatsMenuOptions.WINNING_STREAK),
          InlineKeyboardButton("השחקן לא הפסיד", callback_data=PlayersStreaksStatsMenuOptions.UNBEATEN_STREAK)],
+
+        [InlineKeyboardButton("מכבי הבקיעה", callback_data=PlayersStreaksStatsMenuOptions.SCORE_AT_LEAST_A_GOAL),
+         InlineKeyboardButton("מכבי לא ספגה", callback_data=PlayersStreaksStatsMenuOptions.CLEAN_SHEETS)]
     ]
 
     return InlineKeyboardMarkup(buttons)
