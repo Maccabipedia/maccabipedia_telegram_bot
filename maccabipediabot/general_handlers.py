@@ -4,7 +4,7 @@ from telegram.error import (TelegramError, Unauthorized, BadRequest,
                             TimedOut, ChatMigrated, NetworkError)
 from telegram.parsemode import ParseMode
 
-from maccabipediabot.common import create_maccabipedia_shirt_number_category_html_text, get_song_lyrics
+from maccabipediabot.common import create_maccabipedia_shirt_number_category_html_text, get_song_lyrics, get_profile
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
 
 
@@ -90,6 +90,7 @@ def shirt_number_handler(update, context):
 @send_typing_action
 def song_handler(update, context):
     """
+    handle commands to get songs lyrics
     :return: Lyrics of the given song & link to the page
     """
 
@@ -101,3 +102,21 @@ def song_handler(update, context):
         song_name = "_".join(context.args[:])
         context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
                                  text=get_song_lyrics(song_name))
+
+
+@log_user_request
+@send_typing_action
+def profile_handler(update, context):
+    """
+    handle profiles of players. Will be extended to all staff people later
+    :return: parsed profile data of the given player
+    """
+
+    if not context.args:
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text=f"שם שחקן לא התקבל. בכדי לקבל מידע על שחקן, למשל, שרן ייני, שלח:"
+                                      f"\n/profile שרן ייני")
+    else:
+        profile_name = "_".join(context.args[:])
+        context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
+                                 text=get_profile(profile_name))
