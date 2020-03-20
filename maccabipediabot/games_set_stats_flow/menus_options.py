@@ -15,7 +15,17 @@ class PlayersStreaksStatsMenuOptions(object):
     SCORE_AT_LEAST_A_GOAL = f"{MENU_NAME}_score_at_least_a_goal"
     CLEAN_SHEETS = f"{MENU_NAME}_clean_sheets"
 
-    TEXT = "בחר את הסטטיסטיקה שעבורה תרצה לראות את השחקנים בעלי הרצף הארוך ביותר?"
+    TEXT = "בחר את הסטטיסטיקה שעבורה תרצה לראות עבורה את השחקנים בעלי הרצף הארוך ביותר?"
+
+
+class TeamStreaksStatsMenuOptions(object):
+    MENU_NAME = "teams_streaks_stats_menu"
+    WINNING_STREAK = f"{MENU_NAME}_winning_streak"
+    UNBEATEN_STREAK = f"{MENU_NAME}_unbeaten_streak"
+    SCORE_AT_LEAST_A_GOAL = f"{MENU_NAME}_score_at_least_a_goal"
+    CLEAN_SHEETS = f"{MENU_NAME}_clean_sheets"
+
+    TEXT = "בחר את הסטטיסטיקה שעבורה תרצה לראות את היריבות בעלי הרצף הארוך ביותר?"
 
 
 class MoreStatsOrFinishMenuOptions(object):
