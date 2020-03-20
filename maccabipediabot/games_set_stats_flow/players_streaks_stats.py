@@ -44,3 +44,29 @@ def show_players_winning_streaks_action(update, context):
     query.edit_message_text(parse_mode=ParseMode.HTML, text=f"השחקנים עם רצף הנצחונות הארוך ביותר: \n{top_players_html_text}")
 
     return go_to_more_stats_or_finish_menu(update, context)
+
+
+@log_user_request
+@send_typing_action
+def show_players_streaks_maccabi_score_at_least_a_goal_action(update, context):
+    games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
+    top = games.players_streaks.get_players_with_best_maccabi_score_goal_streak()
+    top_players_html_text = transform_players_with_maccabi_games_to_telegram_html_text(top)
+
+    query = update.callback_query
+    query.edit_message_text(parse_mode=ParseMode.HTML, text=f"השחקנים עם רצף 'מכבי הבקיעה לפחות גול אחד' הארוך ביותר: \n{top_players_html_text}")
+
+    return go_to_more_stats_or_finish_menu(update, context)
+
+
+@log_user_request
+@send_typing_action
+def show_players_players_maccabi_with_clean_sheets_action(update, context):
+    games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
+    top = games.players_streaks.get_players_with_best_clean_sheets_streak()
+    top_players_html_text = transform_players_with_maccabi_games_to_telegram_html_text(top)
+
+    query = update.callback_query
+    query.edit_message_text(parse_mode=ParseMode.HTML, text=f"השחקנים עם רצף 'מכבי שמרה על רשת נקייה' הארוך ביותר: \n{top_players_html_text}")
+
+    return go_to_more_stats_or_finish_menu(update, context)

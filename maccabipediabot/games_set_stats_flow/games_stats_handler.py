@@ -10,7 +10,8 @@ from maccabipediabot.games_set_stats_flow.menus_keyboards import create_games_st
 from maccabipediabot.games_set_stats_flow.menus_options import TopPlayersStatsMenuOptions, GamesStatsMainMenuOptions, PlayersStreaksStatsMenuOptions, \
     MoreStatsOrFinishMenuOptions
 from maccabipediabot.games_set_stats_flow.players_streaks_stats import show_players_streaks_stats_menu_action, show_players_unbeaten_streaks_action, \
-    show_players_winning_streaks_action
+    show_players_winning_streaks_action, show_players_streaks_maccabi_score_at_least_a_goal_action, \
+    show_players_players_maccabi_with_clean_sheets_action
 from maccabipediabot.games_set_stats_flow.summary_stats import show_summary_stats_action
 from maccabipediabot.games_set_stats_flow.top_players_stats import show_top_players_stats_menu_action, show_top_scorers_action, \
     show_top_assisters_action, show_most_played_action, show_most_captain_action
@@ -57,7 +58,11 @@ def create_games_stats_conversion_handler():
 
             select_players_streaks_stats: [
                 CallbackQueryHandler(show_players_winning_streaks_action, pattern=f"^{PlayersStreaksStatsMenuOptions.WINNING_STREAK}$"),
-                CallbackQueryHandler(show_players_unbeaten_streaks_action, pattern=f"^{PlayersStreaksStatsMenuOptions.UNBEATEN_STREAK}$")],
+                CallbackQueryHandler(show_players_unbeaten_streaks_action, pattern=f"^{PlayersStreaksStatsMenuOptions.UNBEATEN_STREAK}$"),
+                CallbackQueryHandler(show_players_streaks_maccabi_score_at_least_a_goal_action,
+                                     pattern=f"^{PlayersStreaksStatsMenuOptions.SCORE_AT_LEAST_A_GOAL}$"),
+                CallbackQueryHandler(show_players_players_maccabi_with_clean_sheets_action,
+                                     pattern=f"^{PlayersStreaksStatsMenuOptions.CLEAN_SHEETS}$")],
 
         },
         fallbacks=[CommandHandler('help', help_handler)]
