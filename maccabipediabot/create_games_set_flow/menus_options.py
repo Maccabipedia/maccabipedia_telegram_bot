@@ -63,6 +63,14 @@ class HomeAwayFilteringMenuOptions(object):
     TEXT = "סנן משחקים לפי ביתיות:"
 
 
+class FinishOrContinueFilteringMenuOptions(object):
+    MENU_NAME = "finish_or_continue_filtering_menu"
+    CONTINUE = f"{MENU_NAME}_continue"
+    FINISH = f"{MENU_NAME}_finish"
+
+    TEXT = "האם לסנן משחקים או לסיים?"
+
+
 class GamesFilteringMainMenuOptions(object):
     MENU_NAME = "games_filtering_main_menu"
     HOME_AWAY = f"{MENU_NAME}_home_away"

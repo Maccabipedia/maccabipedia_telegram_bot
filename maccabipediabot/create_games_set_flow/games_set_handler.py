@@ -2,14 +2,15 @@ import logging
 
 from telegram.ext import CommandHandler, MessageHandler, Filters, CallbackQueryHandler, ConversationHandler
 
+from maccabipediabot.create_games_set_flow.common_menu import go_back_to_main_games_filter_menu
 from maccabipediabot.create_games_set_flow.competition_filtering_menu import show_competition_menu_action, save_competition_decision
 from maccabipediabot.create_games_set_flow.date_filtering_menu import show_date_menu_action, save_date_decision
 from maccabipediabot.create_games_set_flow.games_set_conversation_handler_states import *
 
 from maccabipediabot.common import _USER_DATE_GAMES_FILTER_KEY, set_default_filters_for_current_user
 from maccabipediabot.create_games_set_flow.home_away_filtering_menu import show_home_away_menu_action, save_home_away_decision
-from maccabipediabot.create_games_set_flow.menus_keyboards import create_games_filter_main_menu
-from maccabipediabot.create_games_set_flow.menus_options import GamesFilteringMainMenuOptions
+from maccabipediabot.create_games_set_flow.menus_keyboards import create_games_filter_main_menu, create_finish_or_continue_games_filter_menu
+from maccabipediabot.create_games_set_flow.menus_options import GamesFilteringMainMenuOptions, FinishOrContinueFilteringMenuOptions
 from maccabipediabot.create_games_set_flow.played_player_filtering_menu import show_played_player_menu_action, save_played_player_decision, \
     save_specific_played_player_action
 from maccabipediabot.create_games_set_flow.referee_filtering_menu import show_referee_menu_action, save_referee_decision, save_specific_referee_action
@@ -42,11 +43,28 @@ def create_games_set(update, context):
 
 @log_user_request
 @send_typing_action
+def unknown_message_show_finish_or_continue_menu_action(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f"הפקודה האחרונה לא הובנה")
+
+    reply_keyboard = create_finish_or_continue_games_filter_menu()
+    context.bot.send_message(chat_id=update.effective_chat.id, text=FinishOrContinueFilteringMenuOptions.TEXT, reply_markup=reply_keyboard)
+
+    return finish_or_continue
+
+
+@log_user_request
+@send_typing_action
+def continue_to_filter_games(update, context):
+    return go_back_to_main_games_filter_menu(update, context)
+
+
+@log_user_request
+@send_typing_action
 def finished_to_create_games_action(update, context):
     filtered_games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
 
     query = update.callback_query
-    query.edit_message_text(text=f"{len(filtered_games)} משחקים נבחרו,"
+    query.edit_message_text(text=f"סיימת לסנן משחקים, {len(filtered_games)} משחקים נבחרו,"
                                  f"\nבכדי לראות סטטיסטיקות על המשחקים שנבחרו בחר:"
                                  f"\n/games_stats")
 
@@ -79,8 +97,11 @@ def create_games_set_conversion_handler():
             select_stadium_filter: [CallbackQueryHandler(save_stadium_decision),
                                     MessageHandler(Filters.all, save_specific_stadium_action)],
             select_coach_filter: [CallbackQueryHandler(save_coach_decision),
-                                  MessageHandler(Filters.all, save_specific_coach_action)]
+                                  MessageHandler(Filters.all, save_specific_coach_action)],
+
+            finish_or_continue: [CallbackQueryHandler(finished_to_create_games_action, pattern=f"^{FinishOrContinueFilteringMenuOptions.FINISH}$"),
+                                 CallbackQueryHandler(continue_to_filter_games, pattern=f"^{FinishOrContinueFilteringMenuOptions.CONTINUE}$")]
 
         },
-        fallbacks=[CommandHandler('help', help_handler)]
+        fallbacks=[MessageHandler(Filters.all, unknown_message_show_finish_or_continue_menu_action)]
     )
