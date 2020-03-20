@@ -5,6 +5,23 @@ from maccabipediabot.maccabi_games_filtering import GamesFilter
 
 _USER_DATE_GAMES_FILTER_KEY = "games_filter"
 _MACCABIPEDIA_LINK = "www.maccabipedia.co.il"
+_DONATION_PAGE_NAME = 'מכביפדיה:תרומות'
+
+
+def transform_stats_to_pretty_hebrew_text(stats_summary):
+    """
+    Transform summary to pretty hebrew text
+    :type stats_summary: dict
+    :return: Hebrew text
+    :rtype: str
+    """
+    return f"כמות נצחונות: {stats_summary['wins_count']} - ({stats_summary['wins_percentage']}%)" \
+           f"\nכמות הפסדים: {stats_summary['losses_count']} - ({stats_summary['losses_percentage']}%)" \
+           f"\nכמות תיקו: {stats_summary['ties_count']} - ({stats_summary['ties_percentage']}%)" \
+           f"\nכמות משחקים ללא ספיגה: {stats_summary['clean_sheets_count']} - ({stats_summary['clean_sheets_percentage']}%)" \
+           f"\n\n כמות שערים למכבי: {stats_summary['total_goals_for_maccabi']}" \
+           f"\n כמות שערים נגד מכבי: {stats_summary['total_goals_against_maccabi']}" \
+           f"\n יחס שערים למכבי חלקי נגד מכבי: {stats_summary['goals_ratio']}"
 
 
 def set_default_filters_for_current_user(update, context):
@@ -13,6 +30,10 @@ def set_default_filters_for_current_user(update, context):
 
 def create_maccabipedia_shirt_number_category_html_text(shirt_number):
     return f"<a href='{_MACCABIPEDIA_LINK}/קטגוריה:שחקנים_שלבשו_מספר_{shirt_number}'>שחקנים שלבשו מספר {shirt_number}</a>"
+
+
+def get_donation_link_html_text():
+    return f"<a href='{_MACCABIPEDIA_LINK}/{_DONATION_PAGE_NAME}'>תרומה למכביפדיה</a>"
 
 
 def get_song_lyrics(song_name):
@@ -33,6 +54,7 @@ def get_song_lyrics(song_name):
         return "לא נמצא שיר בשם זה. נסו שוב"
     else:
         return "אופס! קרתה שגיאה. נסו שוב עוד מספר דקות"
+
 
 def get_profile(profile_name):
     """
@@ -64,6 +86,7 @@ def get_profile(profile_name):
     else:
         return "אופס! קרתה שגיאה. נסו שוב עוד מספר דקות"
 
+
 def transform_players_with_amount_to_telegram_html_text(top_players_with_amount):
     """
     Transforms the given list of players with amount (probably list of top players in a specific criteria, like top scorers)
@@ -91,4 +114,25 @@ def transform_players_with_maccabi_games_to_telegram_html_text(top_players_with_
     # The href="..." must have double quotation because we have some players with single quotation in their name
     telegram_html_text = "\n".join(f'<a href="{_MACCABIPEDIA_LINK}/{player_name}">{player_name}</a> : {maccabi_games.hebrew_representation}'
                                    for player_name, maccabi_games in top_players_with_maccabi_games)
+    return telegram_html_text
+
+
+def transform_teams_with_maccabi_games_to_telegram_html_text(top_teams_with_maccabi_games):
+    """
+    Transforms the given list of teams with maccabi games (probably list of teams streaks, like winning streak)
+    into html text that will be sent to the user (including links for the teams).
+    :param top_teams_with_maccabi_games: The teams with the maccabi games
+    :type top_teams_with_maccabi_games: list of (str, maccabistats.stats.maccabi_games_stats.MaccabiGamesStats)
+    :return: The top teams as html text (With maccabipedia links to the teams)
+    :rtype: str
+    """
+
+    def remove_double_quotation(team_name):
+        return team_name.replace('"', '')
+
+    # The href="..." must have double quotation because we have some teams with single quotation in their name
+    # We remove the double quotation just be sure they wont be unescaped here
+    telegram_html_text = "\n".join(
+        f'<a href="{_MACCABIPEDIA_LINK}/{remove_double_quotation(team_name)}">{team_name}</a> : {maccabi_games.hebrew_representation}'
+        for team_name, maccabi_games in top_teams_with_maccabi_games)
     return telegram_html_text

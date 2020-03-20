@@ -14,6 +14,30 @@ class PlayedPlayerFilteringMenuOptions(object):
     TEXT = "סנן לפי שחקן:"
 
 
+class RefereeFilteringMenuOptions(object):
+    MENU_NAME = "referee_filtering_menu"
+    ALL_REFEREES = f"{MENU_NAME}_all_referees"
+    SPECIFIC_REFEREE = f"{MENU_NAME}_specific_referee"
+
+    TEXT = "סנן לפי שופט:"
+
+
+class StadiumFilteringMenuOptions(object):
+    MENU_NAME = "stadium_filtering_menu"
+    ALL_STADIUMS = f"{MENU_NAME}_all_stadiums"
+    SPECIFIC_STADIUM = f"{MENU_NAME}_specific_stadium"
+
+    TEXT = "סנן לפי אצטדיון:"
+
+
+class CoachFilteringMenuOptions(object):
+    MENU_NAME = "coach_filtering_menu"
+    ALL_COACHES = f"{MENU_NAME}_all_coaches"
+    SPECIFIC_COACH = f"{MENU_NAME}_specific_coach"
+
+    TEXT = "סנן לפי מאמן:"
+
+
 class CompetitionFilteringMenuOptions(object):
     MENU_NAME = "competition_filtering_menu"
     ALL_COMPETITIONS = f"{MENU_NAME}_all_competitions"
@@ -39,6 +63,14 @@ class HomeAwayFilteringMenuOptions(object):
     TEXT = "סנן משחקים לפי ביתיות:"
 
 
+class FinishOrContinueFilteringMenuOptions(object):
+    MENU_NAME = "finish_or_continue_filtering_menu"
+    CONTINUE = f"{MENU_NAME}_continue"
+    FINISH = f"{MENU_NAME}_finish"
+
+    TEXT = "האם לסנן משחקים או לסיים?"
+
+
 class GamesFilteringMainMenuOptions(object):
     MENU_NAME = "games_filtering_main_menu"
     HOME_AWAY = f"{MENU_NAME}_home_away"
@@ -46,6 +78,9 @@ class GamesFilteringMainMenuOptions(object):
     COMPETITION = f"{MENU_NAME}_competition"
     DATE = f"{MENU_NAME}_date"
     PLAYED_PLAYER = f"{MENU_NAME}_played_player"
+    REFEREE = f"{MENU_NAME}_referee"
+    STADIUM = f"{MENU_NAME}_stadium"
+    COACH = f"{MENU_NAME}_coach"
     FINISH = f"{MENU_NAME}_finish"
 
     FIRST_TIME_TEXT = "סנן משחקים לפי:"

@@ -4,7 +4,8 @@ from telegram.error import (TelegramError, Unauthorized, BadRequest,
                             TimedOut, ChatMigrated, NetworkError)
 from telegram.parsemode import ParseMode
 
-from maccabipediabot.common import create_maccabipedia_shirt_number_category_html_text, get_song_lyrics, get_profile
+from maccabipediabot.common import create_maccabipedia_shirt_number_category_html_text, get_song_lyrics, get_profile, \
+    get_donation_link_html_text
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
 
 
@@ -90,7 +91,6 @@ def shirt_number_handler(update, context):
 @send_typing_action
 def song_handler(update, context):
     """
-    handle commands to get songs lyrics
     :return: Lyrics of the given song & link to the page
     """
 
@@ -102,7 +102,6 @@ def song_handler(update, context):
         song_name = "_".join(context.args[:])
         context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
                                  text=get_song_lyrics(song_name))
-
 
 @log_user_request
 @send_typing_action
@@ -120,3 +119,16 @@ def profile_handler(update, context):
         profile_name = "_".join(context.args[:])
         context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
                                  text=get_profile(profile_name))
+
+@log_user_request
+@send_typing_action
+def donation_handler(update, context):
+    """
+    Returns the donation page link from maccabipedia
+    """
+
+    context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
+                             text=f"אנחנו מזמינים אתכם לתרום למכביפדיה.\n"
+                                  f"לצורך המשך הפעילות, בשביל הוספה של תכנים חדשים ויכולות חדשות.\n"
+                                  f"בכדי לתרום, היכנסו ל:\n"
+                                  f"{get_donation_link_html_text()}")
