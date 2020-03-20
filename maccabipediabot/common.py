@@ -5,6 +5,7 @@ from maccabipediabot.maccabi_games_filtering import GamesFilter
 
 _USER_DATE_GAMES_FILTER_KEY = "games_filter"
 _MACCABIPEDIA_LINK = "www.maccabipedia.co.il"
+_DONATION_PAGE_NAME = 'מכביפדיה:תרומות'
 
 
 def transform_stats_to_pretty_hebrew_text(stats_summary):
@@ -29,6 +30,10 @@ def set_default_filters_for_current_user(update, context):
 
 def create_maccabipedia_shirt_number_category_html_text(shirt_number):
     return f"<a href='{_MACCABIPEDIA_LINK}/קטגוריה:שחקנים_שלבשו_מספר_{shirt_number}'>שחקנים שלבשו מספר {shirt_number}</a>"
+
+
+def get_donation_link_html_text():
+    return f"<a href='{_MACCABIPEDIA_LINK}/{_DONATION_PAGE_NAME}'>תרומה למכביפדיה</a>"
 
 
 def get_song_lyrics(song_name):
