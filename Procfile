@@ -1,0 +1,1 @@
+worker: python maccabipediabot/bot_main.py

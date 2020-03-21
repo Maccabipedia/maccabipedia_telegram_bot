@@ -1,20 +1,24 @@
+# Hacks for heroku
+import matplotlib
+matplotlib.use('Agg')
+
 import logging
 import os
 
 from maccabipediabot.loggers import initialize_loggers
+from maccabipediabot.maccabi_games import download_maccabipedia_games_for_heroku
 
 # This should stay before the rest of this package imports to enable logging to file
 initialize_loggers()
 
 from dotenv import load_dotenv
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-
 from maccabipediabot.create_games_set_flow.games_set_handler import create_games_set_conversion_handler
 from maccabipediabot.games_set_stats_flow.games_stats_handler import create_games_stats_conversion_handler
 from maccabipediabot.general_handlers import help_handler, start_handler, song_handler, \
     donation_handler, profile_handler, season_details_handler, unknown_message_handler, error_callback
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("maccabipediabot")
 
 
 def load_env_file():
@@ -45,5 +49,6 @@ def register_telegram_bot():
 
 
 if __name__ == "__main__":
+    download_maccabipedia_games_for_heroku()
     load_env_file()
     register_telegram_bot()
