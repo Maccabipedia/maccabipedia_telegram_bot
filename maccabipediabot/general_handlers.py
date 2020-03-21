@@ -5,7 +5,7 @@ from telegram.error import (TelegramError, Unauthorized, BadRequest,
 from telegram.parsemode import ParseMode
 
 from maccabipediabot.common import create_maccabipedia_shirt_number_category_html_text, get_song_lyrics, get_profile, \
-    get_donation_link_html_text
+    get_donation_link_html_text, extract_season_details_from_maccabipedia_as_html_text, format_season_id
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
 
 logger = logging.getLogger(__name__)
@@ -120,6 +120,23 @@ def profile_handler(update, context):
         profile_name = "_".join(context.args[:])
         context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
                                  text=get_profile(profile_name))
+
+
+@log_user_request
+@send_typing_action
+def season_details_handler(update, context):
+    """
+    Shows the given season details, such as wins/losses/ties amount and which titles maccabi won in this season
+    """
+    if not context.args:
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text="נא הכנס את העונה אותה תרצה לראות"
+                                      "\nלמשל:"
+                                      "\n/season 1995/96")
+    else:
+        full_season_id = format_season_id(context.args[0])
+        context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
+                                 text=extract_season_details_from_maccabipedia_as_html_text(full_season_id))
 
 
 @log_user_request

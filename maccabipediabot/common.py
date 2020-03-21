@@ -1,3 +1,5 @@
+import logging
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -6,6 +8,8 @@ from maccabipediabot.maccabi_games_filtering import GamesFilter
 _USER_DATE_GAMES_FILTER_KEY = "games_filter"
 _MACCABIPEDIA_LINK = "www.maccabipedia.co.il"
 _DONATION_PAGE_NAME = 'מכביפדיה:תרומות'
+
+logger = logging.getLogger(__name__)
 
 
 def transform_stats_to_pretty_hebrew_text(stats_summary):
@@ -54,6 +58,64 @@ def get_song_lyrics(song_name):
         return "לא נמצא שיר בשם זה. נסו שוב"
     else:
         return "אופס! קרתה שגיאה. נסו שוב עוד מספר דקות"
+
+
+def format_season_id(season):
+    """
+    Format the given season to the canonical season format, Handling these formats:
+    1995-96, 1995/96, 95-96, 95/96, 1996, 96
+    Return the input if could not find matching format.
+    :param season: The season to find a match for
+    :type season: str
+    :return: The formatted season string or the input if could not find matching format
+    :rtype: str
+    """
+    # Avoid non numbers cases (for the two possible separators) and non valid formats
+    if not season.split('-')[0].split('/')[0].isdigit():
+        return season  # Nothing to do with this format
+    if len(season) == 7 or len(season) == 5:
+        if not ('-' in season or '/' in season):
+            return season  # Nothing to do with this format
+
+    if len(season) == 7:  # Normal format --> 1995/96 or 1995-96
+        return season.replace("-", "/")
+    elif len(season) == 5:  # Short format --> 95/96 or 95-96
+        prefix = "20" if int(season[0:2]) <= 20 else "19"  # We will assume its a newer season until 2020/21, from there we complete 1921/22
+        return f"{prefix}{season.replace('-', '/')}"  # Handle both possible formats here
+    elif len(season) == 4:  # One full year --> 1996
+        return f"{str(int(season) - 1)}/{season[-2:]}"  # Take the full year before the given season + Last two digits of original season
+    elif len(season) == 2:  # Short one year format --> 96
+        prefix = "20" if int(season) <= 20 else "19"  # We will assume its a newer season until 2020/21, from there we complete 1921/22
+        full_year = f"{prefix}{season}"
+        return f"{str(int(full_year) - 1)}/{season[-2:]}"  # Take the full year before the given season + Last two digits of original season
+    else:
+        return season
+
+
+def extract_season_details_from_maccabipedia_as_html_text(season):
+    """
+    Finds the details for the given season, Does not validate the season.
+    :param season: Season id, like "1995/96"
+    :type season: str
+    :rtype: str
+    """
+    full_season_id = season
+    season_url = f"http://{_MACCABIPEDIA_LINK}/עונת_{full_season_id}"
+    response = requests.get(season_url)
+
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.content, 'html.parser')
+        achievements_text_wrapper = soup.find(class_='text sAchievements')
+        [br.replace_with("\n") for br in soup.find_all('br')]
+        # Fix spaces at the start and end of lines
+        formatted_seasons_details = "\n".join([line.strip() for line in achievements_text_wrapper.text.split("\n")])
+        return f"פרטים עבור עונת {full_season_id}:" \
+               f"\n{formatted_seasons_details}"
+    elif response.status_code == 404:
+        return f"עונת {season} לא נמצאה, אנא נסה שנית"
+    else:
+        logger.warning(f"Got {response.status_code} status_code from HTTP GET of: {season_url}")
+        return f"התרחשה תקלה במהלך הוצאת הנתונים הרלוונטים על העונה שביקשת, אנא נסה שנית."
 
 
 def get_profile(profile_name):
