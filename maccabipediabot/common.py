@@ -7,6 +7,7 @@ from maccabipediabot.consts import _MACCABIPEDIA_LINK, _DONATION_PAGE_NAME
 from maccabipediabot.maccabi_games_filtering import GamesFilter
 
 _USER_DATE_GAMES_FILTER_KEY = "games_filter"
+_CURRENT_SEASON = "2019/20"
 
 logger = logging.getLogger(__name__)
 
@@ -69,6 +70,9 @@ def format_season_id(season):
     :return: The formatted season string or the input if could not find matching format
     :rtype: str
     """
+    if season in ["נוכחית", "הנוכחית", "אחרונה", "האחרונה"]:
+        return _CURRENT_SEASON
+
     # Avoid non numbers cases (for the two possible separators) and non valid formats
     if not season.split('-')[0].split('/')[0].isdigit():
         return season  # Nothing to do with this format

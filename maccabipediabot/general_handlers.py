@@ -44,12 +44,23 @@ def help_handler(update, context):
     """
     Shows the help for this bot.
     """
-    context.bot.send_message(chat_id=update.effective_chat.id, text="בכדי לבחור את קבוצת המשחקים שעליהם תרצה לקבל סטטיסטיקה:"
-                                                                    "\n/create_games_set"
-                                                                    "\n\nבכדי לצפות בסטטיסטיקות כלשהן:"
-                                                                    "\n/games_set"
-                                                                    "\n\nקבלת השחקנים ששיחקו עם מספר חולצה כלשהו, נניח 10:"
-                                                                    f"\n/shirt_number 10")
+    user_name = update.effective_chat.username
+    if user_name is not None:
+        hello_message = f"שלום {user_name}."
+    else:
+        hello_message = f"שלום."
+
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text=f"{hello_message}\n"
+                                  "בכדי לבחור את קבוצת המשחקים שעליהם תרצה לקבל סטטיסטיקה:"
+                                  "\n/create_games_set"
+                                  "\n\nבכדי לצפות בסטטיסטיקות כלשהן:"
+                                  "\n/games_set"
+                                  "\n\nבכדי לצפות בסטטיסטיקה על עונה כלשהי:"
+                                  f"\n/season 1995/96"
+                                  f"\n\nבכדי לתרום למכביפדיה:"
+                                  f"\n/donate"
+                                  f"\n\nבכל שלב ניתן לחזור לתפריט העזר באמצעות הפקודה: /help")
 
 
 @log_user_request
