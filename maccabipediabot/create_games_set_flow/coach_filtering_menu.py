@@ -1,3 +1,5 @@
+from telegram.parsemode import ParseMode
+
 from maccabipediabot.common import _USER_DATE_GAMES_FILTER_KEY
 from maccabipediabot.create_games_set_flow.common_menu import get_button_text_from_query_data, go_back_to_main_games_filter_menu
 from maccabipediabot.create_games_set_flow.games_set_conversation_handler_states import select_coach_filter
@@ -14,7 +16,7 @@ def show_coach_menu_action(update, context):
     reply_keyboard = create_coach_games_filter_menu()
 
     query = update.callback_query
-    query.edit_message_text(text=CoachFilteringMenuOptions.TEXT, reply_markup=reply_keyboard)
+    query.edit_message_text(text=CoachFilteringMenuOptions.HTML_TEXT, parse_mode=ParseMode.HTML, reply_markup=reply_keyboard)
 
     return select_coach_filter
 
@@ -33,7 +35,7 @@ def save_coach_decision(update, context):
 
         return go_back_to_main_games_filter_menu(update, context)
     else:
-        query.edit_message_text(text="הקלד את שם המאמן:")
+        query.edit_message_text(text="הקלד את שם המאמן הרצוי:")
         return select_coach_filter
 
 
@@ -47,11 +49,11 @@ def save_specific_coach_action(update, context):
         if similar_coaches_names:
             pretty_print_of_similar_coaches_names = "\n".join(coach_name for coach_name in similar_coaches_names)
             context.bot.send_message(chat_id=update.effective_chat.id,
-                                     text=f"מאמן בשם {user_coach} לא נמצא, אלו בעלי השם הדומה ביותר:\n"
-                                          f"{pretty_print_of_similar_coaches_names}"
-                                          f"\n\nשלח את שם המאמן הרצוי:")
+                                     text=f'לא נמצא מאמן בשם "{user_coach}", מאמנים בעלי שם דומה:'
+                                          f"\n{pretty_print_of_similar_coaches_names}"
+                                          f"\n\nהקלד את שם המאמן הרצוי:")
         else:
-            context.bot.send_message(chat_id=update.effective_chat.id, text=f"מאמן בשם {user_coach} לא נמצא, נסה בשנית")
+            context.bot.send_message(chat_id=update.effective_chat.id, text=f'לא נמצא מאמן בשם "{user_coach}", נסה בשנית:')
 
         return select_coach_filter
     else:

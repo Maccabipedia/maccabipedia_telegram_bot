@@ -3,11 +3,10 @@ import logging
 import requests
 from bs4 import BeautifulSoup
 
+from maccabipediabot.consts import _MACCABIPEDIA_LINK, _DONATION_PAGE_NAME
 from maccabipediabot.maccabi_games_filtering import GamesFilter
 
 _USER_DATE_GAMES_FILTER_KEY = "games_filter"
-_MACCABIPEDIA_LINK = "www.maccabipedia.co.il"
-_DONATION_PAGE_NAME = 'מכביפדיה:תרומות'
 
 logger = logging.getLogger(__name__)
 

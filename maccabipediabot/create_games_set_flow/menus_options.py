@@ -1,3 +1,6 @@
+from maccabipediabot.consts import _MACCABIPEDIA_LINK
+
+
 class TeamFilteringMenuOptions(object):
     MENU_NAME = "team_filtering_menu"
     ALL_TEAMS = f"{MENU_NAME}_all_teams"
@@ -35,7 +38,11 @@ class CoachFilteringMenuOptions(object):
     ALL_COACHES = f"{MENU_NAME}_all_coaches"
     SPECIFIC_COACH = f"{MENU_NAME}_specific_coach"
 
-    TEXT = "סנן לפי מאמן:"
+    _COACHES_CATEGORY_ON_MACCABIPEDIA = "קטגוריה:מאמנים_ראשיים"
+    _MACCABIPEDIA_COACHES_HTML_TEXT = f"<a href='{_MACCABIPEDIA_LINK}/{_COACHES_CATEGORY_ON_MACCABIPEDIA}'>רשימת המאמנים במכביפדיה</a>"
+
+    HTML_TEXT = f"סנן לפי מאמן:" \
+                f"\n{_MACCABIPEDIA_COACHES_HTML_TEXT}"
 
 
 class CompetitionFilteringMenuOptions(object):
