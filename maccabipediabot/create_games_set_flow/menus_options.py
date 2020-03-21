@@ -49,6 +49,8 @@ class CompetitionFilteringMenuOptions(object):
     MENU_NAME = "competition_filtering_menu"
     ALL_COMPETITIONS = f"{MENU_NAME}_all_competitions"
     LEAGUE_ONLY = f"{MENU_NAME}_league_only"
+    TROPHY_ONLY = f"{MENU_NAME}_trophy_only"
+    EUROPE_ONLY = f"{MENU_NAME}_europe_only"
 
     TEXT = "סנן לפי מפעל:"
 

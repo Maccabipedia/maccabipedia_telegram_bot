@@ -18,7 +18,11 @@ def create_home_away_games_filter_menu():
 def create_competition_games_filter_menu():
     buttons = [
         [InlineKeyboardButton("ליגה", callback_data=CompetitionFilteringMenuOptions.LEAGUE_ONLY),
-         InlineKeyboardButton("כל המסגרות", callback_data=CompetitionFilteringMenuOptions.ALL_COMPETITIONS)]
+         InlineKeyboardButton("כל המפעלים", callback_data=CompetitionFilteringMenuOptions.ALL_COMPETITIONS)],
+
+        [InlineKeyboardButton("גביע", callback_data=CompetitionFilteringMenuOptions.TROPHY_ONLY),
+         InlineKeyboardButton("מפעלים אירופאים", callback_data=CompetitionFilteringMenuOptions.EUROPE_ONLY)]
+
     ]
 
     return InlineKeyboardMarkup(buttons)

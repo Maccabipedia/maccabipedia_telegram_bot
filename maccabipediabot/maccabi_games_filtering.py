@@ -9,18 +9,23 @@ logger = logging.getLogger(__name__)
 
 
 class GamesFilter(object):
-    ALL_COMPETITIONS = "all_competitions"
     ALL_TEAMS = "all_opponents"
     ALL_PLAYERS = "all_players"
     ALL_REFEREES = "all_referees"
     ALL_STADIUMS = "all_stadiums"
     ALL_COACHES = "all_coaches"
 
+    ALL_COMPETITIONS = "all_competitions"
+    LEAGUE_COMPETITIONS = ["ליגת העל", "ליגה לאומית", "ליגת Winner", "ליגת הבורסה לניירות ערך", "ליגה א'", "ליגה א"]
+    TROPHY_COMPETITIONS = ["הגביע הארץ ישראלי", "גביע המלחמה", "גביע המדינה"]
+    EUROPE_COMPETITIONS = ["הליגה האירופית", "גביע אסיה לאלופות", "מוקדמות הליגה האירופית", "ליגת האלופות", "גביע אופא",
+                           "פלייאוף הליגה האירופית", "גביע אירופה למחזיקות גביע", "גביע האינטרטוטו", "מוקדמות ליגת האלופות"]
+
     def __init__(self):
         """
         Initialize the games filter with the default filters ("No filter at all").
         """
-        self.competition_name = self.ALL_COMPETITIONS
+        self.competitions_name = self.ALL_COMPETITIONS
         self.team_name = self.ALL_TEAMS
         self.played_player = self.ALL_PLAYERS
         self.referee_name = self.ALL_REFEREES
@@ -53,12 +58,20 @@ class GamesFilter(object):
             self.only_away_games = False
         elif home_away_filter == HomeAwayFilteringMenuOptions.ALL_HOME_AWAY:
             self._set_default_home_away_filter()
+        else:
+            raise TypeError(f"Unknown home_away filter: {home_away_filter}")
 
     def update_competition_filter(self, competition_filter):
         if competition_filter == CompetitionFilteringMenuOptions.ALL_COMPETITIONS:
-            self.competition_name = self.ALL_COMPETITIONS
-        elif CompetitionFilteringMenuOptions.LEAGUE_ONLY:
-            self.competition_name = "league_only"
+            self.competitions_name = self.ALL_COMPETITIONS
+        elif competition_filter == CompetitionFilteringMenuOptions.LEAGUE_ONLY:
+            self.competitions_name = self.LEAGUE_COMPETITIONS
+        elif competition_filter == CompetitionFilteringMenuOptions.TROPHY_ONLY:
+            self.competitions_name = self.TROPHY_COMPETITIONS
+        elif competition_filter == CompetitionFilteringMenuOptions.EUROPE_ONLY:
+            self.competitions_name = self.EUROPE_COMPETITIONS
+        else:
+            raise TypeError(f"Unknown competition filter: {competition_filter}")
 
     def update_team_filter_for_all_teams(self):
         self.team_name = self.ALL_TEAMS
@@ -99,6 +112,8 @@ class GamesFilter(object):
             self.end_date = "04.01.1949"
         elif date_filter == DateFilteringMenuOptions.ALL_TIME:
             self._set_default_date_filter()
+        else:
+            raise TypeError(f"Unknown date filter: {date_filter}")
 
     @property
     def coach_filter_exists(self):
@@ -122,7 +137,7 @@ class GamesFilter(object):
 
     @property
     def competition_filter_exists(self):
-        return self.competition_name != self.ALL_COMPETITIONS
+        return self.competitions_name != self.ALL_COMPETITIONS
 
     @property
     def date_filter_exists(self):
@@ -169,10 +184,9 @@ class MaccabiGamesFiltering(object):
             filtered_games = filtered_games.get_games_by_coach(self.games_filter.coach_name)
             logger.info(f"Filter: select games with maccabi coach: {self.games_filter.coach_name}. Games: {filtered_games}")
 
-        # TODO: today we allow to filter ALL or LEAGUE_ONLY, that probably will be changed
         if self.games_filter.competition_filter_exists:
-            filtered_games = filtered_games.league_games
-            logger.info(f"Filter: select league games only. Games: {filtered_games}")
+            filtered_games = filtered_games.get_games_by_competition(self.games_filter.competitions_name)
+            logger.info(f"Filter: select these competitions only: {self.games_filter.competitions_name}. Games: {filtered_games}")
 
         if self.games_filter.date_filter_exists:
             filtered_games = filtered_games.played_after(self.games_filter.start_date).played_before(self.games_filter.end_date)
