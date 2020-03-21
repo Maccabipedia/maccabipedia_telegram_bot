@@ -42,7 +42,7 @@ class GamesFilter(object):
         Initialize the date filter to include all time
         """
         self.start_date = datetime.min
-        self.end_data = datetime.max
+        self.end_date = datetime.max
 
     def update_home_away_filter(self, home_away_filter):
         if home_away_filter == HomeAwayFilteringMenuOptions.AWAY:
@@ -91,8 +91,12 @@ class GamesFilter(object):
         self.coach_name = coach_name
 
     def update_date_filter(self, date_filter):
-        if date_filter == DateFilteringMenuOptions.SINCE_COUNTRY:
+        if date_filter == DateFilteringMenuOptions.AFTER_COUNTRY_EXISTS:
+            self._set_default_date_filter()
             self.start_date = "04.01.1949"
+        elif date_filter == DateFilteringMenuOptions.BEFORE_COUNTRY_EXISTS:
+            self._set_default_date_filter()
+            self.end_date = "04.01.1949"
         elif date_filter == DateFilteringMenuOptions.ALL_TIME:
             self._set_default_date_filter()
 
@@ -122,7 +126,7 @@ class GamesFilter(object):
 
     @property
     def date_filter_exists(self):
-        return self.start_date != datetime.min or self.end_data != datetime.max
+        return self.start_date != datetime.min or self.end_date != datetime.max
 
     @property
     def home_away_filter_exists(self):
@@ -171,8 +175,8 @@ class MaccabiGamesFiltering(object):
             logger.info(f"Filter: select league games only. Games: {filtered_games}")
 
         if self.games_filter.date_filter_exists:
-            filtered_games = filtered_games.played_after(self.games_filter.start_date).played_before(self.games_filter.end_data)
-            logger.info(f"Filter: select games between {self.games_filter.start_date} <--> {self.games_filter.end_data}. Games: {filtered_games}")
+            filtered_games = filtered_games.played_after(self.games_filter.start_date).played_before(self.games_filter.end_date)
+            logger.info(f"Filter: select games between {self.games_filter.start_date} <--> {self.games_filter.end_date}. Games: {filtered_games}")
 
         if self.games_filter.home_away_filter_exists:
             if self.games_filter.only_home_games:

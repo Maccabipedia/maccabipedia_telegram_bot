@@ -7,9 +7,9 @@ from maccabipediabot.create_games_set_flow.menus_options import GamesFilteringMa
 
 def create_home_away_games_filter_menu():
     buttons = [
-        [InlineKeyboardButton("משחקי בית", callback_data=HomeAwayFilteringMenuOptions.HOME),
+        [InlineKeyboardButton("גם וגם", callback_data=HomeAwayFilteringMenuOptions.ALL_HOME_AWAY),
          InlineKeyboardButton("משחקי חוץ", callback_data=HomeAwayFilteringMenuOptions.AWAY),
-         InlineKeyboardButton("גם וגם", callback_data=HomeAwayFilteringMenuOptions.ALL_HOME_AWAY)]
+         InlineKeyboardButton("משחקי בית", callback_data=HomeAwayFilteringMenuOptions.HOME)]
     ]
 
     return InlineKeyboardMarkup(buttons)
@@ -26,8 +26,9 @@ def create_competition_games_filter_menu():
 
 def create_date_games_filter_menu():
     buttons = [
-        [InlineKeyboardButton("החל מקום המדינה", callback_data=DateFilteringMenuOptions.SINCE_COUNTRY),
-         InlineKeyboardButton("כל הזמן", callback_data=DateFilteringMenuOptions.ALL_TIME)]
+        [InlineKeyboardButton("כל הזמן", callback_data=DateFilteringMenuOptions.ALL_TIME),
+         InlineKeyboardButton("החל מקום המדינה", callback_data=DateFilteringMenuOptions.AFTER_COUNTRY_EXISTS),
+         InlineKeyboardButton("לפני קום המדינה", callback_data=DateFilteringMenuOptions.BEFORE_COUNTRY_EXISTS)]
     ]
 
     return InlineKeyboardMarkup(buttons)
