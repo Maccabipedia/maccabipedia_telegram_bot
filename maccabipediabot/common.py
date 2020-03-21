@@ -24,7 +24,7 @@ def transform_stats_to_pretty_hebrew_text(stats_summary):
            f"\nכמות משחקים ללא ספיגה: {stats_summary['clean_sheets_count']} - ({stats_summary['clean_sheets_percentage']}%)" \
            f"\n\n כמות שערים למכבי: {stats_summary['total_goals_for_maccabi']}" \
            f"\n כמות שערים נגד מכבי: {stats_summary['total_goals_against_maccabi']}" \
-           f"\n יחס שערים למכבי חלקי נגד מכבי: {stats_summary['goals_ratio']}"
+           f"\n יחס שערים (מכבי/יריבה): {stats_summary['goals_ratio']}"
 
 
 def set_default_filters_for_current_user(update, context):
@@ -160,7 +160,7 @@ def transform_players_with_amount_to_telegram_html_text(top_players_with_amount)
     :rtype: str
     """
     # The href="..." must have double quotation because we have some players with single quotation in their name
-    telegram_html_text = "\n".join(f'<a href="{_MACCABIPEDIA_LINK}/{player_name}">{player_name}</a> : {amount}'
+    telegram_html_text = "\n".join(f'<a href="{_MACCABIPEDIA_LINK}/{player_name}">{player_name}</a>: {amount}'
                                    for player_name, amount in top_players_with_amount)
     return telegram_html_text
 
@@ -175,7 +175,7 @@ def transform_players_with_maccabi_games_to_telegram_html_text(top_players_with_
     :rtype: str
     """
     # The href="..." must have double quotation because we have some players with single quotation in their name
-    telegram_html_text = "\n".join(f'<a href="{_MACCABIPEDIA_LINK}/{player_name}">{player_name}</a> : {maccabi_games.hebrew_representation}'
+    telegram_html_text = "\n".join(f'<a href="{_MACCABIPEDIA_LINK}/{player_name}">{player_name}</a>: {maccabi_games.hebrew_representation}'
                                    for player_name, maccabi_games in top_players_with_maccabi_games)
     return telegram_html_text
 
@@ -196,6 +196,6 @@ def transform_teams_with_maccabi_games_to_telegram_html_text(top_teams_with_macc
     # The href="..." must have double quotation because we have some teams with single quotation in their name
     # We remove the double quotation just be sure they wont be unescaped here
     telegram_html_text = "\n".join(
-        f'<a href="{_MACCABIPEDIA_LINK}/{remove_double_quotation(team_name)}">{team_name}</a> : {maccabi_games.hebrew_representation}'
+        f'<a href="{_MACCABIPEDIA_LINK}/{remove_double_quotation(team_name)}">{team_name}</a>: {maccabi_games.hebrew_representation}'
         for team_name, maccabi_games in top_teams_with_maccabi_games)
     return telegram_html_text

@@ -33,7 +33,7 @@ def save_referee_decision(update, context):
 
         return go_back_to_main_games_filter_menu(update, context)
     else:
-        query.edit_message_text(text="הקלד את שם השופט:")
+        query.edit_message_text(text="הקלד את שם השופט הרצוי:")
         return select_referee_filter
 
 
@@ -47,9 +47,9 @@ def save_specific_referee_action(update, context):
         if similar_referees_names:
             pretty_print_of_similar_referees_names = "\n".join(referee_name for referee_name in similar_referees_names)
             context.bot.send_message(chat_id=update.effective_chat.id,
-                                     text=f"שופט בשם {user_referee} לא נמצא, אלו בעלי השם הדומה ביותר:\n"
+                                     text=f'לא נמצא שופט בשם "{user_referee}", מאמנים בעלי שם דומה:'
                                           f"{pretty_print_of_similar_referees_names}"
-                                          f"\n\nשלח את שם השופט הרצוי:")
+                                          f"\n\nהקלד את שם השופט הרצוי:")
         else:
             context.bot.send_message(chat_id=update.effective_chat.id, text=f"שופט בשם {user_referee} לא נמצא, נסה בשנית")
 

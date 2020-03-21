@@ -20,7 +20,7 @@ def create_games_stats_main_menu_keyboard():
 
 def create_more_stats_or_finish_menu_keyboard():
     buttons = [
-        [InlineKeyboardButton("סטטיסטיקות נוספות", callback_data=MoreStatsOrFinishMenuOptions.MORE_STATS),
+        [InlineKeyboardButton("סטטיסטיקה נוספת", callback_data=MoreStatsOrFinishMenuOptions.MORE_STATS),
          InlineKeyboardButton("סיים", callback_data=MoreStatsOrFinishMenuOptions.FINISH)],
 
     ]
