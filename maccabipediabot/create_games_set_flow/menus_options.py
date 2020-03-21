@@ -56,8 +56,8 @@ class CompetitionFilteringMenuOptions(object):
 class DateFilteringMenuOptions(object):
     MENU_NAME = "date_filtering_menu"
     ALL_TIME = f"{MENU_NAME}_all"
-    AFTER_COUNTRY_EXISTS = f"{MENU_NAME}_country"
-    BEFORE_COUNTRY_EXISTS = f"{MENU_NAME}_country"
+    AFTER_COUNTRY_EXISTS = f"{MENU_NAME}_after_country"
+    BEFORE_COUNTRY_EXISTS = f"{MENU_NAME}_before_country"
 
     TEXT = "סנן לפי תאריכי משחקים:"
 

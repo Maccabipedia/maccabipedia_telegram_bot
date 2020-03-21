@@ -45,5 +45,7 @@ class GamesStatsMainMenuOptions(object):
 
     FINISH = f"{MENU_NAME}_finish"
 
+    NO_GAMES_TEXT = f"נבחרו 0 משחקים לאחר הסינון, אנא בחר משחקים כלשהם," \
+                    f"\nלבחירת משחקים: /create_games_set"
     FIRST_TIME_TEXT = "איזו סטטיטיקה תרצה לראות?"
     AFTER_FIRST_TIME_TEXT = "בחר סטטיסטיקה נוספת לצפייה, או סיים:"

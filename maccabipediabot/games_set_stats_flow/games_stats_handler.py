@@ -20,6 +20,7 @@ from maccabipediabot.games_set_stats_flow.top_players_stats import show_top_play
     show_top_assisters_action, show_most_played_action, show_most_captain_action
 from maccabipediabot.general_handlers import help_handler
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
+from maccabipediabot.maccabi_games_filtering import MaccabiGamesFiltering
 
 logger = logging.getLogger(__name__)
 
@@ -33,9 +34,14 @@ def games_stats_action(update, context):
     if _USER_DATE_GAMES_FILTER_KEY not in context.user_data:
         set_default_filters_for_current_user(update, context)
 
-    reply_keyboard = create_games_stats_main_menu_keyboard()
-    context.bot.send_message(chat_id=update.effective_chat.id, text=GamesStatsMainMenuOptions.FIRST_TIME_TEXT, reply_markup=reply_keyboard)
-    return show_stats
+    games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
+    if not games:
+        context.bot.send_message(chat_id=update.effective_chat.id, text=GamesStatsMainMenuOptions.NO_GAMES_TEXT)
+        return ConversationHandler.END
+    else:
+        reply_keyboard = create_games_stats_main_menu_keyboard()
+        context.bot.send_message(chat_id=update.effective_chat.id, text=GamesStatsMainMenuOptions.FIRST_TIME_TEXT, reply_markup=reply_keyboard)
+        return show_stats
 
 
 def create_games_stats_conversion_handler():
