@@ -169,7 +169,7 @@ class MaccabiGamesFiltering(object):
             logger.info(f"Filter: select games only against: {self.games_filter.team_name}. Games: {filtered_games}")
 
         if self.games_filter.played_player_filter_exists:
-            filtered_games = filtered_games.get_games_by_player_name(self.games_filter.played_player)
+            filtered_games = filtered_games.get_games_by_played_player_name(self.games_filter.played_player)
             logger.info(f"Filter: select games with this player only: {self.games_filter.played_player}. Games: {filtered_games}")
 
         if self.games_filter.referee_filter_exists:
