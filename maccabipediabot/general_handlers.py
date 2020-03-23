@@ -15,27 +15,26 @@ def error_callback(update, context):
     """
     Handle all telegram bot related errors
     """
-    logger.exception("Encountered an error")
+    logger.error("Encountered an error, handling it inside error_callback")
     try:
         raise context.error
-    except Unauthorized:
-        pass
+    except Unauthorized as e:
         # remove update.message.chat_id from conversation list
-    except BadRequest:
-        pass
+        logger.error(e)
+    except BadRequest as e:
         # handle malformed requests - read more below!
-    except TimedOut:
-        pass
+        logger.error(e)
+    except TimedOut as e:
         # handle slow connection problems
-    except NetworkError:
-        pass
+        logger.error(e)
+    except NetworkError as e:
         # handle other connection problems
+        logger.error(e)
     except ChatMigrated as e:
-        pass
         # the chat_id of a group has changed, use e.new_chat_id instead
-    except TelegramError:
-        pass
-        # handle all other telegram related errors
+        logger.error(e)
+    except TelegramError as e:
+        logger.error(e)
 
 
 @log_user_request
