@@ -34,7 +34,7 @@ def create_top_players_games_stats_keyboard():
          InlineKeyboardButton("🍴מבשלים מובילים", callback_data=TopPlayersStatsMenuOptions.TOP_ASSISTERS)],
 
         [InlineKeyboardButton("הכי הרבה הופעות", callback_data=TopPlayersStatsMenuOptions.MOST_PLAYED),
-         InlineKeyboardButton("קפטנים מובילים", callback_data=TopPlayersStatsMenuOptions.MOST_CAPTAIN)],
+         InlineKeyboardButton("©קפטנים מובילים", callback_data=TopPlayersStatsMenuOptions.MOST_CAPTAIN)],
 
     ]
 
