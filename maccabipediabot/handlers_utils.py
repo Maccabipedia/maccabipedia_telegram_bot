@@ -17,6 +17,8 @@ def log_user_request(func, update, context, *args, **kwargs):
     """
     if update.callback_query:
         user_text = update.callback_query.data
+    elif context.args:
+        user_text = " ".join(context.args)
     else:
         user_text = ""
 

@@ -15,7 +15,7 @@ def initialize_loggers():
 
     formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s --- %(funcName)s(l.%(lineno)d) :: %(message)s')
 
-    debug_handler = logging.FileHandler(str(maccabipedia_bot_log_path), 'w', encoding="utf-8")
+    debug_handler = logging.FileHandler(str(maccabipedia_bot_log_path), encoding="utf-8")
     debug_handler.setFormatter(formatter)
     debug_handler.setLevel(logging.DEBUG)
 
