@@ -1,3 +1,6 @@
+--- Version 0.8.0 ---
+    Add logging to file (specially for pythonanywhere deployment)
+
 --- Version 0.7.0 ---
     Add season command
 

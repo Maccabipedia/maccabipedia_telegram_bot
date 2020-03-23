@@ -1,6 +1,11 @@
 import logging
 import os
 
+from maccabipediabot.loggers import initialize_loggers
+
+# This should stay before the rest of this package imports to enable logging to file
+initialize_loggers()
+
 from dotenv import load_dotenv
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
@@ -8,8 +13,6 @@ from maccabipediabot.create_games_set_flow.games_set_handler import create_games
 from maccabipediabot.games_set_stats_flow.games_stats_handler import create_games_stats_conversion_handler
 from maccabipediabot.general_handlers import help_handler, start_handler, song_handler, \
     donation_handler, profile_handler, season_details_handler, unknown_message_handler, error_callback
-
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
