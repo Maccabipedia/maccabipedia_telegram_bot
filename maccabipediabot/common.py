@@ -64,12 +64,14 @@ def get_song_lyrics(song_name):
 def get_current_season():
     """
     return the current season according to the current date (assuming new seasons start at august)
+    :return current season in format 2000/01
+    :rtype str
     """
-    today = datetime.datetime.now();
+    today = datetime.datetime.now()
     if today.month < 8:
-        return str(today.year - 1) + "/" + str(today.year)[2:]
+        return f"{str(today.year - 1)}/{str(today.year)[2:]}"
     else:
-        return str(today.year) + "/" + str(today.year - 1)[2:]
+        return f"{str(today.year)}/{str(today.year - 1)[2:]}"
 
 
 def format_season_id(season):
@@ -92,12 +94,12 @@ def format_season_id(season):
     season = season.replace('-', '/')  # Replacing '-' with '/' to get correct format
 
     if len(season) == 9 or len(season) == 7 or len(season) == 5:
-        if not ('/' in season):
+        if '/' not in season:
             return season  # Nothing to do with this format
 
     if len(season) == 9:  # Long format --> 1995/1996
-        season = season.split('/')
-        season = season[0] + '/' + season[1][2:]
+        years = season.split('/')
+        return f"{years[0]}/{years[1][2:]}"
 
     if len(season) == 7:  # Normal format --> 1995/96
         return season
