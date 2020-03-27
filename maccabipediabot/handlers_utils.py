@@ -45,6 +45,19 @@ def send_typing_action(func, update, context, *args, **kwargs):
     return func(update, context, *args, **kwargs)
 
 
+@decorator
+def send_upload_image_action(func, update, context, *args, **kwargs):
+    """
+    Send "uploading" to the user while processing the request
+    :param func: Function to decorate
+    :type func: callable
+    :type update: telegram.update.Update
+    :type context: telegram.ext.callbackcontext.CallbackContext
+    """
+    context.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=ChatAction.UPLOAD_PHOTO)
+    return func(update, context, *args, **kwargs)
+
+
 @log_user_request
 @send_typing_action
 def go_back_to_main_menu_from_conversation_handler(update, context):
