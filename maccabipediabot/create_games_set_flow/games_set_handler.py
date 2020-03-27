@@ -17,7 +17,7 @@ from maccabipediabot.create_games_set_flow.referee_filtering_menu import show_re
 from maccabipediabot.create_games_set_flow.stadium_filtering_menu import show_stadium_menu_action, save_stadium_decision, save_specific_stadium_action
 from maccabipediabot.create_games_set_flow.team_filtering_menu import show_team_menu_action, save_team_decision, save_specific_team_action
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
-from maccabipediabot.maccabi_games import maccabipedia_games
+from maccabipediabot.maccabi_games import get_maccabipedia_games
 from maccabipediabot.maccabi_games_filtering import MaccabiGamesFiltering
 
 logger = logging.getLogger(__name__)
@@ -29,7 +29,7 @@ def create_games_set(update, context):
     """
     Creates a games set that will be used for statistics
     """
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"מתחילים ליצור קבוצת משחקים, {len(maccabipedia_games)} משחקים קיימים")
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f"מתחילים ליצור קבוצת משחקים, {len(get_maccabipedia_games())} משחקים קיימים")
     set_default_filters_for_current_user(update, context)  # In case he want to exit with all games (unfiltered)
 
     reply_keyboard = create_games_filter_main_menu(first_time_menu=True)

@@ -35,6 +35,8 @@ def error_callback(update, context):
         logger.error(e)
     except TelegramError as e:
         logger.error(e)
+    except Exception as e:
+        logger.error(e)
 
 
 @log_user_request

@@ -28,7 +28,7 @@ def show_top_scorers_action(update, context):
     top_players_html_text = transform_players_with_amount_to_telegram_html_text(top)
 
     query = update.callback_query
-    query.edit_message_text(parse_mode=ParseMode.HTML, text=f"הכובשים המובילים:\n {top_players_html_text}")
+    query.edit_message_text(parse_mode=ParseMode.HTML, text=f"הכובשים המובילים: \n{top_players_html_text}")
 
     return go_to_more_stats_or_finish_menu(update, context)
 

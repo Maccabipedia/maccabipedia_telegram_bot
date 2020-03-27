@@ -4,7 +4,7 @@ from maccabipediabot.create_games_set_flow.games_set_conversation_handler_states
 from maccabipediabot.create_games_set_flow.menus_keyboards import create_played_player_games_filter_menu
 from maccabipediabot.create_games_set_flow.menus_options import PlayedPlayerFilteringMenuOptions
 from maccabipediabot.handlers_utils import log_user_request, send_typing_action
-from maccabipediabot.maccabi_games import maccabipedia_games, get_similar_player_names
+from maccabipediabot.maccabi_games import get_maccabipedia_games, get_similar_player_names
 from maccabipediabot.maccabi_games_filtering import MaccabiGamesFiltering
 
 
@@ -42,7 +42,7 @@ def save_played_player_decision(update, context):
 def save_specific_played_player_action(update, context):
     user_player_name = update.message.text
 
-    if user_player_name not in maccabipedia_games.available_players_names:
+    if user_player_name not in get_maccabipedia_games().available_players_names:
         similar_players_names = get_similar_player_names(user_player_name)
         if similar_players_names:
             pretty_print_of_similar_players_names = "\n".join(player_name for player_name in similar_players_names)

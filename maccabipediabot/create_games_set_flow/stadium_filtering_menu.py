@@ -4,7 +4,7 @@ from maccabipediabot.create_games_set_flow.games_set_conversation_handler_states
 from maccabipediabot.create_games_set_flow.menus_keyboards import create_stadium_games_filter_menu
 from maccabipediabot.create_games_set_flow.menus_options import StadiumFilteringMenuOptions
 from maccabipediabot.handlers_utils import log_user_request, send_typing_action
-from maccabipediabot.maccabi_games import maccabipedia_games, get_similar_stadiums_names
+from maccabipediabot.maccabi_games import get_maccabipedia_games, get_similar_stadiums_names
 from maccabipediabot.maccabi_games_filtering import MaccabiGamesFiltering
 
 
@@ -42,7 +42,7 @@ def save_stadium_decision(update, context):
 def save_specific_stadium_action(update, context):
     user_stadium = update.message.text
 
-    if user_stadium not in maccabipedia_games.available_stadiums:
+    if user_stadium not in get_maccabipedia_games().available_stadiums:
         similar_stadiums_names = get_similar_stadiums_names(user_stadium)
         if similar_stadiums_names:
             pretty_print_of_similar_stadiums_names = "\n".join(stadium_name for stadium_name in similar_stadiums_names)

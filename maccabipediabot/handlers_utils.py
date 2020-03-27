@@ -23,7 +23,10 @@ def log_user_request(func, update, context, *args, **kwargs):
         user_text = ""
 
     logger.info(f"User: {update.effective_chat.username} (id: {update.effective_chat.id}), Function: {func.__name__}, Text: {user_text} ")
-    return func(update, context, *args, **kwargs)
+    try:
+        return func(update, context, *args, **kwargs)
+    except Exception:
+        logger.exception("Unhandled exception")
 
 
 @decorator

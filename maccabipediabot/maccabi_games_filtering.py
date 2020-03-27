@@ -3,7 +3,7 @@ from datetime import datetime
 
 from maccabipediabot.create_games_set_flow.menus_options import CompetitionFilteringMenuOptions, DateFilteringMenuOptions, \
     HomeAwayFilteringMenuOptions
-from maccabipediabot.maccabi_games import maccabipedia_games
+from maccabipediabot.maccabi_games import get_maccabipedia_games
 
 logger = logging.getLogger(__name__)
 
@@ -161,7 +161,7 @@ class MaccabiGamesFiltering(object):
         Filter the games with the saved filter
         :rtype: maccabistats.stats.maccabi_games_stats.MaccabiGamesStats
         """
-        filtered_games = maccabipedia_games
+        filtered_games = get_maccabipedia_games()
         logger.info(f"Unfiltered games: {filtered_games}")
 
         if self.games_filter.team_filter_exists:
