@@ -1,4 +1,4 @@
-from telegram import KeyboardButton, ReplyKeyboardMarkup
+from telegram import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 
 
 class MainKeyboardOptions(object):
@@ -27,6 +27,10 @@ def create_go_back_reply_keyboard():
     ]
 
     return ReplyKeyboardMarkup(buttons, resize_keyboard=True, one_time_keyboard=True)
+
+
+def remove_keyboard_reply_markup():
+    return ReplyKeyboardRemove()
 
 
 def create_main_user_reply_keyboard():
