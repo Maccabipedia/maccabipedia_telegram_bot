@@ -1,4 +1,5 @@
 import logging
+import datetime
 
 import requests
 from bs4 import BeautifulSoup
@@ -7,7 +8,7 @@ from maccabipediabot.consts import _MACCABIPEDIA_LINK, _DONATION_PAGE_NAME
 from maccabipediabot.maccabi_games_filtering import GamesFilter
 
 _USER_DATE_GAMES_FILTER_KEY = "games_filter"
-_CURRENT_SEASON = "2019/20"
+
 
 logger = logging.getLogger(__name__)
 
@@ -60,6 +61,17 @@ def get_song_lyrics(song_name):
         return "אופס! קרתה שגיאה. נסו שוב עוד מספר דקות"
 
 
+def get_current_season():
+    """
+    return the current season according to the current date (assuming new seasons start at august)
+    """
+    today = datetime.datetime.now();
+    if today.month < 8:
+        return str(today.year - 1) + "/" + str(today.year)[2:]
+    else:
+        return str(today.year) + "/" + str(today.year - 1)[2:]
+
+
 def format_season_id(season):
     """
     Format the given season to the canonical season format, Handling these formats:
@@ -71,18 +83,25 @@ def format_season_id(season):
     :rtype: str
     """
     if season in ["נוכחית", "הנוכחית", "אחרונה", "האחרונה"]:
-        return _CURRENT_SEASON
+        return get_current_season()
 
     # Avoid non numbers cases (for the two possible separators) and non valid formats
     if not season.split('-')[0].split('/')[0].isdigit():
         return season  # Nothing to do with this format
-    if len(season) == 7 or len(season) == 5:
-        if not ('-' in season or '/' in season):
+
+    season = season.replace('-', '/')  # Replacing '-' with '/' to get correct format
+
+    if len(season) == 9 or len(season) == 7 or len(season) == 5:
+        if not ('/' in season):
             return season  # Nothing to do with this format
 
-    if len(season) == 7:  # Normal format --> 1995/96 or 1995-96
-        return season.replace("-", "/")
-    elif len(season) == 5:  # Short format --> 95/96 or 95-96
+    if len(season) == 9:  # Long format --> 1995/1996
+        season = season.split('/')
+        season = season[0] + '/' + season[1][2:]
+
+    if len(season) == 7:  # Normal format --> 1995/96
+        return season
+    elif len(season) == 5:  # Short format --> 95/96
         prefix = "20" if int(season[0:2]) <= 20 else "19"  # We will assume its a newer season until 2020/21, from there we complete 1921/22
         return f"{prefix}{season.replace('-', '/')}"  # Handle both possible formats here
     elif len(season) == 4:  # One full year --> 1996
