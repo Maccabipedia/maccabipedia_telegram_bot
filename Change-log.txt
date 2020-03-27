@@ -1,3 +1,6 @@
+--- Version 0.1.0 ---
+    Using ReplyKeyboard instead of commands.
+
 --- Version 0.9.0 ---
     Make heroku deployment work (requires to delete pipfile.lock + lazy download of maccabiGamesStats serialized object)
 

@@ -19,6 +19,7 @@ from maccabipediabot.create_games_set_flow.team_filtering_menu import show_team_
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request
 from maccabipediabot.maccabi_games import get_maccabipedia_games
 from maccabipediabot.maccabi_games_filtering import MaccabiGamesFiltering
+from maccabipediabot.main_user_keyboard import MainKeyboardOptions, create_main_user_reply_keyboard
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +30,8 @@ def create_games_set(update, context):
     """
     Creates a games set that will be used for statistics
     """
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"מתחילים ליצור קבוצת משחקים, {len(get_maccabipedia_games())} משחקים קיימים")
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text=f"מתחילים ליצור קבוצת משחקים, {len(get_maccabipedia_games())} משחקים קיימים")
     set_default_filters_for_current_user(update, context)  # In case he want to exit with all games (unfiltered)
 
     reply_keyboard = create_games_filter_main_menu(first_time_menu=True)
@@ -62,16 +64,18 @@ def finished_to_create_games_action(update, context):
     filtered_games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
 
     query = update.callback_query
-    query.edit_message_text(text=f"סיימת לסנן משחקים, {len(filtered_games)} משחקים נבחרו,"
-                                 f"\nבכדי לראות סטטיסטיקות על המשחקים שנבחרו בחר:"
-                                 f"\n/games_stats")
+    query.edit_message_text(text=f"סיימת לסנן משחקים, {len(filtered_games)} משחקים נבחרו!")
+
+    context.bot.send_message(chat_id=update.effective_chat.id, text=" בכדי להמשיך לחץ מטה על 'סטטיסטיקה'",
+                             reply_markup=create_main_user_reply_keyboard())
 
     return ConversationHandler.END
 
 
 def create_games_set_conversion_handler():
     return ConversationHandler(
-        entry_points=[CommandHandler("create_games_set", create_games_set)],
+        entry_points=[CommandHandler("create_games_set", create_games_set),
+                      MessageHandler(Filters.regex(f"^{MainKeyboardOptions.GAMES_FILTERING}$"), create_games_set)],
         states={
             games_filtering: [CallbackQueryHandler(show_home_away_menu_action, pattern=f"^{GamesFilteringMainMenuOptions.HOME_AWAY}$"),
                               CallbackQueryHandler(show_team_menu_action, pattern=f"^{GamesFilteringMainMenuOptions.TEAM}$"),
