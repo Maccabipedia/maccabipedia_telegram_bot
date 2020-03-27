@@ -2,6 +2,9 @@ import logging
 
 from decorator import decorator
 from telegram import ChatAction
+from telegram.ext import ConversationHandler
+
+from maccabipediabot.main_user_keyboard import show_the_user_main_keyboard_with_message
 
 logger = logging.getLogger(__name__)
 
@@ -40,3 +43,10 @@ def send_typing_action(func, update, context, *args, **kwargs):
     """
     context.bot.send_chat_action(chat_id=update.effective_message.chat_id, action=ChatAction.TYPING)
     return func(update, context, *args, **kwargs)
+
+
+@log_user_request
+@send_typing_action
+def go_back_to_main_menu_from_conversation_handler(update, context):
+    show_the_user_main_keyboard_with_message(update, context)
+    return ConversationHandler.END
