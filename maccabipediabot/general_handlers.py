@@ -45,7 +45,7 @@ def help_handler(update, context):
     """
     Shows the help for this bot.
     """
-    context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML,
+    context.bot.send_message(chat_id=update.effective_chat.id, parse_mode=ParseMode.HTML, reply_markup=create_main_user_reply_keyboard(),
                              text=f"בכדי לקבל סטטיסטיקות, השתמש בתפריט מטה ולחץ על:"
                                   f"\n1) 'סנן משחקים' בכדי להחליט אילו משחקים לכלול"
                                   f"\n2) לחץ על 'סטטיסטיקה'"
@@ -76,7 +76,7 @@ def start_handler(update, context):
     else:
         hello_message = f"שלום."
 
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"{hello_message}",  reply_markup=create_main_user_reply_keyboard())
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f"{hello_message}", reply_markup=create_main_user_reply_keyboard())
 
     help_handler(update, context)
 
