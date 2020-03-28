@@ -6,12 +6,12 @@ from maccabipediabot.emojis import MUSICAL_NOTE_EMOJI, HUMAN_RUNNING_EMOJI, MONE
 class MainKeyboardOptions(object):
     GAMES_FILTERING = "סנן משחקים"
     GAMES_STATS = "סטטיסטיקה"
-    SONG = "שיר"
+    SONG = f"שיר{MUSICAL_NOTE_EMOJI}"
     SEASON_STATS = "עונה"
-    UNIFORMS = "מדים"
-    DONATE = "תרומה"
-    PLAYER_STATS = "שחקן"
-    FEEDBACK = "כתבו לנו"
+    UNIFORMS = f"מדים{SHIRT_EMOJI}"
+    DONATE = f"תרומה{MONEY_EMOJI}"
+    PLAYER_STATS = f"שחקן{HUMAN_RUNNING_EMOJI}"
+    FEEDBACK = f"כתבו לנו{WRITE_EMOJI}"
 
     GO_BACK = "חזור"
 
@@ -40,11 +40,10 @@ def remove_keyboard_reply_markup():
 def create_main_user_reply_keyboard():
     buttons = [
         [KeyboardButton(MainKeyboardOptions.GAMES_STATS), KeyboardButton(MainKeyboardOptions.GAMES_FILTERING)],
-        [KeyboardButton(f"{MainKeyboardOptions.SONG}{MUSICAL_NOTE_EMOJI}"),
-         KeyboardButton(f"{MainKeyboardOptions.PLAYER_STATS}{HUMAN_RUNNING_EMOJI}")],
-        [KeyboardButton(MainKeyboardOptions.SEASON_STATS), KeyboardButton(f"{MainKeyboardOptions.UNIFORMS}{SHIRT_EMOJI}")],
+        [KeyboardButton(MainKeyboardOptions.SONG), KeyboardButton(MainKeyboardOptions.PLAYER_STATS)],
+        [KeyboardButton(MainKeyboardOptions.SEASON_STATS), KeyboardButton(MainKeyboardOptions.UNIFORMS)],
 
-        [KeyboardButton(f"{MainKeyboardOptions.DONATE}{MONEY_EMOJI}"), KeyboardButton(f"{MainKeyboardOptions.FEEDBACK}{WRITE_EMOJI}")]
+        [KeyboardButton(MainKeyboardOptions.DONATE), KeyboardButton(MainKeyboardOptions.FEEDBACK)]
     ]
 
     # We send this keyboard as one time keyboard, it will be collapsed
