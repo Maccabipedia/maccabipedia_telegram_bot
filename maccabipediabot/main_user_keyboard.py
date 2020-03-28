@@ -1,11 +1,11 @@
 from telegram import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 
-from maccabipediabot.emojis import MUSICAL_NOTE_EMOJI, HUMAN_RUNNING_EMOJI, MONEY_EMOJI, SHIRT_EMOJI, WRITE_EMOJI
+from maccabipediabot.emojis import MUSICAL_NOTE_EMOJI, HUMAN_RUNNING_EMOJI, MONEY_EMOJI, SHIRT_EMOJI, WRITE_EMOJI, CHART_EMOJI
 
 
 class MainKeyboardOptions(object):
     GAMES_FILTERING = "סנן משחקים"
-    GAMES_STATS = "סטטיסטיקה"
+    GAMES_STATS = f"סטטיסטיקה{CHART_EMOJI}"
     SONG = f"שיר{MUSICAL_NOTE_EMOJI}"
     SEASON_STATS = "עונה"
     UNIFORMS = f"מדים{SHIRT_EMOJI}"
