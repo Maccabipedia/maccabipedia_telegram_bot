@@ -1,5 +1,6 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
+from maccabipediabot.emojis import SOCCER_BALL_EMOJI, FORK_AND_KNIFE_EMOJI, LETTER_C_EMOJI
 from maccabipediabot.games_set_stats_flow.menus_options import TopPlayersStatsMenuOptions, GamesStatsMainMenuOptions, PlayersStreaksStatsMenuOptions, \
     MoreStatsOrFinishMenuOptions, TeamStreaksStatsMenuOptions
 
@@ -30,11 +31,11 @@ def create_more_stats_or_finish_menu_keyboard():
 
 def create_top_players_games_stats_keyboard():
     buttons = [
-        [InlineKeyboardButton("⚽כובשים מובילים", callback_data=TopPlayersStatsMenuOptions.TOP_SCORERS),
-         InlineKeyboardButton("🍴מבשלים מובילים", callback_data=TopPlayersStatsMenuOptions.TOP_ASSISTERS)],
+        [InlineKeyboardButton(f"כובשים מובילים{SOCCER_BALL_EMOJI}", callback_data=TopPlayersStatsMenuOptions.TOP_SCORERS),
+         InlineKeyboardButton(f"מבשלים מובילים{FORK_AND_KNIFE_EMOJI}", callback_data=TopPlayersStatsMenuOptions.TOP_ASSISTERS)],
 
         [InlineKeyboardButton("הכי הרבה הופעות", callback_data=TopPlayersStatsMenuOptions.MOST_PLAYED),
-         InlineKeyboardButton("©קפטנים מובילים", callback_data=TopPlayersStatsMenuOptions.MOST_CAPTAIN)],
+         InlineKeyboardButton(f"קפטנים מובילים{LETTER_C_EMOJI}", callback_data=TopPlayersStatsMenuOptions.MOST_CAPTAIN)],
 
     ]
 

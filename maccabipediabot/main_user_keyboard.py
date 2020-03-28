@@ -1,5 +1,7 @@
 from telegram import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 
+from maccabipediabot.emojis import MUSICAL_NOTE_EMOJI, HUMAN_RUNNING_EMOJI, MONEY_EMOJI, SHIRT_EMOJI, WRITE_EMOJI
+
 
 class MainKeyboardOptions(object):
     GAMES_FILTERING = "סנן משחקים"
@@ -38,10 +40,11 @@ def remove_keyboard_reply_markup():
 def create_main_user_reply_keyboard():
     buttons = [
         [KeyboardButton(MainKeyboardOptions.GAMES_STATS), KeyboardButton(MainKeyboardOptions.GAMES_FILTERING)],
-        [KeyboardButton(MainKeyboardOptions.SONG), KeyboardButton(MainKeyboardOptions.PLAYER_STATS)],
-        [KeyboardButton(MainKeyboardOptions.SEASON_STATS), KeyboardButton(MainKeyboardOptions.UNIFORMS)],
+        [KeyboardButton(f"{MainKeyboardOptions.SONG}{MUSICAL_NOTE_EMOJI}"),
+         KeyboardButton(f"{MainKeyboardOptions.PLAYER_STATS}{HUMAN_RUNNING_EMOJI}")],
+        [KeyboardButton(MainKeyboardOptions.SEASON_STATS), KeyboardButton(f"{MainKeyboardOptions.UNIFORMS}{SHIRT_EMOJI}")],
 
-        [KeyboardButton(MainKeyboardOptions.DONATE), KeyboardButton(MainKeyboardOptions.FEEDBACK)]
+        [KeyboardButton(f"{MainKeyboardOptions.DONATE}{MONEY_EMOJI}"), KeyboardButton(f"{MainKeyboardOptions.FEEDBACK}{WRITE_EMOJI}")]
     ]
 
     # We send this keyboard as one time keyboard, it will be collapsed
