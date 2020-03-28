@@ -20,7 +20,6 @@ from maccabipediabot.games_set_stats_flow.teams_streaks_stats import show_teams_
 from maccabipediabot.games_set_stats_flow.top_players_stats import show_top_players_stats_menu_action, show_top_scorers_action, \
     show_top_assisters_action, show_most_played_action, show_most_captain_action
 from maccabipediabot.handlers_utils import send_typing_action, log_user_request, go_back_to_main_menu_from_conversation_handler
-from maccabipediabot.maccabi_games import get_maccabipedia_games
 from maccabipediabot.maccabi_games_filtering import MaccabiGamesFiltering
 from maccabipediabot.main_user_keyboard import MainKeyboardOptions, create_main_user_reply_keyboard, remove_keyboard_reply_markup
 
@@ -42,9 +41,11 @@ def games_stats_action(update, context):
         return ConversationHandler.END
     else:
 
-        # We send here 2 messages because we need to hide the ReplyKeyboard and show an InlineKeyboard (telegram requires 2 actions for that).
-        context.bot.send_message(chat_id=update.effective_chat.id, text=f"{len(get_maccabipedia_games())} משחקים קיימים,",
-                                 reply_markup=remove_keyboard_reply_markup())
+        games_filtering = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY])
+
+        context.bot.send_message(chat_id=update.effective_chat.id, text=f"{len(games_filtering.filter_games())} משחקים נבחרו, המשחקים שנבחרו:"
+                                                                        f"\n{games_filtering.to_user_description()}",
+                                 reply_markup=remove_keyboard_reply_markup())  # This message will re-add the user keyboard
 
         reply_keyboard = create_games_stats_main_menu_keyboard()
         context.bot.send_message(chat_id=update.effective_chat.id, text=GamesStatsMainMenuOptions.FIRST_TIME_TEXT, reply_markup=reply_keyboard)

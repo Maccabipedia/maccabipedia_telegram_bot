@@ -16,15 +16,23 @@ class GamesFilter(object):
     ALL_COACHES = "all_coaches"
 
     ALL_COMPETITIONS = "all_competitions"
+    LEAGUE_CATEGORY = "ליגה"
+    TROPHY_CATEGORY = "גביע"
+    EUROPE_CATEGORY = "מפעלים אירופאים"
     LEAGUE_COMPETITIONS = ["ליגת העל", "ליגה לאומית", "ליגת Winner", "ליגת הבורסה לניירות ערך", "ליגה א'", "ליגה א"]
     TROPHY_COMPETITIONS = ["הגביע הארץ ישראלי", "גביע המלחמה", "גביע המדינה"]
     EUROPE_COMPETITIONS = ["הליגה האירופית", "גביע אסיה לאלופות", "מוקדמות הליגה האירופית", "ליגת האלופות", "גביע אופא",
                            "פלייאוף הליגה האירופית", "גביע אירופה למחזיקות גביע", "גביע האינטרטוטו", "מוקדמות ליגת האלופות"]
 
+    ALL_DATES = "all_dates"
+    AFTER_COUNTRY = "החל מקום המדינה"
+    BEFORE_COUNTRY = "לפני קום המדינה"
+
     def __init__(self):
         """
         Initialize the games filter with the default filters ("No filter at all").
         """
+        self.competition_category = self.ALL_COMPETITIONS
         self.competitions_name = self.ALL_COMPETITIONS
         self.team_name = self.ALL_TEAMS
         self.played_player = self.ALL_PLAYERS
@@ -48,6 +56,7 @@ class GamesFilter(object):
         """
         self.start_date = datetime.min
         self.end_date = datetime.max
+        self.date_category = self.ALL_DATES
 
     def update_home_away_filter(self, home_away_filter):
         if home_away_filter == HomeAwayFilteringMenuOptions.AWAY:
@@ -64,12 +73,16 @@ class GamesFilter(object):
     def update_competition_filter(self, competition_filter):
         if competition_filter == CompetitionFilteringMenuOptions.ALL_COMPETITIONS:
             self.competitions_name = self.ALL_COMPETITIONS
+            self.competition_category = self.ALL_COMPETITIONS
         elif competition_filter == CompetitionFilteringMenuOptions.LEAGUE_ONLY:
             self.competitions_name = self.LEAGUE_COMPETITIONS
+            self.competition_category = self.LEAGUE_CATEGORY
         elif competition_filter == CompetitionFilteringMenuOptions.TROPHY_ONLY:
             self.competitions_name = self.TROPHY_COMPETITIONS
+            self.competition_category = self.TROPHY_CATEGORY
         elif competition_filter == CompetitionFilteringMenuOptions.EUROPE_ONLY:
             self.competitions_name = self.EUROPE_COMPETITIONS
+            self.competition_category = self.EUROPE_CATEGORY
         else:
             raise TypeError(f"Unknown competition filter: {competition_filter}")
 
@@ -107,9 +120,11 @@ class GamesFilter(object):
         if date_filter == DateFilteringMenuOptions.AFTER_COUNTRY_EXISTS:
             self._set_default_date_filter()
             self.start_date = "04.01.1949"
+            self.date_category = self.AFTER_COUNTRY
         elif date_filter == DateFilteringMenuOptions.BEFORE_COUNTRY_EXISTS:
             self._set_default_date_filter()
             self.end_date = "04.01.1949"
+            self.date_category = self.BEFORE_COUNTRY
         elif date_filter == DateFilteringMenuOptions.ALL_TIME:
             self._set_default_date_filter()
         else:
@@ -155,6 +170,35 @@ class MaccabiGamesFiltering(object):
         :type games_filter: GamesFilter
         """
         self.games_filter = games_filter
+
+    def to_user_description(self):
+        """
+        Returns a description of the filtering that will be shown to the user
+        :rtype: str
+        """
+        descriptions = []
+        if self.games_filter.home_away_filter_exists:
+            where = "בית" if self.games_filter.only_home_games else "חוץ"
+            descriptions.append(f"משחקי {where}")
+        if self.games_filter.date_filter_exists:
+            descriptions.append(f"ששוחקו {self.games_filter.date_category}")
+        if self.games_filter.competition_filter_exists:
+            descriptions.append(f"ששוחקו ב{self.games_filter.competition_category}")
+        if self.games_filter.team_filter_exists:
+            descriptions.append(f"נגד {self.games_filter.team_name}")
+        if self.games_filter.stadium_filter_exists:
+            descriptions.append(f"ששוחקו ב {self.games_filter.stadium_name}")
+        if self.games_filter.played_player_filter_exists:
+            descriptions.append(f"שהשחקן {self.games_filter.played_player} שיחק")
+        if self.games_filter.coach_filter_exists:
+            descriptions.append(f"ש{self.games_filter.coach_name} אימן")
+        if self.games_filter.referee_filter_exists:
+            descriptions.append(f"שהשופט{self.games_filter.referee_name} שפט")
+
+        if descriptions:
+            return "\n".join(descriptions)
+        else:
+            return "כל המשחקים האפשריים"
 
     def filter_games(self):
         """
