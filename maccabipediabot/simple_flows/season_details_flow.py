@@ -30,7 +30,8 @@ def season_details_entry_point(update, context):
     """
     context.bot.send_message(chat_id=update.effective_chat.id,
                              reply_markup=create_go_back_reply_keyboard(),
-                             text=f"הקלד את העונה עבורה תרצה לקבל מידע (למשל 1995/96):")
+                             text=f"הקלד את העונה עבורה תרצה לקבל מידע,"
+                                  f"\nלמשל 1995/96, 1996 או 96:")
 
     return _show_season_details_state
 
