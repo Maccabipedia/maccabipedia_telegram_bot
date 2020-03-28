@@ -9,6 +9,7 @@ class MainKeyboardOptions(object):
     UNIFORMS = "מדים"
     DONATE = "תרומה"
     PLAYER_STATS = "שחקן"
+    FEEDBACK = "כתבו לנו"
 
     GO_BACK = "חזור"
 
@@ -40,7 +41,7 @@ def create_main_user_reply_keyboard():
         [KeyboardButton(MainKeyboardOptions.SONG), KeyboardButton(MainKeyboardOptions.PLAYER_STATS)],
         [KeyboardButton(MainKeyboardOptions.SEASON_STATS), KeyboardButton(MainKeyboardOptions.UNIFORMS)],
 
-        [KeyboardButton(MainKeyboardOptions.DONATE)]
+        [KeyboardButton(MainKeyboardOptions.DONATE), KeyboardButton(MainKeyboardOptions.FEEDBACK)]
     ]
 
     # We send this keyboard as one time keyboard, it will be collapsed

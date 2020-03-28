@@ -1,6 +1,5 @@
 # Hacks for heroku
 import matplotlib
-
 matplotlib.use('Agg')
 
 import logging
@@ -23,6 +22,7 @@ from maccabipediabot.simple_flows.donation_flow import create_donation_handlers
 from maccabipediabot.simple_flows.season_details_flow import create_season_conversation_handler
 from maccabipediabot.simple_flows.song_details_flow import create_song_conversation_handler
 from maccabipediabot.simple_flows.uniforms_flow import create_uniforms_conversation_handler
+from maccabipediabot.simple_flows.feedback_flow import create_feedback_conversation_handler
 
 logger = logging.getLogger("maccabipediabot")
 
@@ -65,6 +65,7 @@ def register_telegram_bot():
     updater.dispatcher.add_handler(create_song_conversation_handler())
     updater.dispatcher.add_handler(create_player_conversation_handler())
     updater.dispatcher.add_handler(create_uniforms_conversation_handler())
+    updater.dispatcher.add_handler(create_feedback_conversation_handler())
 
     # More complex conversations
     updater.dispatcher.add_handler(create_games_set_conversion_handler())
