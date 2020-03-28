@@ -1,17 +1,18 @@
 from telegram import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 
-from maccabipediabot.emojis import MUSICAL_NOTE_EMOJI, HUMAN_RUNNING_EMOJI, MONEY_EMOJI, SHIRT_EMOJI, WRITE_EMOJI, CHART_EMOJI
+from maccabipediabot.emojis import MUSICAL_NOTE_EMOJI, HUMAN_RUNNING_EMOJI, MONEY_EMOJI, SHIRT_EMOJI, WRITE_EMOJI, \
+    CHART_EMOJI, MAGNIFYING_EMOJI, CALENDAR_EMOJI
 
 
 class MainKeyboardOptions(object):
-    GAMES_FILTERING = "סנן משחקים"
-    GAMES_STATS = f"סטטיסטיקה{CHART_EMOJI}"
-    SONG = f"שיר{MUSICAL_NOTE_EMOJI}"
-    SEASON_STATS = "עונה"
-    UNIFORMS = f"מדים{SHIRT_EMOJI}"
-    DONATE = f"תרומה{MONEY_EMOJI}"
-    PLAYER_STATS = f"שחקן{HUMAN_RUNNING_EMOJI}"
-    FEEDBACK = f"כתבו לנו{WRITE_EMOJI}"
+    GAMES_FILTERING = f"סנן משחקים {MAGNIFYING_EMOJI}"
+    GAMES_STATS = f"סטטיסטיקה {CHART_EMOJI}"
+    SONG = f"שיר {MUSICAL_NOTE_EMOJI}"
+    SEASON_STATS = f"עונה {CALENDAR_EMOJI}"
+    UNIFORMS = f"מדים {SHIRT_EMOJI}"
+    DONATE = f"תרומה {MONEY_EMOJI}"
+    PLAYER_STATS = f"שחקן {HUMAN_RUNNING_EMOJI}"
+    FEEDBACK = f"כתבו לנו {WRITE_EMOJI}"
 
     GO_BACK = "חזור"
 
