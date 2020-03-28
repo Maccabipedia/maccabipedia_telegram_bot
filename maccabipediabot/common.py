@@ -1,5 +1,5 @@
-import logging
 import datetime
+import logging
 
 import requests
 from bs4 import BeautifulSoup
@@ -8,7 +8,6 @@ from maccabipediabot.consts import _MACCABIPEDIA_LINK, _DONATION_PAGE_NAME
 from maccabipediabot.maccabi_games_filtering import GamesFilter
 
 _USER_DATE_GAMES_FILTER_KEY = "games_filter"
-
 
 logger = logging.getLogger(__name__)
 
@@ -50,13 +49,13 @@ def get_song_lyrics(song_name):
     :rtype: str
     """
     url = _MACCABIPEDIA_LINK + '/שיר:' + song_name
-    response = requests.get('http://' + requests.utils.quote(url))
+    response = requests.get('https://' + requests.utils.quote(url))
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, 'html.parser')
         lyrics = soup.find(class_='poem')
         return f"<a href='{url}' >שיר {song_name.replace('_', ' ')}:</a>\n{lyrics.text} \n\n"
     elif response.status_code == 404:
-        return "לא נמצא שיר בשם זה. נסו שוב"
+        return f"לא נמצא שיר בשם {song_name.replace('_', ' ')}. אנא נסו שנית"
     else:
         return "אופס! קרתה שגיאה. נסו שוב עוד מספר דקות"
 
@@ -124,7 +123,7 @@ def extract_season_details_from_maccabipedia_as_html_text(season):
     :rtype: str
     """
     full_season_id = season
-    season_url = f"http://{_MACCABIPEDIA_LINK}/עונת_{full_season_id}"
+    season_url = f"https://{_MACCABIPEDIA_LINK}/עונת_{full_season_id}"
     response = requests.get(season_url)
 
     if response.status_code == 200:
@@ -136,10 +135,39 @@ def extract_season_details_from_maccabipedia_as_html_text(season):
         return f"פרטים עבור עונת {full_season_id}:" \
                f"\n{formatted_seasons_details}"
     elif response.status_code == 404:
-        return f"עונת {season} לא נמצאה, אנא נסה שנית"
+        return f"עונת {season} לא נמצאה, אנא נסו שנית"
     else:
         logger.warning(f"Got {response.status_code} status_code from HTTP GET of: {season_url}")
-        return f"התרחשה תקלה במהלך הוצאת הנתונים הרלוונטים על העונה שביקשת, אנא נסה שנית."
+        return f"התרחשה תקלה במהלך הוצאת הנתונים הרלוונטים על העונה שביקשת, אנא נסו שנית."
+
+
+def extract_season_uniforms_from_maccabipedia(full_season_id):
+    """
+    Finds uniforms of the given season. Does not validate the season.
+    Returns the text and the uniforms images
+    :param full_season_id: Season id, like "1995/96"
+    :type full_season_id: str
+    :rtype: str, list of str
+    """
+    season_url = f"https://{_MACCABIPEDIA_LINK}/מדי_עונת_{full_season_id}"
+    response = requests.get(season_url)
+
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.content, 'html.parser')
+        uniforms = soup.find_all(class_='UniformC_Portal_Text')
+
+        images = []
+        for uniform in uniforms:
+            for image in uniform.find_all("img"):
+                images.append(f"http://{_MACCABIPEDIA_LINK}{image['src']}")
+
+        return f'<a href="{season_url}" >מדי עונת {full_season_id}:</a>', images
+
+    elif response.status_code == 404:
+        return f"מדי עונת {full_season_id} לא נמצאו, אנא נסו שנית", []
+    else:
+        logger.warning(f"Got {response.status_code} status_code from HTTP GET of: {season_url}")
+        return f"התרחשה תקלה במהלך הוצאת הנתונים הרלוונטים על מדי העונה שביקשת, אנא נסו שנית.", []
 
 
 def get_profile(profile_name):
@@ -150,11 +178,10 @@ def get_profile(profile_name):
     :return: Information and stats of the player/staff people & link to the profile page
     """
     url = _MACCABIPEDIA_LINK + '/' + profile_name
-    response = requests.get('http://' + requests.utils.quote(url))
+    response = requests.get('https://' + requests.utils.quote(url))
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, 'html.parser')
-        for br in soup.find_all('br'):
-            br.replace_with("\n")
+        [br.replace_with("\n") for br in soup.find_all('br')]
 
         profile = "\n- פרטים אישיים: \n" + soup.find(class_='ppPersonalDetails').text
         profile += "\n- פרטים מקצועיים: \n" + soup.find(class_='ppProDetails').text
@@ -164,15 +191,14 @@ def get_profile(profile_name):
         profile += "--- גביע ---" + soup.find(id='tab3-content').text
         profile += "--- אירופה ---" + soup.find(id='tab4-content').text
 
-        "Removing whitespace"
-        profile = profile.replace(" גובה:", "גובה:")
+        profile = profile.replace(" גובה:", "גובה:")  # Removing whitespace
 
         # The href="..." must have double quotation because we have some players with single quotation in their name
         return f'<a href="{url}" >פרופיל {profile_name.replace("_", " ")}:</a>\n{profile} \n\n'
     elif response.status_code == 404:
-        return "לא נמצא שחקן בשם זה. נסו שוב"
+        return f"לא נמצא שחקן בשם {profile_name.replace('_', ' ')}. אנא נסו שוב"
     else:
-        return "אופס! קרתה שגיאה. נסו שוב עוד מספר דקות"
+        return "אופס! התרחשה תקלה. אנא נסו שנית בעוד מספר דקות"
 
 
 def transform_players_with_amount_to_telegram_html_text(top_players_with_amount):

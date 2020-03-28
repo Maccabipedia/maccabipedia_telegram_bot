@@ -6,6 +6,7 @@ class MainKeyboardOptions(object):
     GAMES_STATS = "סטטיסטיקה"
     SONG = "שיר"
     SEASON_STATS = "עונה"
+    UNIFORMS = "מדים"
     DONATE = "תרומה"
     PLAYER_STATS = "שחקן"
 
@@ -37,7 +38,7 @@ def create_main_user_reply_keyboard():
     buttons = [
         [KeyboardButton(MainKeyboardOptions.GAMES_STATS), KeyboardButton(MainKeyboardOptions.GAMES_FILTERING)],
         [KeyboardButton(MainKeyboardOptions.SONG), KeyboardButton(MainKeyboardOptions.PLAYER_STATS)],
-        [KeyboardButton(MainKeyboardOptions.SEASON_STATS)],
+        [KeyboardButton(MainKeyboardOptions.SEASON_STATS), KeyboardButton(MainKeyboardOptions.UNIFORMS)],
 
         [KeyboardButton(MainKeyboardOptions.DONATE)]
     ]

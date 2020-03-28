@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__version__ = "0.10.1"
+__version__ = "0.11.0"
 
 setup(
     name='maccabipediabot',
