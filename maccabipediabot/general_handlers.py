@@ -60,7 +60,8 @@ def unknown_message_handler(update, context):
     """
     For any msg that we didn't registered explicit
     """
-    context.bot.send_message(chat_id=update.effective_chat.id, text="הפקודה האחרונה לא הובנה, נסו להשתמש ב: /help")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="הפקודה האחרונה לא הובנה, נסו להשתמש ב: /help",
+                             reply_markup=create_main_user_reply_keyboard())
 
 
 @log_user_request
@@ -75,7 +76,7 @@ def start_handler(update, context):
     else:
         hello_message = f"שלום."
 
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"{hello_message}", reply_markup=create_main_user_reply_keyboard())
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f"{hello_message}")
 
     help_handler(update, context)
 

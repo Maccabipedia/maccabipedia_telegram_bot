@@ -16,6 +16,8 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from maccabipediabot.create_games_set_flow.games_set_handler import create_games_set_conversion_handler
 from maccabipediabot.games_set_stats_flow.games_stats_handler import create_games_stats_conversion_handler
 from maccabipediabot.general_handlers import help_handler, start_handler, unknown_message_handler, error_callback
+from maccabipediabot.main_user_keyboard import MainKeyboardOptions
+from maccabipediabot.handlers_utils import go_back_to_main_menu_from_conversation_handler
 from maccabipediabot.simple_flows.player_details_flow import create_player_conversation_handler
 from maccabipediabot.simple_flows.donation_flow import create_donation_handlers
 from maccabipediabot.simple_flows.season_details_flow import create_season_conversation_handler
@@ -52,21 +54,25 @@ def register_telegram_bot():
     bot_token = os.environ['TELEGRAM_BOT_TOKEN']
     updater = Updater(token=bot_token, use_context=True)
 
+    # Basic handlers
     updater.dispatcher.add_handler(CommandHandler("help", help_handler))
     updater.dispatcher.add_handler(CommandHandler("start", start_handler))
-
     donation_command_handler, donation_message_handler = create_donation_handlers()
-    updater.dispatcher.add_handler(donation_command_handler)
-    updater.dispatcher.add_handler(donation_message_handler)
+    updater.dispatcher.add_handler(donation_command_handler), updater.dispatcher.add_handler(donation_message_handler)
 
+    # Simple conversations
     updater.dispatcher.add_handler(create_season_conversation_handler())
     updater.dispatcher.add_handler(create_song_conversation_handler())
     updater.dispatcher.add_handler(create_player_conversation_handler())
     updater.dispatcher.add_handler(create_uniforms_conversation_handler())
 
+    # More complex conversations
     updater.dispatcher.add_handler(create_games_set_conversion_handler())
     updater.dispatcher.add_handler(create_games_stats_conversion_handler())
 
+    # Allow to go back if the user has "Go back" keyboard and we restarted the bot
+    updater.dispatcher.add_handler(MessageHandler(Filters.regex(f"^{MainKeyboardOptions.GO_BACK}$"), go_back_to_main_menu_from_conversation_handler))
+    # General handlers
     updater.dispatcher.add_handler(MessageHandler(Filters.text, unknown_message_handler))
     updater.dispatcher.add_error_handler(error_callback)
 
