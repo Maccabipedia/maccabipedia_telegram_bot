@@ -15,6 +15,6 @@ setup(
     install_requires=["python-telegram-bot>=12.4.2, <13",
                       "decorator>=4.4.2, <5",
                       "python-dotenv>=0.12.0, <0.13",
-                      "maccabistats>=2.9.5",
+                      "maccabistats>=2.17",
                       "requests>=2.20.0"]
 )
