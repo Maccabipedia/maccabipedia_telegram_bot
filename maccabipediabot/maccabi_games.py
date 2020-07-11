@@ -31,7 +31,7 @@ def download_maccabipedia_games_for_heroku():
         maccabipedia_games_file_path = Path(temp_maccabipedia_games_folder) / "MaccabiPedia.games"
 
         logger.info(f"Downloading maccabipedia games do: {maccabipedia_games_file_path}")
-        urllib.request.urlretrieve("http://maccabipedia.co.il/MaccabiPedia-2.9.1-2020-03-15%2002-17-03.games", maccabipedia_games_file_path)
+        urllib.request.urlretrieve("http://maccabipedia.co.il/MaccabiPedia.games", maccabipedia_games_file_path)
 
         global _maccabipedia_games
         _maccabipedia_games = get_maccabi_stats_as_newest_wrapper(maccabipedia_games_file_path)
