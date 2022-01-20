@@ -1,1 +1,1 @@
-worker: python maccabipediabot/bot_main.py
+web: python maccabipediabot/bot_main.py

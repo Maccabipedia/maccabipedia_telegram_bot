@@ -1,5 +1,6 @@
 # Hacks for heroku
 import matplotlib
+
 matplotlib.use('Agg')
 
 import logging
@@ -25,6 +26,9 @@ from maccabipediabot.simple_flows.uniforms_flow import create_uniforms_conversat
 from maccabipediabot.simple_flows.feedback_flow import create_feedback_conversation_handler
 
 logger = logging.getLogger("maccabipediabot")
+
+USE_WEB_HOOK = True
+HEROKU_APP_NAME = 'maccabipedia-telegram-bot-py'
 
 
 def load_env_file():
@@ -52,6 +56,8 @@ def register_telegram_bot():
     """
     logger.info("Starting registering the bot!")
     bot_token = os.environ['TELEGRAM_BOT_TOKEN']
+    webhook_port = int(os.environ.get('PORT', '8443'))
+
     updater = Updater(token=bot_token, use_context=True)
 
     # Basic handlers
@@ -72,15 +78,26 @@ def register_telegram_bot():
     updater.dispatcher.add_handler(create_games_stats_conversion_handler())
 
     # Allow to go back if the user has "Go back" keyboard and we restarted the bot
-    updater.dispatcher.add_handler(MessageHandler(Filters.regex(f"^{MainKeyboardOptions.GO_BACK}$"), go_back_to_main_menu_from_conversation_handler))
+    updater.dispatcher.add_handler(MessageHandler(Filters.regex(f"^{MainKeyboardOptions.GO_BACK}$"),
+                                                  go_back_to_main_menu_from_conversation_handler))
     # General handlers
     updater.dispatcher.add_handler(MessageHandler(Filters.text, unknown_message_handler))
     updater.dispatcher.add_error_handler(error_callback)
 
     # updater.dispatcher.add_handler(CommandHandler("shirt_number", shirt_number_handler)) This command is not good enough for now
 
-    logger.info("Starting to run the bot!")
-    updater.start_polling(clean=True)
+    logger.info(f"Starting to run the bot! using webhook: {USE_WEB_HOOK}, port: {webhook_port}, token: {bot_token[:2]}")
+    if USE_WEB_HOOK:
+        # Reference: https://towardsdatascience.com/how-to-deploy-a-telegram-bot-using-heroku-for-free-9436f89575d2
+        updater.start_webhook(listen='0.0.0.0',
+                              port=webhook_port,
+                              url_path=bot_token)
+        updater.bot.set_webhook(f'https://{HEROKU_APP_NAME}.herokuapp.com/{bot_token}')
+        logger.info('Set webhook successfully!')
+
+        updater.idle()
+    else:
+        updater.start_polling(clean=True)
 
 
 if __name__ == "__main__":
