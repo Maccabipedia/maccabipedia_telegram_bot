@@ -1,3 +1,6 @@
+--- Version 0.14.0 ---
+    Heroku webhook, for better usage of the dyno hours
+
 --- Version 0.13.1 ---
     Small fixes + emojis
 
