@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__version__ = "0.14.2"
+__version__ = "0.14.3"
 
 setup(
     name='maccabipediabot',
@@ -12,9 +12,4 @@ setup(
     long_description="MaccabiPedia telegram bot for Maccabi Tel-Aviv fans, including statistics and crawling from maccabipedia.co.il.",
     long_description_content_type='text/markdown',
     python_requires='>=3',
-    install_requires=["python-telegram-bot>=12.4.2, <13",
-                      "decorator>=4.4.2, <5",
-                      "python-dotenv>=0.12.0, <0.13",
-                      "maccabistats>=2.17",
-                      "requests>=2.20.0"]
 )
