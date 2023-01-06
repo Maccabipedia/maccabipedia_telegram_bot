@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "maccabipediabot"
+version = "0.14.4"
+description = "MaccabiPedia Python Telegram bot"
+authors = ["MaccabiPedia <maccabipedia@gmail.com>"]
+packages = [{ include = "maccabipediabot", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+maccabistats = ">=2.33.0"
+requests = ">=2.20.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
