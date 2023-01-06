@@ -27,7 +27,8 @@ from simple_flows.feedback_flow import create_feedback_conversation_handler
 
 logger = logging.getLogger("maccabipediabot")
 
-USE_WEB_HOOK = os.environ.get('USE_WEB_HOOK', True)
+DISABLE_WEB_HOOK = 'DISABLE_WEB_HOOK' in os.environ
+USE_WEB_HOOK = not DISABLE_WEB_HOOK
 HEROKU_APP_NAME = 'maccabipedia-telegram-bot-py'
 
 
