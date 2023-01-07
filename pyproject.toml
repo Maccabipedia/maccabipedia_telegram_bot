@@ -21,8 +21,3 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 run_bot = 'maccabipediabot.bot_main:main'
-
-
-[virtualenvs]
-create = true
-in-project = true
