@@ -101,6 +101,10 @@ def register_telegram_bot():
         updater.start_polling(clean=True)
 
 
-if __name__ == "__main__":
+def main() -> None:
     load_env_file()
     register_telegram_bot()
+
+
+if __name__ == "__main__":
+    main()
