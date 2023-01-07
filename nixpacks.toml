@@ -1,0 +1,7 @@
+providers = ["...", "python"]
+
+[install]
+cmd = "poetry install"
+
+[start]
+cmd = "poetry run run_bot"
