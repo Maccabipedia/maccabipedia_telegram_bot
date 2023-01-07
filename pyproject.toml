@@ -9,6 +9,9 @@ packages = [{ include = "maccabipediabot", from = "src" }]
 python = "^3.7"
 maccabistats = ">=2.33.0"
 requests = ">=2.20.0"
+python-dotenv = ">=0.12.0, <0.13"
+python-telegram-bot = ">=12.4.2, <13"
+decorator = ">=4.4.2, <5"
 
 
 [build-system]
@@ -18,3 +21,8 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 run_bot = 'maccabipediabot.bot_main:run'
+
+
+[virtualenvs]
+create = true
+in-project = true

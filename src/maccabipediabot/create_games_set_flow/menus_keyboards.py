@@ -1,8 +1,11 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
-from create_games_set_flow.menus_options import GamesFilteringMainMenuOptions, HomeAwayFilteringMenuOptions, \
-    TeamFilteringMenuOptions, CompetitionFilteringMenuOptions, DateFilteringMenuOptions, PlayedPlayerFilteringMenuOptions, \
-    RefereeFilteringMenuOptions, StadiumFilteringMenuOptions, CoachFilteringMenuOptions, FinishOrContinueFilteringMenuOptions
+from maccabipediabot.create_games_set_flow.menus_options import GamesFilteringMainMenuOptions, \
+    HomeAwayFilteringMenuOptions, \
+    TeamFilteringMenuOptions, CompetitionFilteringMenuOptions, DateFilteringMenuOptions, \
+    PlayedPlayerFilteringMenuOptions, \
+    RefereeFilteringMenuOptions, StadiumFilteringMenuOptions, CoachFilteringMenuOptions, \
+    FinishOrContinueFilteringMenuOptions
 
 
 def create_home_away_games_filter_menu():

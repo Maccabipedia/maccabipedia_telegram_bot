@@ -1,4 +1,4 @@
-from consts import _MACCABIPEDIA_LINK
+from maccabipediabot.consts import _MACCABIPEDIA_LINK
 
 
 class TeamFilteringMenuOptions(object):

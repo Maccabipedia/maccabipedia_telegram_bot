@@ -4,7 +4,7 @@ from decorator import decorator
 from telegram import ChatAction
 from telegram.ext import ConversationHandler
 
-from main_user_keyboard import show_the_user_main_keyboard_with_message
+from maccabipediabot.main_user_keyboard import show_the_user_main_keyboard_with_message
 
 logger = logging.getLogger(__name__)
 

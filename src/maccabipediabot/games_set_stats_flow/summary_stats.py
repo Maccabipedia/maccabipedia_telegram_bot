@@ -1,7 +1,7 @@
-from common import _USER_DATE_GAMES_FILTER_KEY, transform_stats_to_pretty_hebrew_text
-from games_set_stats_flow.common_menu import go_to_more_stats_or_finish_menu
-from handlers_utils import log_user_request, send_typing_action
-from maccabi_games_filtering import MaccabiGamesFiltering
+from maccabipediabot.common import _USER_DATE_GAMES_FILTER_KEY, transform_stats_to_pretty_hebrew_text
+from maccabipediabot.games_set_stats_flow.common_menu import go_to_more_stats_or_finish_menu
+from maccabipediabot.handlers_utils import log_user_request, send_typing_action
+from maccabipediabot.maccabi_games_filtering import MaccabiGamesFiltering
 
 
 @log_user_request

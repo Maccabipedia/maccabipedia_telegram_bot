@@ -1,8 +1,9 @@
 import html
 import logging
 
-from maccabi_games import _get_similar_names
 from maccabistats.parse.maccabipedia.maccabipedia_cargo_chunks_crawler import MaccabiPediaCargoChunksCrawler
+
+from maccabipediabot.maccabi_games import _get_similar_names
 
 _logger = logging.getLogger(__name__)
 _MACCABIPEDIA_SONGS = None
@@ -22,7 +23,8 @@ def _fetch_songs_from_maccabipedia():
                                            tables_fields="_pageName, SongName, OriginalSongName, Lyrics")
     for song in songs:
         songs_from_maccabipedia[_unescape(song['_pageName'])] = MaccabiPediaSong(song['_pageName'], song['SongName'],
-                                                                                 song['OriginalSongName'], song['Lyrics'])
+                                                                                 song['OriginalSongName'],
+                                                                                 song['Lyrics'])
 
     _logger.info(f"Fetched {len(songs_from_maccabipedia)} from maccabipedia")
     return songs_from_maccabipedia
@@ -85,15 +87,18 @@ class SimilarMaccabiPediaSong(object):
         """
         maccabipedia_songs = get_maccabipedia_songs()
 
-        similar_songs_by_name = _get_similar_names(self.search_song_by_this, [song.song_name for song in maccabipedia_songs.values()])
+        similar_songs_by_name = _get_similar_names(self.search_song_by_this,
+                                                   [song.song_name for song in maccabipedia_songs.values()])
         similar_song_by_original_song = _get_similar_names(self.search_song_by_this,
-                                                           [song.original_song_name for song in maccabipedia_songs.values()])
+                                                           [song.original_song_name for song in
+                                                            maccabipedia_songs.values()])
         songs_by_lyrics = [song for song in maccabipedia_songs.values() if self.search_song_by_this in song.lyrics]
 
         # Add all similar songs
         similar_songs = set()
         similar_songs.update([song for song in maccabipedia_songs.values() if song.song_name in similar_songs_by_name])
-        similar_songs.update([song for song in maccabipedia_songs.values() if song.original_song_name in similar_song_by_original_song])
+        similar_songs.update(
+            [song for song in maccabipedia_songs.values() if song.original_song_name in similar_song_by_original_song])
         similar_songs.update(songs_by_lyrics)
 
         # We want to remove the song namespace prefix so the user wont see it as recommendation

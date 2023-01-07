@@ -1,9 +1,9 @@
 from telegram import ParseMode
 from telegram.ext import CommandHandler, MessageHandler, Filters
 
-from common import get_donation_link_html_text
-from handlers_utils import log_user_request, send_typing_action
-from main_user_keyboard import MainKeyboardOptions
+from maccabipediabot.common import get_donation_link_html_text
+from maccabipediabot.handlers_utils import log_user_request, send_typing_action
+from maccabipediabot.main_user_keyboard import MainKeyboardOptions
 
 
 @log_user_request

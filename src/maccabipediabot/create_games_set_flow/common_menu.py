@@ -1,12 +1,13 @@
-from create_games_set_flow.games_set_conversation_handler_states import games_filtering
-from create_games_set_flow.menus_keyboards import create_games_filter_main_menu
-from create_games_set_flow.menus_options import GamesFilteringMainMenuOptions
+from maccabipediabot.create_games_set_flow.games_set_conversation_handler_states import games_filtering
+from maccabipediabot.create_games_set_flow.menus_keyboards import create_games_filter_main_menu
+from maccabipediabot.create_games_set_flow.menus_options import GamesFilteringMainMenuOptions
 
 
 def get_button_text_from_query_data(query):
     from itertools import chain
 
-    return next(button.text for button in chain.from_iterable(query.message.reply_markup.inline_keyboard) if button.callback_data == query.data)
+    return next(button.text for button in chain.from_iterable(query.message.reply_markup.inline_keyboard) if
+                button.callback_data == query.data)
 
 
 def go_back_to_main_games_filter_menu(update, context):

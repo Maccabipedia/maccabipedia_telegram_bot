@@ -4,9 +4,9 @@ from telegram.error import (TelegramError, Unauthorized, BadRequest,
                             TimedOut, ChatMigrated, NetworkError)
 from telegram.parsemode import ParseMode
 
-from common import create_maccabipedia_shirt_number_category_html_text
-from handlers_utils import send_typing_action, log_user_request
-from main_user_keyboard import create_main_user_reply_keyboard
+from maccabipediabot.common import create_maccabipedia_shirt_number_category_html_text
+from maccabipediabot.handlers_utils import send_typing_action, log_user_request
+from maccabipediabot.main_user_keyboard import create_main_user_reply_keyboard
 
 logger = logging.getLogger(__name__)
 

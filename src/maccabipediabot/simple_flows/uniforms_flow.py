@@ -1,10 +1,12 @@
 from telegram import ParseMode, InputMediaPhoto
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, Filters
 
-from common import format_season_id, extract_season_uniforms_from_maccabipedia
-from handlers_utils import log_user_request, send_typing_action, go_back_to_main_menu_from_conversation_handler, \
+from maccabipediabot.common import format_season_id, extract_season_uniforms_from_maccabipedia
+from maccabipediabot.handlers_utils import log_user_request, send_typing_action, \
+    go_back_to_main_menu_from_conversation_handler, \
     send_upload_image_action
-from main_user_keyboard import MainKeyboardOptions, create_main_user_reply_keyboard, create_go_back_reply_keyboard
+from maccabipediabot.main_user_keyboard import MainKeyboardOptions, create_main_user_reply_keyboard, \
+    create_go_back_reply_keyboard
 
 _show_uniforms_state = range(1)
 
@@ -45,7 +47,9 @@ def create_uniforms_conversation_handler():
         entry_points=[CommandHandler("uniforms", uniforms_entry_point),
                       MessageHandler(Filters.regex(f"^{MainKeyboardOptions.UNIFORMS}$"), uniforms_entry_point)],
         states={_show_uniforms_state: [
-            MessageHandler(Filters.regex(f"^{MainKeyboardOptions.GO_BACK}$"), go_back_to_main_menu_from_conversation_handler),
+            MessageHandler(Filters.regex(f"^{MainKeyboardOptions.GO_BACK}$"),
+                           go_back_to_main_menu_from_conversation_handler),
             MessageHandler(Filters.text, show_uniforms_handler)]},
-        fallbacks=[MessageHandler(Filters.regex(f"^{MainKeyboardOptions.GO_BACK}$"), go_back_to_main_menu_from_conversation_handler)]
+        fallbacks=[MessageHandler(Filters.regex(f"^{MainKeyboardOptions.GO_BACK}$"),
+                                  go_back_to_main_menu_from_conversation_handler)]
     )

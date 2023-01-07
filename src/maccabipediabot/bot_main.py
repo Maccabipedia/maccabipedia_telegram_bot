@@ -1,29 +1,24 @@
-# Hacks for heroku
-import matplotlib
-
-matplotlib.use('Agg')
-
 import logging
 import os
 
-from loggers import initialize_loggers
+from maccabipediabot.loggers import initialize_loggers
 
 # This should stay before the rest of this package imports to enable logging to file
 initialize_loggers()
 
 from dotenv import load_dotenv
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-from create_games_set_flow.games_set_handler import create_games_set_conversion_handler
-from games_set_stats_flow.games_stats_handler import create_games_stats_conversion_handler
-from general_handlers import help_handler, start_handler, unknown_message_handler, error_callback
-from main_user_keyboard import MainKeyboardOptions
-from handlers_utils import go_back_to_main_menu_from_conversation_handler
-from simple_flows.player_details_flow import create_player_conversation_handler
-from simple_flows.donation_flow import create_donation_handlers
-from simple_flows.season_details_flow import create_season_conversation_handler
-from simple_flows.song_details_flow import create_song_conversation_handler
-from simple_flows.uniforms_flow import create_uniforms_conversation_handler
-from simple_flows.feedback_flow import create_feedback_conversation_handler
+from maccabipediabot.create_games_set_flow.games_set_handler import create_games_set_conversion_handler
+from maccabipediabot.games_set_stats_flow.games_stats_handler import create_games_stats_conversion_handler
+from maccabipediabot.general_handlers import help_handler, start_handler, unknown_message_handler, error_callback
+from maccabipediabot.main_user_keyboard import MainKeyboardOptions
+from maccabipediabot.handlers_utils import go_back_to_main_menu_from_conversation_handler
+from maccabipediabot.simple_flows.player_details_flow import create_player_conversation_handler
+from maccabipediabot.simple_flows.donation_flow import create_donation_handlers
+from maccabipediabot.simple_flows.season_details_flow import create_season_conversation_handler
+from maccabipediabot.simple_flows.song_details_flow import create_song_conversation_handler
+from maccabipediabot.simple_flows.uniforms_flow import create_uniforms_conversation_handler
+from maccabipediabot.simple_flows.feedback_flow import create_feedback_conversation_handler
 
 logger = logging.getLogger("maccabipediabot")
 

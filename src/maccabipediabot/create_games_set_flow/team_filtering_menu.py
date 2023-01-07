@@ -1,11 +1,12 @@
-from common import _USER_DATE_GAMES_FILTER_KEY
-from create_games_set_flow.common_menu import get_button_text_from_query_data, go_back_to_main_games_filter_menu
-from create_games_set_flow.games_set_conversation_handler_states import select_team_filter
-from create_games_set_flow.menus_keyboards import create_team_games_filter_menu
-from create_games_set_flow.menus_options import TeamFilteringMenuOptions
-from handlers_utils import log_user_request, send_typing_action
-from maccabi_games import get_maccabipedia_games, get_similar_teams_names
-from maccabi_games_filtering import MaccabiGamesFiltering
+from maccabipediabot.common import _USER_DATE_GAMES_FILTER_KEY
+from maccabipediabot.create_games_set_flow.common_menu import get_button_text_from_query_data, \
+    go_back_to_main_games_filter_menu
+from maccabipediabot.create_games_set_flow.games_set_conversation_handler_states import select_team_filter
+from maccabipediabot.create_games_set_flow.menus_keyboards import create_team_games_filter_menu
+from maccabipediabot.create_games_set_flow.menus_options import TeamFilteringMenuOptions
+from maccabipediabot.handlers_utils import log_user_request, send_typing_action
+from maccabipediabot.maccabi_games import get_maccabipedia_games, get_similar_teams_names
+from maccabipediabot.maccabi_games_filtering import MaccabiGamesFiltering
 
 
 @log_user_request
@@ -50,12 +51,14 @@ def save_specific_team_action(update, context):
                                           f"{pretty_print_of_similar_team_names}"
                                           f"\n\nשלח את שם הקבוצה הרצויה:")
         else:
-            context.bot.send_message(chat_id=update.effective_chat.id, text=f"קבוצה בשם {team_name} לא נמצאה, נסה בשנית")
+            context.bot.send_message(chat_id=update.effective_chat.id,
+                                     text=f"קבוצה בשם {team_name} לא נמצאה, נסה בשנית")
 
         return select_team_filter
     else:
         context.user_data[_USER_DATE_GAMES_FILTER_KEY].update_team_filter(team_name)
         games = MaccabiGamesFiltering(context.user_data[_USER_DATE_GAMES_FILTER_KEY]).filter_games()
 
-        context.bot.send_message(chat_id=update.effective_chat.id, text=f"בחרת ב: {team_name}, {len(games)} משחקים נבחרו")
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text=f"בחרת ב: {team_name}, {len(games)} משחקים נבחרו")
         return go_back_to_main_games_filter_menu(update, context)

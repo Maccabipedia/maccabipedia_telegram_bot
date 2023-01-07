@@ -1,9 +1,10 @@
 import logging
 from datetime import datetime
 
-from create_games_set_flow.menus_options import CompetitionFilteringMenuOptions, DateFilteringMenuOptions, \
+from maccabipediabot.create_games_set_flow.menus_options import CompetitionFilteringMenuOptions, \
+    DateFilteringMenuOptions, \
     HomeAwayFilteringMenuOptions
-from maccabi_games import get_maccabipedia_games
+from maccabipediabot.maccabi_games import get_maccabipedia_games
 
 logger = logging.getLogger(__name__)
 

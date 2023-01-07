@@ -1,6 +1,6 @@
 from telegram import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 
-from emojis import MUSICAL_NOTE_EMOJI, HUMAN_RUNNING_EMOJI, MONEY_EMOJI, SHIRT_EMOJI, WRITE_EMOJI, \
+from maccabipediabot.emojis import MUSICAL_NOTE_EMOJI, HUMAN_RUNNING_EMOJI, MONEY_EMOJI, SHIRT_EMOJI, WRITE_EMOJI, \
     CHART_EMOJI, MAGNIFYING_EMOJI, CALENDAR_EMOJI
 
 
