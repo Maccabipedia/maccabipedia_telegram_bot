@@ -1,3 +1,8 @@
+# Hacks for remote deploy without tkinter
+import matplotlib
+
+matplotlib.use('Agg')
+
 import logging
 import os
 
